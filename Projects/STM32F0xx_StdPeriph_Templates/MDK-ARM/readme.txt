@@ -5,8 +5,8 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.3.1
+  * @date    17-January-2014
   * @brief   This sub-directory contains all the user-modifiable files 
   *          needed to create a new project linked with the STM32F0xx  
   *          Standard Peripheral Library and working with RealView Microcontroller

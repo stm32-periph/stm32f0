@@ -117,16 +117,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/system_stm32f0xx.c</locationURI>
 		</link>
 		<link>
-			<name>StdPeriph_Driver/stm320518_eval.c</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c</locationURI>
-		</link>
-		<link>
-			<name>StdPeriph_Driver/stm320518_eval_lcd.c</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c</locationURI>
-		</link>
-		<link>
 			<name>StdPeriph_Driver/stm32f0xx_adc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-4-PROJECT_LOC/Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c</locationURI>

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file      startup_stm32f042.s
   * @author    MCD Application Team
-  * @version   V1.3.0
-  * @date      16-January-2014
+  * @version   V1.3.1
+  * @date      17-January-2014
   * @brief     STM32F042 Devices vector table for Atollic toolchain.
   *            This module performs:
   *                - Set the initial SP
@@ -159,18 +159,18 @@ g_pfnVectors:
 
 
   .word WWDG_IRQHandler
-  .word PVD_IRQHandler
+  .word PVD_VDDIO2_IRQHandler
   .word RTC_IRQHandler
   .word FLASH_IRQHandler
-  .word RCC_IRQHandler
+  .word RCC_CRS_IRQHandler
   .word EXTI0_1_IRQHandler
   .word EXTI2_3_IRQHandler
   .word EXTI4_15_IRQHandler
-  .word TS_IRQHandler
+  .word TSC_IRQHandler
   .word DMA1_Channel1_IRQHandler
   .word DMA1_Channel2_3_IRQHandler
   .word DMA1_Channel4_5_IRQHandler
-  .word ADC1_COMP_IRQHandler 
+  .word ADC1_IRQHandler 
   .word TIM1_BRK_UP_TRG_COM_IRQHandler
   .word TIM1_CC_IRQHandler
   .word TIM2_IRQHandler
@@ -188,8 +188,10 @@ g_pfnVectors:
   .word USART1_IRQHandler
   .word USART2_IRQHandler
   .word 0
-  .word CEC_IRQHandler
-  .word USB_IRQHandler   
+  .word CEC_CAN_IRQHandler
+  .word USB_IRQHandler
+  .word BootRAM          /* @0x108. This is for boot in RAM mode for 
+                            STM32F0xx devices. */
   
 
 
@@ -219,8 +221,8 @@ g_pfnVectors:
   .weak WWDG_IRQHandler
   .thumb_set WWDG_IRQHandler,Default_Handler
 
-  .weak PVD_IRQHandler
-  .thumb_set PVD_IRQHandler,Default_Handler
+  .weak PVD_VDDIO2_IRQHandler
+  .thumb_set PVD_VDDIO2_IRQHandler,Default_Handler
   
   .weak RTC_IRQHandler
   .thumb_set RTC_IRQHandler,Default_Handler
@@ -228,8 +230,8 @@ g_pfnVectors:
   .weak FLASH_IRQHandler
   .thumb_set FLASH_IRQHandler,Default_Handler
   
-  .weak RCC_IRQHandler
-  .thumb_set RCC_IRQHandler,Default_Handler
+  .weak RCC_CRS_IRQHandler
+  .thumb_set RCC_CRS_IRQHandler,Default_Handler
   
   .weak EXTI0_1_IRQHandler
   .thumb_set EXTI0_1_IRQHandler,Default_Handler
@@ -240,8 +242,8 @@ g_pfnVectors:
   .weak EXTI4_15_IRQHandler
   .thumb_set EXTI4_15_IRQHandler,Default_Handler
   
-  .weak TS_IRQHandler
-  .thumb_set TS_IRQHandler,Default_Handler
+  .weak TSC_IRQHandler
+  .thumb_set TSC_IRQHandler,Default_Handler
   
   .weak DMA1_Channel1_IRQHandler
   .thumb_set DMA1_Channel1_IRQHandler,Default_Handler
@@ -252,8 +254,8 @@ g_pfnVectors:
   .weak DMA1_Channel4_5_IRQHandler
   .thumb_set DMA1_Channel4_5_IRQHandler,Default_Handler
   
-  .weak ADC1_COMP_IRQHandler
-  .thumb_set ADC1_COMP_IRQHandler,Default_Handler
+  .weak ADC1_IRQHandler
+  .thumb_set ADC1_IRQHandler,Default_Handler
    
   .weak TIM1_BRK_UP_TRG_COM_IRQHandler
   .thumb_set TIM1_BRK_UP_TRG_COM_IRQHandler,Default_Handler
@@ -291,11 +293,10 @@ g_pfnVectors:
   .weak USART2_IRQHandler
   .thumb_set USART2_IRQHandler,Default_Handler
   
-  .weak CEC_IRQHandler
-  .thumb_set CEC_IRQHandler,Default_Handler
+  .weak CEC_CAN_IRQHandler
+  .thumb_set CEC_CAN_IRQHandler,Default_Handler
 
 
   .weak USB_IRQHandler
   .thumb_set USB_IRQHandler,Default_Handler
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

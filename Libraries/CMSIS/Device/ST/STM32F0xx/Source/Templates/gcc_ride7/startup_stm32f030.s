@@ -2,9 +2,9 @@
   ******************************************************************************
   * @file      startup_stm32f0xx.s
   * @author    MCD Application Team
-  * @version   V1.3.0
-  * @date      16-January-2014
-  * @brief     STM32F0xx Devices vector table for RIDE7 toolchain.
+  * @version   V1.3.1
+  * @date      17-January-2014
+  * @brief     STM32F030 Devices vector table for RIDE7 toolchain.
   *            This module performs:
   *                - Set the initial SP
   *                - Set the initial PC == Reset_Handler,
@@ -170,7 +170,7 @@ g_pfnVectors:
   .word DMA1_Channel1_IRQHandler
   .word DMA1_Channel2_3_IRQHandler
   .word DMA1_Channel4_5_IRQHandler
-  .word ADC1_COMP_IRQHandler 
+  .word ADC1_IRQHandler 
   .word TIM1_BRK_UP_TRG_COM_IRQHandler
   .word TIM1_CC_IRQHandler
   .word 0  
@@ -187,6 +187,11 @@ g_pfnVectors:
   .word SPI2_IRQHandler
   .word USART1_IRQHandler
   .word USART2_IRQHandler
+  .word 0
+  .word 0
+  .word 0
+  .word BootRAM          /* @0x108. This is for boot in RAM mode for 
+                            STM32F0xx devices. */
  
 
 /*******************************************************************************
@@ -242,8 +247,8 @@ g_pfnVectors:
   .weak DMA1_Channel4_5_IRQHandler
   .thumb_set DMA1_Channel4_5_IRQHandler,Default_Handler
   
-  .weak ADC1_COMP_IRQHandler
-  .thumb_set ADC1_COMP_IRQHandler,Default_Handler
+  .weak ADC1_IRQHandler
+  .thumb_set ADC1_IRQHandler,Default_Handler
    
   .weak TIM1_BRK_UP_TRG_COM_IRQHandler
   .thumb_set TIM1_BRK_UP_TRG_COM_IRQHandler,Default_Handler
@@ -286,3 +291,4 @@ g_pfnVectors:
   
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

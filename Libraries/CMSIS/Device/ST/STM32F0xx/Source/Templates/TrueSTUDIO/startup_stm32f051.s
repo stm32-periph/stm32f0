@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file      startup_stm32f051.s
   * @author    MCD Application Team
-  * @version   V1.3.0
-  * @date      16-January-2014
+  * @version   V1.3.1
+  * @date      17-January-2014
   * @brief     STM32F051 Devices vector table for Atollic toolchain.
   *            This module performs:
   *                - Set the initial SP
@@ -53,16 +53,6 @@ defined in linker script */
 .word _sbss
 /* end address for the .bss section. defined in linker script */
 .word _ebss
-
-.equ  BootRAM, 0xF108F85F
-/**
- * @brief  This is the code that gets called when the processor first
- *          starts execution following a reset event. Only the absolutely
- *          necessary set is performed, after which the application
- *          supplied main() routine is called.
- * @param  None
- * @retval : None
-*/
 
   .section .text.Reset_Handler
   .weak Reset_Handler

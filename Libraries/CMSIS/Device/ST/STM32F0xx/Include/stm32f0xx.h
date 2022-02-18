@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx.h
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.3.1
+  * @date    17-January-2014
   * @brief   CMSIS Cortex-M0 Device Peripheral Access Layer Header File. 
   *          This file contains all the peripheral register's definitions, bits 
   *          definitions and memory mapping for STM32F0xx devices.  
@@ -66,11 +66,11 @@
   */
 
 #if !defined (STM32F030) && !defined (STM32F031) && !defined (STM32F051) && !defined (STM32F072) && !defined (STM32F042)
-  /* #define STM32F030 */   /*!<  */
-  /* #define STM32F031 */   /*!<  */
-  /* #define STM32F051 */   /*!<  */
-  #define STM32F072   /*!<  */
-  /* #define STM32F042 */   /*!<  */
+  /* #define STM32F030 */   
+  /* #define STM32F031 */   
+  /* #define STM32F051 */   
+  #define STM32F072   
+  /* #define STM32F042 */   
 #endif
 
 /*  Tip: To avoid modifying this file each time you need to switch between these
@@ -167,11 +167,11 @@
 #endif /* LSE_VALUE */
 
 /**
- * @brief STM32F0xx Standard Peripheral Library version number V1.3.0
+ * @brief STM32F0xx Standard Peripheral Library version number V1.3.1
    */
 #define __STM32F0XX_STDPERIPH_VERSION_MAIN   (0x01) /*!< [31:24] main version */
 #define __STM32F0XX_STDPERIPH_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version */
-#define __STM32F0XX_STDPERIPH_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
+#define __STM32F0XX_STDPERIPH_VERSION_SUB2   (0x01) /*!< [15:8]  sub2 version */
 #define __STM32F0XX_STDPERIPH_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F0XX_STDPERIPH_VERSION        ((__STM32F0XX_STDPERIPH_VERSION_MAIN << 24)\
                                              |(__STM32F0XX_STDPERIPH_VERSION_SUB1 << 16)\

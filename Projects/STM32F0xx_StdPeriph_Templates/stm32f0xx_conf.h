@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    Project/STM32F0xx_StdPeriph_Templates/stm32f0xx_conf.h 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.3.1
+  * @date    17-January-2014
   * @brief   Library configuration file.
   ******************************************************************************
   * @attention

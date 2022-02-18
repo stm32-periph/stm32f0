@@ -2,9 +2,9 @@
   ******************************************************************************
   * @file      startup_stm32f0xx.s
   * @author    MCD Application Team
-  * @version   V1.3.0
-  * @date      16-January-2014
-  * @brief     STM32F0xx Devices vector table for RIDE7 toolchain.
+  * @version   V1.3.1
+  * @date      17-January-2014
+  * @brief     STM32F031 Devices vector table for RIDE7 toolchain.
   *            This module performs:
   *                - Set the initial SP
   *                - Set the initial PC == Reset_Handler,
@@ -160,7 +160,7 @@ g_pfnVectors:
 
 
   .word WWDG_IRQHandler
-  .word 0  
+  .word PVD_IRQHandler  
   .word RTC_IRQHandler
   .word FLASH_IRQHandler
   .word RCC_IRQHandler
@@ -171,10 +171,10 @@ g_pfnVectors:
   .word DMA1_Channel1_IRQHandler
   .word DMA1_Channel2_3_IRQHandler
   .word DMA1_Channel4_5_IRQHandler
-  .word ADC1_COMP_IRQHandler 
+  .word ADC1_IRQHandler 
   .word TIM1_BRK_UP_TRG_COM_IRQHandler
   .word TIM1_CC_IRQHandler
-  .word 0  
+  .word TIM2_IRQHandler  
   .word TIM3_IRQHandler
   .word 0   
   .word 0  
@@ -187,6 +187,12 @@ g_pfnVectors:
   .word SPI1_IRQHandler
   .word 0 
   .word USART1_IRQHandler
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word BootRAM          /* @0x108. This is for boot in RAM mode for 
+                            STM32F0xx devices. */
   
 /*******************************************************************************
 *
@@ -213,6 +219,9 @@ g_pfnVectors:
 
   .weak WWDG_IRQHandler
   .thumb_set WWDG_IRQHandler,Default_Handler
+  
+  .weak PVD_IRQHandler
+  .thumb_set PVD_IRQHandler,Default_Handler
  
   .weak RTC_IRQHandler
   .thumb_set RTC_IRQHandler,Default_Handler
@@ -241,14 +250,17 @@ g_pfnVectors:
   .weak DMA1_Channel4_5_IRQHandler
   .thumb_set DMA1_Channel4_5_IRQHandler,Default_Handler
   
-  .weak ADC1_COMP_IRQHandler
-  .thumb_set ADC1_COMP_IRQHandler,Default_Handler
+  .weak ADC1_IRQHandler
+  .thumb_set ADC1_IRQHandler,Default_Handler
    
   .weak TIM1_BRK_UP_TRG_COM_IRQHandler
   .thumb_set TIM1_BRK_UP_TRG_COM_IRQHandler,Default_Handler
   
   .weak TIM1_CC_IRQHandler
   .thumb_set TIM1_CC_IRQHandler,Default_Handler
+  
+  .weak TIM2_IRQHandler
+  .thumb_set TIM2_IRQHandler,Default_Handler
     
   .weak TIM3_IRQHandler
   .thumb_set TIM3_IRQHandler,Default_Handler
@@ -273,4 +285,3 @@ g_pfnVectors:
     
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-  
