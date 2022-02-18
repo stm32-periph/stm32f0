@@ -2,11 +2,11 @@
   @page Lib_DEBUG_Example  Lib_DEBUG Example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2012 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
   * @file    Lib_DEBUG/Lib_DEBUG_Example/readme.txt 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Description of the Lib_DEBUG Example.
   ******************************************************************************
   *
@@ -92,7 +92,10 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain
- - Add the "stm32f0xx_ip_dbg.c" file to the project source list 
+ - Select STM32F0XX_MD(STM32F0x1xx) workspace 
+ - Add the following files to the project source list
+      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+      - stm32f0xx_ip_dbg.c
  - Rebuild all files and load your image into target memory
  - Run the example
         

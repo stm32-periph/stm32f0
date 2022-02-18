@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_cec.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file provides all the STM320518-EVAL HDMI-CEC firmware functions.
   *
   *          ===================================================================
@@ -14,7 +14,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ __IO uint8_t BufferPointer[15];
 __IO uint32_t ReceiveStatus = 0;
 __IO uint32_t SendStatus = 0;
 __IO uint8_t TransErrorCode = 0;
-uint8_t MyLogicalAddress = 0;
+__IO uint8_t MyLogicalAddress = 0;
 uint16_t MyPhysicalAddress = 0;
 __IO uint8_t DeviceType = 0;
 #ifdef HDMI_CEC_USE_DDC
@@ -274,7 +274,7 @@ HDMI_CEC_Error HDMI_CEC_Init(void)
     sendcount = 0;
     errorstatus = LogicalAddressAllocation();
     
-    while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+    while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
     {
       sendcount++;
       errorstatus = LogicalAddressAllocation();
@@ -303,19 +303,13 @@ HDMI_CEC_Error HDMI_CEC_Init(void)
   else
   {
     /* Source Physical Address discovery */
-    errorstatus = SourcePhysicalAddressDiscovery();
-    
-    if (errorstatus != HDMI_CEC_OK)
-    {
-      /* Device not connected (Physical Address lost) */
-      return(errorstatus);
-    }
-    
+    SourcePhysicalAddressDiscovery();
+      
     /* Logical Address Allocation */
     sendcount = 0;
     errorstatus = LogicalAddressAllocation();
     
-    while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+    while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
     {
       sendcount++;
       errorstatus = LogicalAddressAllocation();
@@ -350,7 +344,7 @@ HDMI_CEC_Error HDMI_CEC_Init(void)
   sendcount = 0;
   RxCounter = 0;
   
-  while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+  while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
   {
     sendcount++;
     errorstatus = HDMI_CEC_ReportPhysicalAddress();
@@ -366,11 +360,11 @@ HDMI_CEC_Error HDMI_CEC_Init(void)
 
 /**
   * @brief  Transmit message by taking data from typedef struct CEC_Meassage
-  * @param  CEC_TX_MessageStructure: pointer to an CEC_Message structure that contains
+  * @param  HDMI_CEC_TX_MessageStruct: pointer to an CEC_Message structure that contains
   *         the message to be sent.
   * @retval HDMI_CEC_Error: CEC Error code
   */
-HDMI_CEC_Error HDMI_CEC_TransmitMessage(HDMI_CEC_Message *HDMI_CEC_TX_MessageStructure)
+HDMI_CEC_Error HDMI_CEC_TransmitMessage(HDMI_CEC_Message *HDMI_CEC_TX_MessageStruct)
 {
   HDMI_CEC_Error errorstatus = HDMI_CEC_OK;
   __IO uint32_t count = 0, j = 0;
@@ -380,7 +374,7 @@ HDMI_CEC_Error HDMI_CEC_TransmitMessage(HDMI_CEC_Message *HDMI_CEC_TX_MessageStr
   TxCounter = 0;
   BufferCount = 0;
 
-  HDMI_CEC_TX_MessageStructPrivate = *HDMI_CEC_TX_MessageStructure;
+  HDMI_CEC_TX_MessageStructPrivate = *HDMI_CEC_TX_MessageStruct;
 
   /* Initialize BufferPointer */
   for (j = 0; j < 15; j++)
@@ -661,14 +655,14 @@ void HDMI_CEC_CommandCallBack(void)
 
     case HDMI_CEC_OPCODE_GET_CEC_VERSION:
       /* Send the Used CEC version */
-      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | HDMI_CEC_RX_MessageStructPrivate.Header >> 4);
+      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | (HDMI_CEC_RX_MessageStructPrivate.Header >> 4));
       HDMI_CEC_TX_MessageStructPrivate.Opcode = HDMI_CEC_OPCODE_CEC_VERSION;
       HDMI_CEC_TX_MessageStructPrivate.Operande[0] = HDMI_CEC_VERSION; /* CEC Version */
       HDMI_CEC_TX_MessageStructPrivate.TxMessageLength = 0x01;
       errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
 
       /* Retransmit message until 5 time */
-      while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+      while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
       {
         sendcount++;
         errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
@@ -680,7 +674,7 @@ void HDMI_CEC_CommandCallBack(void)
       errorstatus = HDMI_CEC_ReportPhysicalAddress();
       sendcount = 0;
       /* Retransmit message until 5 time */
-      while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+      while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
       {
         sendcount++;
         errorstatus = HDMI_CEC_ReportPhysicalAddress();
@@ -696,7 +690,7 @@ void HDMI_CEC_CommandCallBack(void)
 
     case HDMI_CEC_OPCODE_GIVE_OSD_NAME:
       /* Send the OSD name = STM320518 CEC */
-      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | HDMI_CEC_RX_MessageStructPrivate.Header >> 4);
+      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | (HDMI_CEC_RX_MessageStructPrivate.Header >> 4));
       HDMI_CEC_TX_MessageStructPrivate.Opcode = HDMI_CEC_OPCODE_SET_OSD_NAME;
       /* STM320518 */
       HDMI_CEC_TX_MessageStructPrivate.Operande[0] = 0x53;
@@ -717,7 +711,7 @@ void HDMI_CEC_CommandCallBack(void)
       errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
       sendcount = 0;
       /* Retransmit message until 5 time */
-      while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+      while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
       {
         sendcount++;
         errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
@@ -727,9 +721,9 @@ void HDMI_CEC_CommandCallBack(void)
     case HDMI_CEC_OPCODE_ROUTING_CHANGE:
       for (i = 0;i < 0x14;i++)
       {
-        if ((HDMI_CEC_DeviceMap[i].PhysicalAddress_A == HDMI_CEC_RX_MessageStructPrivate.Operande[1] >> 4) &&
-            (HDMI_CEC_DeviceMap[i].PhysicalAddress_B == HDMI_CEC_RX_MessageStructPrivate.Operande[1]&0x0F) &&
-            (HDMI_CEC_DeviceMap[i].PhysicalAddress_C == HDMI_CEC_RX_MessageStructPrivate.Operande[0] >> 4) &&
+        if ((HDMI_CEC_DeviceMap[i].PhysicalAddress_A == (HDMI_CEC_RX_MessageStructPrivate.Operande[1] >> 4)) &&
+            (HDMI_CEC_DeviceMap[i].PhysicalAddress_B == (HDMI_CEC_RX_MessageStructPrivate.Operande[1]&0x0F)) &&
+            (HDMI_CEC_DeviceMap[i].PhysicalAddress_C == (HDMI_CEC_RX_MessageStructPrivate.Operande[0] >> 4)) &&
             (HDMI_CEC_DeviceMap[i].PhysicalAddress_D == (HDMI_CEC_RX_MessageStructPrivate.Operande[0]&0x0F)))
         {
           HDMI_CEC_MapStruct.LogicalAddress = (HDMI_CEC_RX_MessageStructPrivate.Header >> 0x4) & 0x0F;
@@ -741,7 +735,7 @@ void HDMI_CEC_CommandCallBack(void)
 
     default:
       /* Send Abort feature */
-      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | HDMI_CEC_RX_MessageStructPrivate.Header >> 4);
+      HDMI_CEC_TX_MessageStructPrivate.Header = ((MyLogicalAddress << 4) | (HDMI_CEC_RX_MessageStructPrivate.Header >> 4));
       HDMI_CEC_TX_MessageStructPrivate.Opcode = HDMI_CEC_OPCODE_FEATURE_ABORT;
       HDMI_CEC_TX_MessageStructPrivate.Operande[0] = 0x02; /* Defines command to be performed */
       HDMI_CEC_TX_MessageStructPrivate.Operande[1] = HDMI_CEC_REFUSED; /* Reason for abort feature */
@@ -749,7 +743,7 @@ void HDMI_CEC_CommandCallBack(void)
       errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
       sendcount = 0;
       /* Retransmit message until 5 time */
-      while ((errorstatus != HDMI_CEC_OK) && sendcount < 0x5)
+      while ((errorstatus != HDMI_CEC_OK) && (sendcount < 0x5))
       {
         sendcount++;
         errorstatus = HDMI_CEC_TransmitMessage(&HDMI_CEC_TX_MessageStructPrivate);
@@ -1432,48 +1426,48 @@ static HDMI_CEC_Error SourcePhysicalAddressDiscovery(void)
   /* Wait until TXIS is set */
   while (!(HDMI_CEC_I2C->ISR & I2C_ISR_TXIS));
   
-    /* Send memory address */
-    HDMI_CEC_I2C->TXDR = (uint8_t)(0x00);
+  /* Send memory address */
+  HDMI_CEC_I2C->TXDR = (uint8_t)(0x00);
     
-    /* Wait until TC is set */
-    while (!(HDMI_CEC_I2C->ISR & I2C_ISR_TC));
+  /* Wait until TC is set */
+  while (!(HDMI_CEC_I2C->ISR & I2C_ISR_TC));
     
-    /* Update CR2 : set Nbytes and reload */        
-    HDMI_CEC_I2C->CR2 = (uint32_t)(0xA0) | I2C_CR2_RD_WRN |  I2C_CR2_START | (uint32_t)(255 << 16) | I2C_CR2_RELOAD;     
+  /* Update CR2 : set Nbytes and reload */        
+  HDMI_CEC_I2C->CR2 = (uint32_t)(0xA0) | I2C_CR2_RD_WRN |  I2C_CR2_START | (uint32_t)(255 << 16) | I2C_CR2_RELOAD;     
     
-    /* Wait until all data are received */
-    while (DataNum != 255)
-    {        
-      /* Wait until RXNE flag is set */
-      while (!(HDMI_CEC_I2C->ISR & I2C_ISR_RXNE));
-
-      /* Read data from RXDR */
-      pBuffer[DataNum]= (uint8_t)HDMI_CEC_I2C->RXDR;
-      
-      /* Update number of received data */
-      DataNum++;
-    }
-    
-    /* Wait until TCR flag is set */     
-    while (!(HDMI_CEC_I2C->ISR & I2C_ISR_TCR));
-
-    /* Update CR2 : set Nbytes and end mode */
-    HDMI_CEC_I2C->CR2 = (uint32_t)(1 << 16) | I2C_CR2_AUTOEND; 
-    
+  /* Wait until all data are received */
+  while (DataNum != 255)
+  {        
+    /* Wait until RXNE flag is set */
     while (!(HDMI_CEC_I2C->ISR & I2C_ISR_RXNE));
-    
+
     /* Read data from RXDR */
     pBuffer[DataNum]= (uint8_t)HDMI_CEC_I2C->RXDR;
+      
+    /* Update number of received data */
+    DataNum++;
+  }
     
-    /* Wait until STOPF flag is set */      
-    while (!(HDMI_CEC_I2C->ISR & I2C_ISR_STOPF));
+  /* Wait until TCR flag is set */     
+  while (!(HDMI_CEC_I2C->ISR & I2C_ISR_TCR));
+
+  /* Update CR2 : set Nbytes and end mode */
+  HDMI_CEC_I2C->CR2 = (uint32_t)(1 << 16) | I2C_CR2_AUTOEND; 
     
-    /* Clear STOPF flag */
-    HDMI_CEC_I2C->ICR = I2C_ICR_STOPCF;
+  while (!(HDMI_CEC_I2C->ISR & I2C_ISR_RXNE));
+  
+  /* Read data from RXDR */
+  pBuffer[DataNum]= (uint8_t)HDMI_CEC_I2C->RXDR;
+    
+  /* Wait until STOPF flag is set */      
+  while (!(HDMI_CEC_I2C->ISR & I2C_ISR_STOPF));
+    
+  /* Clear STOPF flag */
+  HDMI_CEC_I2C->ICR = I2C_ICR_STOPCF;
  
-    MyPhysicalAddress = ((pBuffer[158] << 8) | pBuffer[159]);
+  MyPhysicalAddress = ((pBuffer[158] << 8) | pBuffer[159]);
 #else
-    MyPhysicalAddress = 0x1000;  
+  MyPhysicalAddress = 0x1000;  
 #endif
    
   return errorstatus;

@@ -2,11 +2,11 @@
   @page I2C_TwoBoards  I2C Communication Boards Data Exchange using CPAL Library
   
   @verbatim
-  ******************** (C) COPYRIGHT 2012 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
   * @file    I2C/I2C_TwoBoards/readme.txt 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Description of the CPAL Two Boards communication example.
   ******************************************************************************
   *
@@ -155,10 +155,13 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain
- - Add the following files the project source list
-     - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
-     - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
-     - stm32f0xx_i2c_cpal_usercallback.c
+ - Select STM32F0XX_MD(STM32F0x1xx) workspace 
+ - Add the following files to the project source list
+      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
+      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
+      - stm32f0xx_i2c_cpal_usercallback.c
+      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
+      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
  - Rebuild all files and load your image into target memory
  - Run the example
 

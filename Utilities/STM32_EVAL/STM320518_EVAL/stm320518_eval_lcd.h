@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_lcd.h
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file contains all the functions prototypes for the stm320518_eval_lcd
   *          firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -97,17 +97,11 @@ typedef struct
 #endif                                     
 
 /** 
-  * @brief  LCD Control pins  
+  * @brief  LCD Control pins
   */ 
-#define LCD_NCS_PIN             GPIO_Pin_4                  
+#define LCD_NCS_PIN             GPIO_Pin_4         
 #define LCD_NCS_GPIO_PORT       GPIOF                     
 #define LCD_NCS_GPIO_CLK        RCC_AHBPeriph_GPIOF 
-#define LCD_NWR_PIN             GPIO_Pin_15
-#define LCD_NWR_GPIO_PORT       GPIOD
-#define LCD_NWR_GPIO_CLK        RCC_AHBPeriph_GPIOD
-#define LCD_RS_PIN              GPIO_Pin_7                     
-#define LCD_RS_GPIO_PORT        GPIOD
-#define LCD_RS_GPIO_CLK         RCC_AHBPeriph_GPIOD 
 
 /** 
   * @brief  LCD SPI Interface pins 

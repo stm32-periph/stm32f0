@@ -2,11 +2,11 @@
   @page truestudio TrueSTUDIO Project Template for STM32F0xx devices
  
   @verbatim
-  ******************** (C) COPYRIGHT 2012 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   This sub-directory contains all the user-modifiable files needed to
   *          create a new project linked with the STM32F0xx Standard Peripherals
   *          Library and working with TrueSTUDIO software toolchain.
@@ -29,13 +29,13 @@
  
  @par Directory contents
  
- -  .cproject/.project: A pre-configured project file with the provided library
-                        structure that produces an executable image with TrueSTUDIO.
+ - .cproject/.project: A pre-configured project file with the provided library
+                       structure that produces an executable image with TrueSTUDIO.
 
- - stm32_flash.ld:             This file is the TrueSTUDIO linker script used to 
-                               place program code (readonly) in internal FLASH and
-                               data (readwrite, Stack and Heap)in internal SRAM. 
-                               You can customize this file to your need.
+ - stm32_flash.ld:     This file is the TrueSTUDIO linker script used to 
+                       place program code (readonly) in internal FLASH and
+                       data (readwrite, Stack and Heap)in internal SRAM. 
+                       You can customize this file to your need.
                                                           
  @par How to use it ?
 
@@ -45,7 +45,8 @@
  - Click on File->Import, select General->'Existing Projects into Workspace' 
    and then click "Next". 
  - Browse to the TrueSTUDIO workspace directory and select the project: 
-   - STM320518_EVAL: to configure the project for STM32F4xx devices.
+   - STM32F0XX_MD(STM32F0x1xx): to configure the project for STM32F0x1xx devices.
+   - STM32F0XX_LD(STM32F0x0xx): to configure the project for STM32F0x0xx devices.
  - Rebuild all project files: Select the project in the "Project explorer" 
    window then click on Project->build project menu.
  - Run program: Select the project in the "Project explorer" window then click 

@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    TIM/PWM_Input/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.

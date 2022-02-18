@@ -1,13 +1,14 @@
-;******************** (C) COPYRIGHT 2012 STMicroelectronics ********************
+;******************** (C) COPYRIGHT 2013 STMicroelectronics ********************
 ;* File Name          : startup_stm32f0xx.s
 ;* Author             : MCD Application Team
-;* Version            : V1.0.1
-;* Date               : 20-April-2012
-;* Description        : STM32F0xx Devices vector table for MDK-ARM toolchain.
+;* Version            : V1.1.1
+;* Date               : 31-July-2013
+;* Description        : STM32F0xx Medium-density devices vector table for MDK-ARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == Reset_Handler
 ;*                      - Set the vector table entries with the exceptions ISR address
+;*                      - Configure the system clock
 ;*                      - Branches to __main in the C library (which eventually
 ;*                        calls main()).
 ;*                      After Reset the CortexM0 processor is in Thread mode,

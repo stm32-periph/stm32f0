@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    WDG/IWDG_Reset/main.c 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -134,8 +134,8 @@ int main(void)
     /* Toggle LED2 */
     STM_EVAL_LEDToggle(LED2);
 
-    /* Insert 240 ms delay */
-    Delay(240);
+    /* Insert 220 ms delay */
+    Delay(220);
 
     /* Reload IWDG counter */
     IWDG_ReloadCounter();  

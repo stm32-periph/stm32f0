@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_ee.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file provides a set of functions needed to manage an I2C M24LR64 
   *          EEPROM memory.
   *          
@@ -45,7 +45,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -411,7 +411,7 @@ uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteTo
   * @retval sEE_OK (0) if operation is correctly performed, else return value 
   *         different from sEE_OK (0) or the timeout user callback.
   */
-uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint8_t* NumByteToWrite)
+uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t* NumByteToWrite)
 {   
   uint32_t DataNum = 0;
   
@@ -524,7 +524,7 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       /* Store the number of data to be written */
       sEEDataNum = NumOfSingle;
       /* Start writing data */
-      sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+      sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
       sEE_WaitEepromStandbyState();
     }
     /*!< If NumByteToWrite > sEE_PAGESIZE */
@@ -534,7 +534,7 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       {
         /* Store the number of data to be written */
         sEEDataNum = sEE_PAGESIZE;        
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum)); 
         sEE_WaitEepromStandbyState();
         WriteAddr +=  sEE_PAGESIZE;
         pBuffer += sEE_PAGESIZE;
@@ -544,7 +544,7 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();
       }
     }
@@ -562,20 +562,20 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
         /* Store the number of data to be written */
         sEEDataNum = count;        
         /*!< Write the data conained in same page */
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();      
         
         /* Store the number of data to be written */
         sEEDataNum = (NumByteToWrite - count);          
         /*!< Write the remaining data in the following page */
-        sEE_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint8_t*)(&sEEDataNum));
+        sEE_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint16_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();        
       }      
       else      
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;         
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();        
       }     
     }
@@ -586,21 +586,18 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
       NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
       
-      if(count != 0)
-      {  
-        /* Store the number of data to be written */
-        sEEDataNum = count;         
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
-        sEE_WaitEepromStandbyState();
-        WriteAddr += count;
-        pBuffer += count;
-      } 
+      /* Store the number of data to be written */
+      sEEDataNum = count;         
+      sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+      sEE_WaitEepromStandbyState();
+      WriteAddr += count;
+      pBuffer += count;
       
       while(NumOfPage--)
       {
         /* Store the number of data to be written */
         sEEDataNum = sEE_PAGESIZE;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
         sEETimeout = sEE_LONG_TIMEOUT;
         sEE_WaitEepromStandbyState();
         WriteAddr +=  sEE_PAGESIZE;
@@ -610,7 +607,7 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;           
-        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
+        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum)); 
         sEE_WaitEepromStandbyState();
       }
     }
@@ -677,14 +674,23 @@ uint32_t sEE_WaitEepromStandbyState(void)
 /**
   * @brief  Basic management of the timeout situation.
   * @param  None.
-  * @retval None.
+  * @retval 0.
   */
 uint32_t sEE_TIMEOUT_UserCallback(void)
 {
-  /* Block communication and all processes */
-  while (1)
-  {   
-  }
+  /* The following code allows I2C error recovery and return to normal communication
+     if the error source doesn’t still exist (ie. hardware issue..) */
+  
+  /* Reinitialize all resources */
+  sEE_DeInit();
+  sEE_Init();
+
+  /* At this stage the I2C error should be recovered and device can communicate
+     again (except if the error source still exist).
+     User can implement mechanism (ex. test on max trial number) to manage situation
+     when the I2C can't recover from current error. */
+  
+  return 0;
 }
 #endif /* USE_DEFAULT_TIMEOUT_CALLBACK */
 

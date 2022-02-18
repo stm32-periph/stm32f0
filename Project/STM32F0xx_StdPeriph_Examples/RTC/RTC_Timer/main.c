@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    RTC/RTC_Timer/main.c 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -336,9 +336,11 @@ void RTC_AlarmConfig(void)
   NVIC_Init(&NVIC_InitStructure);
  
   /* Set the alarmA Masks */
+  RTC_AlarmStructInit(&RTC_AlarmStructure);
+
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_All;
   RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
-  
+
   /* Set AlarmA subseconds and enable SubSec Alarm : generate 8 interripts per Second */
   RTC_AlarmSubSecondConfig(RTC_Alarm_A, 0xFF, RTC_AlarmSubSecondMask_SS14_5);
 

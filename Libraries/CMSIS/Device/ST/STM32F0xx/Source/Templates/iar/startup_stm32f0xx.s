@@ -1,14 +1,17 @@
-;******************** (C) COPYRIGHT 2012 STMicroelectronics ********************
+;******************** (C) COPYRIGHT 2013 STMicroelectronics ********************
 ;* File Name          : startup_stm32f0xx.s
 ;* Author             : MCD Application Team
-;* Version            : V1.0.1
-;* Date               : 20-April-2012
-;* Description        : STM32F0xx Devices vector table for EWARM toolchain.
+;* Version            : V1.1.1
+;* Date               : 31-July-2013
+;* Description        : STM32F0xx Medium-density devices vector table for EWARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == iar_program_start,
 ;*                      - Set the vector table entries with the exceptions ISR 
-;*                        address.
+;*                        address
+;*                      - Configure the system clock
+;*                      - Branches to main in the C library (which eventually
+;*                        calls main()).
 ;*                      After Reset the Cortex-M0 processor is in Thread mode,
 ;*                      priority is Privileged, and the Stack is set to Main.
 ;*******************************************************************************

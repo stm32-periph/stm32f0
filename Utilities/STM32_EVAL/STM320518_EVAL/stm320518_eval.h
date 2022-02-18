@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval.h
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file contains definitions for STM320518_EVAL's Leds, push-buttons
   *          and COM ports hardware resources.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -121,7 +121,7 @@ typedef enum
 #endif
 
 #if !defined (STM320518_EVAL_REVA)
- //#define STM320518_EVAL_REVA
+ /* #define STM320518_EVAL_REVA */
 #endif
 
 

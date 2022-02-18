@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file provides set of firmware functions to manage Leds, 
   *          push-button and COM ports.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ const uint16_t BUTTON_EXTI_LINE[BUTTONn] = {TAMPER_BUTTON_EXTI_LINE,
                                             DOWN_BUTTON_EXTI_LINE,
                                             SEL_BUTTON_EXTI_LINE};
 
-const uint16_t BUTTON_PORT_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PORT_SOURCE, 
+const uint8_t BUTTON_PORT_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PORT_SOURCE, 
                                               KEY_BUTTON_EXTI_PORT_SOURCE,
                                               RIGHT_BUTTON_EXTI_PORT_SOURCE,
                                               LEFT_BUTTON_EXTI_PORT_SOURCE,
@@ -113,7 +113,7 @@ const uint16_t BUTTON_PORT_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PORT_SOURCE,
                                               DOWN_BUTTON_EXTI_PORT_SOURCE,
                                               SEL_BUTTON_EXTI_PORT_SOURCE};
 								 
-const uint16_t BUTTON_PIN_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PIN_SOURCE, 
+const uint8_t BUTTON_PIN_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PIN_SOURCE, 
                                              KEY_BUTTON_EXTI_PIN_SOURCE,
                                              RIGHT_BUTTON_EXTI_PIN_SOURCE,
                                              LEFT_BUTTON_EXTI_PIN_SOURCE,
@@ -121,7 +121,7 @@ const uint16_t BUTTON_PIN_SOURCE[BUTTONn] = {TAMPER_BUTTON_EXTI_PIN_SOURCE,
                                              DOWN_BUTTON_EXTI_PIN_SOURCE,
                                              SEL_BUTTON_EXTI_PIN_SOURCE}; 
 
-const uint16_t BUTTON_IRQn[BUTTONn] = {TAMPER_BUTTON_EXTI_IRQn, KEY_BUTTON_EXTI_IRQn, 
+const uint8_t BUTTON_IRQn[BUTTONn] = {TAMPER_BUTTON_EXTI_IRQn, KEY_BUTTON_EXTI_IRQn, 
                                        RIGHT_BUTTON_EXTI_IRQn, LEFT_BUTTON_EXTI_IRQn, 
                                        UP_BUTTON_EXTI_IRQn, DOWN_BUTTON_EXTI_IRQn, 
                                        SEL_BUTTON_EXTI_IRQn};
@@ -142,13 +142,13 @@ const uint16_t COM_TX_PIN[COMn] = {EVAL_COM1_TX_PIN};
 
 const uint16_t COM_RX_PIN[COMn] = {EVAL_COM1_RX_PIN};
  
-const uint16_t COM_TX_PIN_SOURCE[COMn] = {EVAL_COM1_TX_SOURCE};
+const uint8_t COM_TX_PIN_SOURCE[COMn] = {EVAL_COM1_TX_SOURCE};
 
-const uint16_t COM_RX_PIN_SOURCE[COMn] = {EVAL_COM1_RX_SOURCE};
+const uint8_t COM_RX_PIN_SOURCE[COMn] = {EVAL_COM1_RX_SOURCE};
  
-const uint16_t COM_TX_AF[COMn] = {EVAL_COM1_TX_AF};
+const uint8_t COM_TX_AF[COMn] = {EVAL_COM1_TX_AF};
  
-const uint16_t COM_RX_AF[COMn] = {EVAL_COM1_RX_AF};
+const uint8_t COM_RX_AF[COMn] = {EVAL_COM1_RX_AF};
 
 
 /**

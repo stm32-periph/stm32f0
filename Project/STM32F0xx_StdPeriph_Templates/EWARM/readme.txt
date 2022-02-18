@@ -1,12 +1,12 @@
 /**
   @page ewarm EWARM Project Template for STM32F0xx devices
-  
+
   @verbatim
-  ******************* (C) COPYRIGHT 2012 STMicroelectronics ********************
+  ******************* (C) COPYRIGHT 2013 STMicroelectronics ********************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   This sub-directory contains all the user-modifiable files needed
   *          to create a new project linked with the STM32F0xx Standard Peripheral 
   *          Library and working with IAR Embedded Workbench for ARM (EWARM)
@@ -27,34 +27,48 @@
   *
   ******************************************************************************
   @endverbatim
- 
- @par Directory contents
 
- - project .ewd/.eww/.ewp: A pre-configured project file with the provided library 
-                           structure that produces an executable image with IAR 
-                           Embedded Workbench.
-                
- - stm32f0xx_flash.icf : This file is the IAR Linker configuration file used to 
-                         place program code (readonly) in internal FLASH and data
-                         (readwrite, Stack and Heap)in internal SRAM. 
-                         You can customize this file to your need.
+@par Directory contents
 
- - stm32f0xx_ram.icf:  This file is the IAR Linker configuration file used to 
-                       place program code (readonly) and data (readwrite, Stack 
-                       and Heap)in internal SRAM. 
-                       You can customize this file to your need.
+ - project .ewd/.eww/.ewp : A pre-configured project file with the provided library 
+                            structure that produces an executable image with EWARM.
 
- @par How to use it ?
+ - stm32f0xx_flash.icf    : STM32F0xx Medium-density devices Linker configuration file 
+                            used to place program code (readonly) in internal FLASH 
+                            and data (readwrite, Stack and Heap)in internal SRAM.
+                            You can customize this file to your need.
+
+ - stm32f0xx_ram.icf      : STM32F0xx Medium-density devices  Linker configuration file 
+                            used to place program code (readonly) and data (readwrite,
+                            Stack and Heap)in internal SRAM.
+                            You can customize this file to your need.
+
+ - stm32f0xx_ld_flash.icf : STM32F0xx Low-density devices Linker configuration file 
+                            used to place program code (readonly) in internal FLASH 
+                            and data (readwrite, Stack and Heap)in internal SRAM.
+                            You can customize this file to your need.
+
+@par How to use it ?
 
  - Open the Project.eww workspace.
  - In the workspace toolbar select the project config:
-     - STM320518-EVAL: to configure the project for STM32F0xx devices.
+     - STM32F0XX_MD(STM32F0x1xx): to configure the project for STM32F0xx Medium-density devices.
+                                  You can use STMicroelectronics STM320518-EVAL or STM32F0-Discovery
+                                  board to run this project.
+     - STM32F0XX_LD(STM32F0x0xx): to configure the project for STM32F0xx Low-density devices.
+                                  You need to use custom HW board to run this project.
  - Rebuild all files: Project->Rebuild all
  - Load project image: Project->Debug
  - Run program: Debug->Go(F5)
 
-  @note The needed define symbols for this config are already declared in the
-        preprocessor section: USE_STDPERIPH_DRIVER, STM32F0XX, USE_STM320518_EVAL
+
+@note The needed define symbols for this config are already declared in the
+      preprocessor section: USE_STDPERIPH_DRIVER, STM32F0XX, USE_STM320518_EVAL
+
+@note - STM32F0xx Low-density devices are STM32F050xx and STM32F060xx microcontrollers
+        where the Flash memory ranges between 16 and 32 Kbytes.
+      - STM32F0xx Medium-density devices are STM32F051xx and STM32F061xx microcontrollers
+        where the Flash memory ranges between 16 and 64 Kbytes  
 
  * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */

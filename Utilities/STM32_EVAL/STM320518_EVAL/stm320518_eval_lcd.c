@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_lcd.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    20-April-2012
+  * @version V1.1.0
+  * @date    10-May-2013
   * @brief   This file includes the LCD driver for AM-240320L8TNQW00H (LCD_ILI9320), 
   *          AM-240320LDTNQW00H (LCD_SPFD5408B), AM240320D5TOQW01H (LCD_ILI9325)
   *          and AM240320LGTNQW00H (HX8347-D) Liquid Crystal Display Module of
@@ -11,7 +11,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -74,8 +74,8 @@
 #define LCD_READ_REG       0x03
 #define MAX_POLY_CORNERS   200
 
-#define POLY_Y(Z)          ((int32_t)((Points + Z)->X))
-#define POLY_X(Z)          ((int32_t)((Points + Z)->Y))
+#define POLY_Y(Z)          ((int32_t)((Points + (Z))->X))
+#define POLY_X(Z)          ((int32_t)((Points + (Z))->Y))
 /**
   * @}
   */ 
@@ -144,13 +144,6 @@ void LCD_DeInit(void)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(LCD_NCS_GPIO_PORT, &GPIO_InitStructure);
-   
-  /* Configure NWR(RNW), RS */
-  GPIO_InitStructure.GPIO_Pin = LCD_RS_PIN;
-  GPIO_Init(LCD_RS_GPIO_PORT, &GPIO_InitStructure);
-
-  GPIO_InitStructure.GPIO_Pin = LCD_NWR_PIN;
-  GPIO_Init(LCD_NWR_GPIO_PORT, &GPIO_InitStructure);  
      
   /* Configure SPI pins: SCK, MISO and MOSI */
   GPIO_InitStructure.GPIO_Pin = LCD_SPI_SCK_PIN;
@@ -173,7 +166,7 @@ void LCD_Setup(void)
 /* Configure the LCD Control pins --------------------------------------------*/
   LCD_CtrlLinesConfig();
   
-/* Configure the LCD_SPI interface ----------------------------------------------*/
+/* Configure the LCD_SPI interface -------------------------------------------*/
   LCD_SPIConfig();
   
   /* Check if the LCD is HX8347D Controller */
@@ -237,7 +230,7 @@ void LCD_Setup(void)
     LCD_WriteReg(LCD_REG_31, 0x80); /* Step-up Circuit 1 off */
     _delay_(2);
     LCD_WriteReg(LCD_REG_31, 0x90); /* VCOML voltage can output to negative voltage,
-                                (1.0V ~ VCL+0.5V) */
+                                       (1.0V ~ VCL+0.5V) */
     _delay_(2);
     LCD_WriteReg(LCD_REG_31, 0xD0); /* Step-up Circuit 2 on */
     _delay_(2);
@@ -548,10 +541,8 @@ void LCD_SetColors(__IO uint16_t _TextColor, __IO uint16_t _BackColor)
 
 /**
   * @brief  Gets the LCD Text and Background colors.
-  * @param  _TextColor: pointer to the variable that will contain the Text 
-            Color.
-  * @param  _BackColor: pointer to the variable that will contain the Background 
-            Color.
+  * @param  _TextColor: pointer to the variable that will contain the Text Color.
+  * @param  _BackColor: pointer to the variable that will contain the Background Color.
   * @retval None
   */
 void LCD_GetColors(__IO uint16_t *_TextColor, __IO uint16_t *_BackColor)
@@ -604,38 +595,22 @@ sFONT *LCD_GetFont(void)
   * @brief  Clears the selected line.
   * @param  Line: the Line to be cleared.
   *         This parameter can be one of the following values:
-  *              @arg Linex: where x can be 0..n
+  *            @arg LCD_LINE_x: where x can be 0..9
   * @retval None
   */
 void LCD_ClearLine(uint16_t Line)
 {
   uint16_t refcolumn = LCD_PIXEL_WIDTH - 1;
   
-  if(LCDType == LCD_HX8347D)
+  /* Send the string character by character on lCD */
+  while (((refcolumn + 1) & 0xFFFF) >= LCD_Currentfonts->Width)
   {
-    refcolumn = 0;
-    /* Send the string character by character on LCD */
-    while ((LCD_PIXEL_WIDTH - (refcolumn & 0xFFFF)) >= LCD_Currentfonts->Width)
-    {
-      /* Display one character on LCD */
-      LCD_DisplayChar(Line, refcolumn, ' ');
-      /* Increment the column position by 16 */
-      refcolumn += LCD_Currentfonts->Width;
-    }    
-  }
-  else
-  {
-    /* Send the string character by character on lCD */
-    while (((refcolumn + 1) & 0xFFFF) >= LCD_Currentfonts->Width)
-    {
-      /* Display one character on LCD */
-      LCD_DisplayChar(Line, refcolumn, ' ');
-      /* Decrement the column position by 16 */
-      refcolumn -= LCD_Currentfonts->Width;
-    }
+    /* Display one character on LCD */
+    LCD_DisplayChar(Line, refcolumn, ' ');
+    /* Decrement the column position by 16 */
+    refcolumn -= LCD_Currentfonts->Width;
   }
 }
-
 
 /**
   * @brief  Clears the hole LCD.
@@ -729,7 +704,7 @@ void LCD_DrawChar(uint16_t Xpos, uint16_t Ypos, const uint16_t *c)
   * @brief  Displays one character (16dots width, 24dots height).
   * @param  Line: the Line where to display the character shape .
   *          This parameter can be one of the following values:
-  *            @arg Linex: where x can be 0..9
+  *            @arg LCD_LINE_x: where x can be 0..9
   * @param  Column: start column address.
   * @param  Ascii: character ascii code, must be between 0x20 and 0x7E.
   * @retval None
@@ -737,6 +712,12 @@ void LCD_DrawChar(uint16_t Xpos, uint16_t Ypos, const uint16_t *c)
 void LCD_DisplayChar(uint16_t Line, uint16_t Column, uint8_t Ascii)
 {
   Ascii -= 32;
+
+  if(LCDType == LCD_HX8347D)
+  {
+    Column = 319 - Column;
+  }
+    
   LCD_DrawChar(Line, Column, &LCD_Currentfonts->table[Ascii * LCD_Currentfonts->Height]);
 }
 
@@ -745,7 +726,7 @@ void LCD_DisplayChar(uint16_t Line, uint16_t Column, uint8_t Ascii)
   * @brief  Displays a maximum of 20 char on the LCD.
   * @param  Line: the Line where to display the character shape .
   *          This parameter can be one of the following values:
-  *            @arg Linex: where x can be 0..9
+  *            @arg LCD_LINE_x: where x can be 0..9
   * @param  *ptr: pointer to string to display on LCD.
   * @retval None
   */
@@ -753,35 +734,17 @@ void LCD_DisplayStringLine(uint16_t Line, uint8_t *ptr)
 {
   uint16_t refcolumn = LCD_PIXEL_WIDTH - 1;
 
-  if(LCDType == LCD_HX8347D)
+  /* Send the string character by character on lCD */
+  while ((*ptr != 0) & (((refcolumn + 1) & 0xFFFF) >= LCD_Currentfonts->Width))
   {
-    refcolumn = 0;
-    /* Send the string character by character on LCD */
-    while ((*ptr != 0) & ((LCD_PIXEL_WIDTH - (refcolumn & 0xFFFF)) >= LCD_Currentfonts->Width))
-    {
-      /* Display one character on LCD */
-      LCD_DisplayChar(Line, refcolumn, *ptr);
-      /* Increment the column position by 16 */
-      refcolumn += LCD_Currentfonts->Width;
-      /* Point on the next character */
-      ptr++;
-    }
-  }
-  else
-  {
-    /* Send the string character by character on lCD */
-    while ((*ptr != 0) & (((refcolumn + 1) & 0xFFFF) >= LCD_Currentfonts->Width))
-    {
-      /* Display one character on LCD */
-      LCD_DisplayChar(Line, refcolumn, *ptr);
-      /* Decrement the column position by 16 */
-      refcolumn -= LCD_Currentfonts->Width;
-      /* Point on the next character */
-      ptr++;
-  }
+    /* Display one character on LCD */
+    LCD_DisplayChar(Line, refcolumn, *ptr);
+    /* Decrement the column position by 16 */
+    refcolumn -= LCD_Currentfonts->Width;
+    /* Point on the next character */
+    ptr++;
   }
 }
-
 
 /**
   * @brief  Sets a display window
@@ -891,7 +854,6 @@ void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Directi
     }
   }
 }
-
 
 /**
   * @brief  Displays a rectangle.
@@ -1014,6 +976,9 @@ void LCD_DrawMonoPict(const uint32_t *Pict)
 #ifdef USE_LCD_DrawBMP 
 /**
   * @brief  Displays a bitmap picture loaded in the SPI Flash.
+  * @note   This function assumes that the bitmap file is loaded in the SPI Flash
+  *         mounted on STM320518-EVAL board, however user can tailor it according
+  *         to his application hardware requirement.
   * @param  BmpAddress: Bmp picture address in the SPI Flash.
   * @retval None
   */
@@ -1481,49 +1446,9 @@ void LCD_WriteRegIndex(uint8_t LCD_Reg)
   */
 uint16_t LCD_ReadReg(uint8_t LCD_Reg)
 {
-//  uint16_t tmp = 0;
-//  uint8_t i = 0;
-//
-//  // Write 16-bit Index (then Read Reg)
-//  LCD_WriteRegIndex(LCD_Reg);
-//
-//  // Read 16-bit Reg //
-//  // Reset LCD control line(/CS) and Send Start-Byte
-//  LCD_nCS_StartByte(0x73);
-//  for(i=0;i<5;i++)
-//  {
-//    while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_TXE) == RESET);
-//    SPI_SendData8(LCD_SPI, 0xFF);
-//  }
-//  // One byte of invalid dummy data read after the start byte
-//  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_RXNE)== SET)
-//    SPI_ReceiveData8(LCD_SPI);
-//
-//  // trial for HX8347-D
-//  LCD_SPI->CR1 &= ~SPI_CR1_BIDIOE;
-//  // Read upper byte
-//  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_TXE) == RESET);
-//  SPI_SendData8(LCD_SPI, 0xFF);
-//  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_TXE) == RESET);
-////  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_RXNE)== RESET);
-//  tmp = SPI_ReceiveData8(LCD_SPI);
-//  // Read lower byte
-//  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_TXE) == RESET);
-//  SPI_SendData8(LCD_SPI, 0xFF);
-//  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_TXE) == RESET);
-////  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_RXNE)== RESET);
-//  tmp = ((tmp & 0xFF) << 8) | SPI_ReceiveData8(LCD_SPI);
-//
-//  // trial for HX8347-D
-//  LCD_SPI->CR1 |= SPI_CR1_BIDIOE;
-//
-//  LCD_CtrlLinesWrite(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
-//  return tmp;
-  
   uint16_t tmp = 0;
   uint8_t i = 0;
-  
-  
+   
   /* LCD_SPI prescaler: 4 */
   LCD_SPI->CR1 &= 0xFFC7;
   LCD_SPI->CR1 |= 0x0008;
@@ -1738,26 +1663,14 @@ void LCD_CtrlLinesConfig(void)
   GPIO_Init(LCD_NCS_GPIO_PORT, &GPIO_InitStructure);
     
   LCD_CtrlLinesWrite(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
-  
-  /* Configure NWR(RNW), RS in Output Push-Pull mode */
-  GPIO_InitStructure.GPIO_Pin = LCD_RS_PIN;
-  GPIO_Init(LCD_RS_GPIO_PORT, &GPIO_InitStructure);
-
-  GPIO_InitStructure.GPIO_Pin = LCD_NWR_PIN;
-  GPIO_Init(LCD_NWR_GPIO_PORT, &GPIO_InitStructure);
-  
-  LCD_CtrlLinesWrite(LCD_NWR_GPIO_PORT, LCD_NWR_PIN, Bit_SET);
-  LCD_CtrlLinesWrite(LCD_RS_GPIO_PORT, LCD_RS_PIN, Bit_SET);
 }
 
 /**
   * @brief  Sets or reset LCD control lines.
-  * @param  GPIOx: where x can be B or D to select the GPIO peripheral.
+  * @param  GPIOx: where x must be F to select the GPIO peripheral.
   * @param  CtrlPins: the Control line.
   *          This parameter can be:
   *            @arg LCD_NCS_PIN: Chip Select pin
-  *            @arg LCD_NWR_PIN: Read/Write Selection pin
-  *            @arg LCD_RS_PIN: Register/RAM Selection pin
   * @param  BitVal: specifies the value to be written to the selected bit.
   *          This parameter can be:
   *            @arg Bit_RESET: to clear the port pin
@@ -1851,7 +1764,7 @@ void LCD_SPIConfig(void)
   */
 static void PutPixel(int16_t x, int16_t y)
 { 
-  if(x < 0 || x > 239 || y < 0 || y > 319)
+  if((x < 0) || (x > 239) || (y < 0) || (y > 319))
   {
     return;  
   }

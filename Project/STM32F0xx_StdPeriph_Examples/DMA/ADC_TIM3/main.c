@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    DMA/ADC_TIM3/main.c  
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -153,8 +153,8 @@ void ADC_Config(void)
   /* Enable ADC1 */
   ADC_Cmd(ADC1, ENABLE);
 
-  /* Wait until the ADC enable falg is set to start conversion */
-  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADEN));
+  /* Wait the ADRDY falg */
+  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));   
 
   /* Enable the wait conversion mode */
   ADC_WaitModeCmd(ADC1, ENABLE);

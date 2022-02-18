@@ -2,11 +2,11 @@
   @page IWDG_Reset IWDG Reset example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2012 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
   * @file    IWDG/IWDG_Reset/readme.txt 
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-May-2012
+  * @version V1.1.0
+  * @date    31-July-2013
   * @brief   Description of the IWDG Reset example.
   ******************************************************************************
   *
@@ -47,8 +47,8 @@ which will generate less accurate IWDG timeout.
 Then, the IWDG reload counter is configured to obtain a time out of 250 ms(the timeout
 may varies due to LSI frequency dispersion).
 
-The IWDG reload counter is refreshed each 240 ms in the main program infinite loop 
-to prevent a IWDG reset. LED2 is also toggled each 240 ms indicating that the program
+The IWDG reload counter is refreshed each 220 ms in the main program infinite loop 
+to prevent a IWDG reset. LED2 is also toggled each 220 ms indicating that the program
 is running.
 
 An EXTI Line is connected to a GPIO pin, and configured to generate an interrupt
@@ -97,6 +97,9 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
+ - Select STM32F0XX_MD(STM32F0x1xx) workspace 
+ - Add the following files to the project source list
+      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
  - Rebuild all files and load your image into target memory
  - Run the example
         
