@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    USART/USART_HyperTerminalInterrupt/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   * @attention

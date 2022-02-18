@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_i2c_cpal.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    16-January-2014
+  * @version V1.2.0
+  * @date    24-July-2014
   * @brief   This file contains all the functions prototypes for the I2C firmware
   *          layer.
   ******************************************************************************
@@ -370,6 +370,7 @@ uint32_t  CPAL_I2C_StructInit   (CPAL_InitTypeDef* pDevInitStruct); /*<!This fun
                                                                         application local variables and fill these fields with their
                                                                         pointers.*/
 
+#if defined (CPAL_I2C_MASTER_MODE) || ! defined (CPAL_I2C_LISTEN_MODE)
 uint32_t  CPAL_I2C_Write        (CPAL_InitTypeDef* pDevInitStruct); /*<!This function Writes data to the specified I2C device.
                                                                         All information relative to the write transfer parameters and
                                                                         current status are extracted from pCPAL_TransferTx field defined
@@ -379,6 +380,15 @@ uint32_t  CPAL_I2C_Read         (CPAL_InitTypeDef* pDevInitStruct); /*<!This fun
                                                                         All information relative to the read transfer parameters and
                                                                         current status are extracted from pCPAL_TransferTx field defined
                                                                         in @ref CPAL_Transfer_TypeDef */
+
+#endif /* CPAL_I2C_MASTER_MODE || ! CPAL_I2C_LISTEN_MODE */
+
+
+#if defined (CPAL_I2C_LISTEN_MODE) && defined (CPAL_I2C_SLAVE_MODE)
+uint32_t  CPAL_I2C_Listen       (CPAL_InitTypeDef* pDevInitStruct); /*<!This function allows the specified I2C device to enter listen mode
+                                                                        All information relative to the read or write transfer parameters and
+                                                                        current status are extracted from fields defined in @ref CPAL_Transfer_TypeDef */
+#endif /* CPAL_I2C_LISTEN_MODE && CPAL_I2C_SLAVE_MODE */
 
 uint32_t  CPAL_I2C_IsDeviceReady(CPAL_InitTypeDef* pDevInitStruct); /*<!This function can be used to wait until target device is ready
                                                                         for communication (ie. for memories after write operations) */
@@ -473,6 +483,16 @@ void CPAL_I2C_GENCALL_UserCallback(CPAL_InitTypeDef* pDevInitStruct); /*<!This f
 #ifndef CPAL_I2C_DUALF_UserCallback
 void CPAL_I2C_DUALF_UserCallback(CPAL_InitTypeDef* pDevInitStruct); /*<!This function is called when Slave OA2 Address
                                                                         matched (used in Dual Address Mode only ) */
+#endif  
+                                                                                                                                               
+#ifndef CPAL_I2C_SLAVE_READ_UserCallback
+void CPAL_I2C_SLAVE_READ_UserCallback(CPAL_InitTypeDef* pDevInitStruct); /*<!This function is called when a write operation is
+                                                                             requested from master in Listen mode only */
+#endif
+
+#ifndef CPAL_I2C_SLAVE_WRITE_UserCallback
+void CPAL_I2C_SLAVE_WRITE_UserCallback(CPAL_InitTypeDef* pDevInitStruct); /*<!This function is called when a read operation is
+                                                                             requested from master in Listen mode only */
 #endif
 
 /*========= CPAL_User_ErrorCallback_Prototypes =========*/

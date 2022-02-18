@@ -5,8 +5,8 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    17-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   This sub-directory contains all the user-modifiable files needed
   *          to create a new project linked with the STM32F0xx Standard Peripheral 
   *          Library and working with IAR Embedded Workbench for ARM (EWARM)
@@ -100,6 +100,16 @@
                             used to place program code (readonly) and data (readwrite,
                             Stack and Heap)in internal SRAM.
                             You can customize this file to your need.
+
+ - stm32f091_flash.icf    : STM32F091 devices Linker configuration file 
+                            used to place program code (readonly) in internal FLASH 
+                            and data (readwrite, Stack and Heap)in internal SRAM.
+                            You can customize this file to your need.
+
+ - stm32f091_ram.icf      : STM32F091 devices  Linker configuration file 
+                            used to place program code (readonly) and data (readwrite,
+                            Stack and Heap)in internal SRAM.
+                            You can customize this file to your need.
                             
 @par How to use it ?
 
@@ -117,11 +127,13 @@
                   board to run this project.
                   
      - STM32F072: to configure the project for STM32F072 devices.
-                  You need to use custom STM32072B-EVAL or STM32F072B-Discovery
-                  board to run this project.
+                  You can use STMicroelectronics STM32072B-EVAL or STM32F072B-Discovery.
                   
      - STM32F042: to configure the project for STM32F042 devices.
                   You need to use custom HW board to run this project.
+
+     - STM32F091: to configure the project for STM32F091 devices.
+                  You can use STMicroelectronics STM32091C-EVAL.
                                   
  - Rebuild all files: Project->Rebuild all
  - Load project image: Project->Debug

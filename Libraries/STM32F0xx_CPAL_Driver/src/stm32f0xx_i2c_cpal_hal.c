@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_i2c_cpal_hal.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    16-January-2014
+  * @version V1.2.0
+  * @date    24-July-2014
   * @brief   This file provides all the CPAL_I2C_HAL (hardware Abstraction Layer)
   *          firmware functions.
   ******************************************************************************
@@ -421,7 +421,7 @@ void CPAL_I2C_HAL_ITInit(CPAL_DevTypeDef Device, uint32_t Options)
 
   /* If I2C ERR Interrupt Option Bit not selected */
   if ((Options & CPAL_OPT_I2C_ERRIT_DISABLE) == 0)
-  {
+  {            
     /* Enable I2C Error Interrupts */
     __CPAL_I2C_HAL_ENABLE_ERRIT(Device);
   }
@@ -512,7 +512,7 @@ void CPAL_I2C_HAL_ITDeInit(CPAL_DevTypeDef Device, uint32_t Options )
 #endif /* CPAL_I2C_DMA_PROGMODEL */
 }
 
-
+  
 /*================== CPAL_I2C1_IRQhandler ==================*/
 
 #ifdef CPAL_USE_I2C1

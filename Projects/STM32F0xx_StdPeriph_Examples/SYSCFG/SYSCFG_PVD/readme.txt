@@ -5,8 +5,8 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    SYSCFG/SYSCFG_PVD/readme.txt 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   Description of the Programmable Voltage Detector (PVD) example.
   ******************************************************************************
   *

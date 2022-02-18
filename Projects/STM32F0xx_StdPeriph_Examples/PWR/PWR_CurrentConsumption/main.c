@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    PWR/PWR_CurrentConsumption/main.c 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
@@ -58,11 +58,11 @@ int main(void)
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f0xx.c file
      */ 
-  /* Configure Joystick SEL Button */
-  STM_EVAL_PBInit(BUTTON_SEL,BUTTON_MODE_GPIO);
+  /* Configure Tamper Button */
+  STM_EVAL_PBInit(BUTTON_TAMPER,BUTTON_MODE_GPIO);
     
-  /* Loop while Joystick SEL button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_SEL) != RESET)
+  /* Loop while Tamper button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_TAMPER) == RESET)
   {
   }
     
@@ -75,13 +75,12 @@ int main(void)
   /* Reset RTC Domain */
   RCC_BackupResetCmd(ENABLE);
   RCC_BackupResetCmd(DISABLE);
-    
-  /* Loop while Joystick SEL button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_SEL) != RESET)
+  /* Loop while Tamper button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_TAMPER) != RESET)
   {
-  }
-  /* Loop while Joystick SEL button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_SEL) == RESET)
+  } 
+  /* Loop while Tamper button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_TAMPER) == RESET)
   {
   }
   

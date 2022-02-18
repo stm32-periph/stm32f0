@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    FLASH/FLASH_WriteProtection/main.c 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
@@ -41,24 +41,37 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 
 /* Private define ------------------------------------------------------------*/
 #ifdef STM32F072
- #define FLASH_PAGE_SIZE                ((uint16_t)0x800)
- #define FLASH_PAGES_TO_BE_PROTECTED    (OB_WRP_Pages22to23 | OB_WRP_Pages24to25 | OB_WRP_Pages26to27 |\
-                                        OB_WRP_Pages28to29 | OB_WRP_Pages30to31 | OB_WRP_Pages32to33 |\
-                                        OB_WRP_Pages34to35 | OB_WRP_Pages60to61 | OB_WRP_Pages62to63|\
-                                        OB_WRP_Pages54to55 | OB_WRP_Pages52to53 | OB_WRP_Pages58to59/*|OB_WRP_AllPages*/) 
+  #define FLASH_PAGE_SIZE                ((uint16_t)0x800)
+  #define FLASH_PAGES_TO_BE_PROTECTED    (OB_WRP_Pages22to23 | OB_WRP_Pages24to25 | OB_WRP_Pages26to27 |\
+                                          OB_WRP_Pages28to29 | OB_WRP_Pages30to31 | OB_WRP_Pages32to33 |\
+                                          OB_WRP_Pages34to35 | OB_WRP_Pages60to61 | OB_WRP_Pages62to63|\
+                                          OB_WRP_Pages54to55 | OB_WRP_Pages52to53 | OB_WRP_Pages58to59/*|OB_WRP_AllPages*/) 
+  #define BANK1_WRITE_START_ADDR         ((uint32_t)0x08006000)
+  #define BANK1_WRITE_END_ADDR           ((uint32_t)0x08008000)
+#elif defined (STM32F091)
+  #define FLASH_PAGE_SIZE                ((uint16_t)0x800)
+  #define FLASH_PAGES_TO_BE_PROTECTED    (OB_WRP_Pages28to29 | OB_WRP_Pages30to31 | OB_WRP_Pages32to33 |\
+                                          OB_WRP_Pages34to35 | OB_WRP_Pages60to61 | OB_WRP_Pages62to127) 
+
+  #define BANK1_WRITE_START_ADDR         ((uint32_t)0x08006000)
+  #define BANK1_WRITE_END_ADDR           ((uint32_t)0x08040000)
+
 #else
- #define FLASH_PAGE_SIZE                ((uint16_t)0x400)
- #define FLASH_PAGES_TO_BE_PROTECTED    (OB_WRP_Pages20to23 | OB_WRP_Pages44to47 | OB_WRP_Pages60to63)  
+  #define FLASH_PAGE_SIZE                ((uint16_t)0x400)
+  #define FLASH_PAGES_TO_BE_PROTECTED    (OB_WRP_Pages20to23 | OB_WRP_Pages44to47 | OB_WRP_Pages60to63)  
+
+  #define BANK1_WRITE_START_ADDR         ((uint32_t)0x08006000)
+  #define BANK1_WRITE_END_ADDR           ((uint32_t)0x08008000)
 #endif /* STM32F072 */
 
-#define BANK1_WRITE_START_ADDR         ((uint32_t)0x08006000)
-#define BANK1_WRITE_END_ADDR           ((uint32_t)0x08008000)
+
+
  
 /* Uncomment this line to program the Flash pages */
-//#define FLASH_PAGE_PROGRAM
+#define FLASH_PAGE_PROGRAM
 
 /* Uncomment this line to Enable Write Protection */
-#define WRITE_PROTECTION_ENABLE
+//#define WRITE_PROTECTION_ENABLE
 
 /* Uncomment this line to Disable Write Protection */
 //#define WRITE_PROTECTION_DISABLE

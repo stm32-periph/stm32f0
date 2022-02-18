@@ -5,8 +5,8 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    DAC/DAC_SignalsGeneration/readme.txt 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   Description of the DAC Signals generation example.
   ******************************************************************************
   *
@@ -28,13 +28,20 @@
 @par Example Description 
 
 This example provides a short description of how to use the DAC peripheral to 
-generate various signals using DMA controller.
-When the user presses the TAMPER push-button, DMA transfers the selected waveform to DAC.
+generate several signals using DMA controller.
+When the user presses the Tamper push-button, DMA transfers the two selected 
+waveforms to DAC.
+For each press on Tamper button, 2 signals has been selected and monitored on the 
+two dac channels:
+    - Sine waveForm (Channel 1) and Escalator waveform (Channel 2).
+    - Noise waveform (Channel 1) and Triangle waveform (Channel 2).
 
-For each press on TAMPER button, One signal has been selected and monitored on the DAC Channel1
-    - Escalator waveform (Channel 1).
-    - Sine waveForm (Channel 1).
- 
+    @note The Dual DAC Channels is only available for the STM32F072, STM32F042 
+          and STM32F091 devices.
+    @note For the STM32F051, STM32F031 and STM32F030 devices, one signal has been 
+          selected and monitored on the DAC Channel1
+              - Escalator waveForm (Channel 1).
+              - Sine waveform (Channel 1).
 
 @par Directory contents 
 
@@ -64,7 +71,7 @@ For each press on TAMPER button, One signal has been selected and monitored on t
      - Make sure that JP13 is open.
   - STM32072B-EVAL Set-up
      - Use TAMPER push-button connected to PC13.
-     - Connect PA4 (DAC Channel1) pin to an oscilloscope.
+     - Connect PA4 (DAC Channel1) and PA5 (DAC Channel2) pins to an oscilloscope.
      - Make sure that JP20 is open.
 
 @par How to use it ? 

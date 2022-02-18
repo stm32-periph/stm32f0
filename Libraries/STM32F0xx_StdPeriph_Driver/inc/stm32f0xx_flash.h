@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_flash.h
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   This file contains all the functions prototypes for the FLASH 
   *          firmware library.
   ******************************************************************************
@@ -113,7 +113,7 @@ typedef enum
   * @{
   */
   
-#ifndef STM32F072
+#if !defined (STM32F072) && !defined (STM32F091)   
 
 #define OB_WRP_Pages0to3               ((uint32_t)0x00000001) /* Write protection of page 0 to 3 */
 #define OB_WRP_Pages4to7               ((uint32_t)0x00000002) /* Write protection of page 4 to 7 */
@@ -169,7 +169,16 @@ typedef enum
 #define OB_WRP_Pages56to57             ((uint32_t)0x10000000) /* Write protection of page 56 to 57 */
 #define OB_WRP_Pages58to59             ((uint32_t)0x20000000) /* Write protection of page 58 to 59 */
 #define OB_WRP_Pages60to61             ((uint32_t)0x40000000) /* Write protection of page 60 to 61 */
+
+#ifdef STM32F091
+
+#define OB_WRP_Pages62to127            ((uint32_t)0x80000000) /* Write protection of page 62 to 127 */
+
+#else
+
 #define OB_WRP_Pages62to63             ((uint32_t)0x80000000) /* Write protection of page 62 to 63 */
+
+#endif /* STM32F091 */
 
 #define OB_WRP_AllPages                ((uint32_t)0xFFFFFFFF) /*!< Write protection of all Sectors */
 

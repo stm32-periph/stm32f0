@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    PWR/PWR_CurrentConsumption/stm32f0xx_lp_modes.c 
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the STM32F0xx Low Power Modes:
   *           - Sleep Mode
@@ -268,9 +268,18 @@ void StopMode_Measure(void)
   */
 void StandbyMode_Measure(void)
 {
-  /* Enable WKUP pin 2 */
-  PWR_WakeUpPinCmd(PWR_WakeUpPin_2,ENABLE);
+  /* Disable wake-up source(Wake up pin) to guarantee free access to WUT level-OR input */ 
+  PWR_WakeUpPinCmd(PWR_WakeUpPin_1, DISABLE);  
+  
+  /* Clear Standby flag */
+  PWR_ClearFlag(PWR_FLAG_SB);
+    
+  /* Clear Power Wake-up (CWUF) flag */
+  PWR_ClearFlag(PWR_FLAG_WU);
 
+  /* Enable WKUP pin 1 */
+  PWR_WakeUpPinCmd(PWR_WakeUpPin_1,ENABLE);
+  
   /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
   PWR_EnterSTANDBYMode();
   
@@ -333,10 +342,7 @@ void StandbyRTCMode_Measure(void)
   RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay;
   RTC_SetAlarm(RTC_Format_BCD, RTC_Alarm_A, &RTC_AlarmStructure);
-  
-  /* Enable RTC Alarm A Interrupt */
-  RTC_ITConfig(RTC_IT_ALRA, ENABLE);
-  
+    
   /* Enable the alarm */
   RTC_AlarmCmd(RTC_Alarm_A, ENABLE);
   
@@ -347,9 +353,15 @@ void StandbyRTCMode_Measure(void)
   RTC_TimeStructure.RTC_Seconds = 0x00;  
   
   RTC_SetTime(RTC_Format_BCD, &RTC_TimeStructure);
-    
-  /* Clear Wakeup flag */
-  PWR_ClearFlag(PWR_FLAG_WU);      
+  
+  /* Disable RTC Alarm A Interrupt */
+  RTC_ITConfig(RTC_IT_ALRA, DISABLE);   
+  
+  /* Clear Power Wake-up (CWUF) flag */
+  PWR_ClearFlag(PWR_FLAG_WU);  
+  
+  /* Enable RTC Alarm A Interrupt */
+  RTC_ITConfig(RTC_IT_ALRA, ENABLE);  
   
   RTC_ClearFlag(RTC_FLAG_ALRAF);
   

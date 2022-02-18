@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    FLASH/FLASH_Program/main.c  
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.4.0
+  * @date    24-July-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
@@ -42,7 +42,11 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 #ifdef STM32F072
  #define FLASH_PAGE_SIZE         ((uint32_t)0x00000800)   /* FLASH Page Size */
  #define FLASH_USER_START_ADDR   ((uint32_t)0x08009000)   /* Start @ of user Flash area */
- #define FLASH_USER_END_ADDR     ((uint32_t)0x0801FFFF)   /* End @ of user Flash area */
+ #define FLASH_USER_END_ADDR     ((uint32_t)0x08020000)   /* End @ of user Flash area */
+#elif defined (STM32F091)
+ #define FLASH_PAGE_SIZE         ((uint32_t)0x00000800)   /* FLASH Page Size */
+ #define FLASH_USER_START_ADDR   ((uint32_t)0x08009000)   /* Start @ of user Flash area */
+ #define FLASH_USER_END_ADDR     ((uint32_t)0x08040000)   /* End @ of user Flash area */
 #else
  #define FLASH_PAGE_SIZE         ((uint32_t)0x00000400)   /* FLASH Page Size */
  #define FLASH_USER_START_ADDR   ((uint32_t)0x08006000)   /* Start @ of user Flash area */
