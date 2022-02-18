@@ -1,8 +1,8 @@
 ;******************** (C) COPYRIGHT 2013 STMicroelectronics ********************
 ;* File Name          : startup_stm32f0xx_ld.s
 ;* Author             : MCD Application Team
-;* Version            : V1.1.1
-;* Date               : 31-July-2013 
+;* Version            : V1.2.1
+;* Date               : 22-November-2013 
 ;* Description        : STM32F0xx Low-density devices vector table for MDK-ARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP

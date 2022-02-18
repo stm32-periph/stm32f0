@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_misc.h
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file contains all the functions prototypes for the miscellaneous
   *          firmware library functions (add-on to CMSIS functions).
   ******************************************************************************

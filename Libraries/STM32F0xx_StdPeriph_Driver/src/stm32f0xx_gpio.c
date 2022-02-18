@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_gpio.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the GPIO peripheral:
   *           + Initialization and Configuration functions
@@ -457,7 +457,7 @@ void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal)
   *            @arg GPIO_AF_1: USART2, CEC, Tim3, USART1, IR_OUT,EVENTOUT, I2C1, I2C2, TIM15 
   *            @arg GPIO_AF_2: TIM2, TIM1, EVENTOUT, TIM16, TIM17
   *            @arg GPIO_AF_3: TS, I2C1, TIM15, EVENTOUT 
-  *            @arg GPIO_AF_4: TIM14, I2C1 (only for STM32F0XX_LD devices)
+  *            @arg GPIO_AF_4: TIM14, I2C1 (only for STM32F0XX_LD and STM32F030 devices)
   *            @arg GPIO_AF_5: TIM16, TIM17
   *            @arg GPIO_AF_6: EVENTOUT
   *            @arg GPIO_AF_7: COMP1 OUT, COMP2 OUT 

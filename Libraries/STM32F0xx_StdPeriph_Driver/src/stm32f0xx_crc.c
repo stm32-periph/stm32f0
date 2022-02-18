@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_crc.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of CRC computation unit peripheral:
   *            + Configuration of the CRC computation unit

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_gpio.h
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file contains all the functions prototypes for the GPIO 
   *          firmware library. 
   ******************************************************************************
@@ -271,7 +271,7 @@ typedef struct
 /** 
   * @brief  AF 4 selection
   */
-#define GPIO_AF_4            ((uint8_t)0x04) /* TIM14, I2C1 (only for STM32F0XX_LD devices) */
+#define GPIO_AF_4            ((uint8_t)0x04) /* TIM14, I2C1 (only for STM32F0XX_LD and STM32F030 devices) */
 /** 
   * @brief  AF 5 selection
   */

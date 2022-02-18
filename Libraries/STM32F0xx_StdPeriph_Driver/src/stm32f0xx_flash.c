@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_flash.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the FLASH peripheral:
   *            - FLASH Interface configuration

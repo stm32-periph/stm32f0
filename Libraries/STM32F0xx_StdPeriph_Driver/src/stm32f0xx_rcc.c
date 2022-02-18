@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_rcc.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Reset and clock control (RCC) peripheral:
   *           + Internal/external clocks, PLL, CSS and MCO configuration
@@ -148,7 +148,7 @@ void RCC_DeInit(void)
   /* Set HSION bit */
   RCC->CR |= (uint32_t)0x00000001;
 
-#ifdef STM32F0XX_MD
+#if defined (STM32F0XX_MD)
   /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE and MCOSEL[2:0] bits */
   RCC->CFGR &= (uint32_t)0xF8FFB80C;
 #else
@@ -570,7 +570,7 @@ void RCC_ClockSecuritySystemCmd(FunctionalState NewState)
     RCC->CR &= ~RCC_CR_CSSON;
   }
 }
-#ifdef STM32F0XX_MD
+#if defined (STM32F0XX_MD)
 /**
   * @brief  Selects the clock source to output on MCO pin (PA8).
   * @note   PA8 should be configured in alternate function mode.

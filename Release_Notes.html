@@ -259,7 +259,8 @@ ul
 -->
 </style><!--[if gte mso 10]> <style> /* Style Definitions */ table.MsoNormalTable {mso-style-name:"Table Normal"; mso-tstyle-rowband-size:0; mso-tstyle-colband-size:0; mso-style-noshow:yes; mso-style-parent:""; mso-padding-alt:0cm 5.4pt 0cm 5.4pt; mso-para-margin:0cm; mso-para-margin-bottom:.0001pt; mso-pagination:widow-orphan; font-size:10.0pt; font-family:"Times New Roman"; mso-fareast-font-family:"Times New Roman"; mso-ansi-language:#0400; mso-fareast-language:#0400; mso-bidi-language:#0400;} </style> <![endif]-->
 <style type="disc">
-</style><!--[if gte mso 9]><xml> <o:shapedefaults v:ext="edit" spidmax="45058"/> </xml><![endif]--><!--[if gte mso 9]><xml> <o:shapelayout v:ext="edit"> <o:idmap v:ext="edit" data="1"/> </o:shapelayout></xml><![endif]--><meta content="MCD Application Team" name="author"></head><body link="blue" vlink="blue">
+</style><!--[if gte mso 9]><xml> <o:shapedefaults v:ext="edit" spidmax="45058"/> </xml><![endif]--><!--[if gte mso 9]><xml> <o:shapelayout v:ext="edit"> <o:idmap v:ext="edit" data="1"/> </o:shapelayout></xml><![endif]--><meta content="MCD Application Team" name="author"></head>
+<body link="blue" vlink="blue">
 <div class="Section1">
 <p class="MsoNormal"><span style="font-family: Arial;"><br>
 </span><span style="font-family: Arial;"><o:p></o:p></span></p>
@@ -288,16 +289,67 @@ Notes for STM32F0xx Standard Peripherals Library<br>
 <tbody>
 <tr style="">
 <td style="padding: 0cm;" valign="top">
-<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><span style="font-size: 12pt; color: white;">Contents<o:p></o:p></span></h2>
+<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;"><span style="font-size: 12pt; color: white;">Contents<o:p></o:p></span></h2>
 <ol style="margin-top: 0cm;" start="1" type="1">
 <li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;"><a href="#History">STM32F0xx Standard Peripherals Library update history</a><o:p></o:p></span></li>
 <li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;"><a href="#License">License</a><o:p></o:p></span></li>
 </ol>
-<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><a name="History"></a><span style="font-size: 12pt; color: white;">STM32F0xx Standard Peripherals Library update history</span></h2><ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">The
+<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;"><a name="History"></a><span style="font-size: 12pt; color: white;">STM32F0xx Standard Peripherals Library update history</span></h2><ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">The
 <span style="font-weight: bold; font-style: italic;">STM32F0xx Standard Peripherals Library</span> is a complete package,
-consisting of device drivers plus</span><span style="font-size: 10pt; font-family: Verdana;">&nbsp;67 examples for 22 different peripherals and template project for 5 different IDEs.</span></li></ul><br>
+consisting of device drivers plus</span><span style="font-size: 10pt; font-family: Verdana;">&nbsp;67 examples for 22 different peripherals and template project for 5 different IDEs.</span></li></ul>
             
-            <h3 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-right: 500pt; width: 200px;"><span style="font-size: 10pt; font-family: Arial; color: white;">V1.1.0 / 31-July-2013</span></h3>
+            <h3 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; margin-right: 500pt; width: 200px;"><span style="font-size: 10pt; font-family: Arial; color: white;">V1.2.0 / 22-November-2013</span></h3>
+
+
+
+            
+            
+            <p class="MsoNormal" style="margin: 4.5pt 0cm 4.5pt 18pt;"><b style=""><u><span style="font-size: 10pt; font-family: Verdana; color: black;">Main
+Changes<o:p></o:p></span></u></b></p>
+
+
+
+            
+            
+            <ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">Add the support of <span style="font-weight: bold; font-style: italic;">STM32F030 value line devices</span></span><span style="font-size: 10pt; font-family: Verdana;"></span></li></ul>
+
+
+            <span style="font-size: 10pt; font-family: Verdana;"><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></span><br>
+
+
+
+            <span style="font-size: 10pt; font-family: Verdana; color: black;"><o:p></o:p></span>
+            
+            
+            <p class="MsoNormal" style="margin: 4.5pt 0cm 4.5pt 23px; width: 868px;"><b style=""><u><span style="font-size: 10pt; font-family: Verdana; color: black;">Contents<o:p></o:p></span></u></b></p>
+
+
+
+            
+            
+            <ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="margin-top: 4.5pt; margin-bottom: 4.5pt; color: black;"><span style="font-size: 10pt; font-family: Verdana;">Cortex-M CMSIS </span><span style="font-size: 10pt; font-family: Verdana;">V3.20</span><span style="font-size: 10pt; font-family: Verdana;"> </span><span style="font-size: 10pt; font-family: Verdana;">(<a href="Libraries/CMSIS/index.html">release notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32F0xx CMSIS V1.2.1 (<a href="Libraries/CMSIS/Device/ST/STM32F0xx/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;">STM32F0xx_StdPeriph_Driver V1.2.1 (<a href="Libraries/STM32F0xx_StdPeriph_Driver/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;">STM32F0xx_CPAL_Driver V1.0.0 (<a href="Libraries/STM32F0xx_CPAL_Driver/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32F0xx_StdPeriph_Examples V1.2.0 (<a href="Projects/STM32F0xx_StdPeriph_Examples/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32F0xx_StdPeriph_Templates V1.2.0 (<a href="Projects/STM32F0xx_StdPeriph_Templates/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32_EVAL Common drivers V5.0.2 (<a href="Utilities/STM32_EVAL/Common/Release_Notes.html">release
+notes</a>)</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM320518_EVAL board drivers&nbsp;V1.1.0 (<a href="Utilities/STM32_EVAL/STM320518_EVAL/Release_Notes.html">release
+notes</a>)</span></li></ul>
+
+
+            <span style="font-size: 10pt; font-family: Verdana;"></span><br>
+
+
+            <span style="font-size: 10pt; font-family: Verdana;"><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></span>
+            
+            
+            <p class="MsoNormal" style="margin: 4.5pt 0cm 4.5pt 23px; width: 868px;"><b style=""><u><span style="font-size: 10pt; font-family: Verdana; color: black;">Development Toolchains<o:p></o:p></span></u></b></p>
+            <b style=""><span style="font-size: 10pt; font-family: Verdana; color: black;"></span></b>
+            <ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">IAR Embedded Workbench for ARM (EWARM) toolchain V6.70 + ST-Link</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">RealView Microcontroller Development Kit (MDK-ARM) toolchain V4.73 +&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;">ST-Link</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">Raisonance IDE RIDE7 (RIDE) toolchain (RIDE7 IDE:7.48, RKitARM for RIDE7:1.52) +&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;">Rlink Pro</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">Atollic TrueSTUDIO&nbsp;toolchain V4.2.0 +&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;">ST-LINK</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">TASKING VX-toolset for ARM Cortex-M V4.4r1 +&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;">ST-LINK</span></li></ul>
+            <b style=""><span style="font-size: 10pt; font-family: Verdana; color: black;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><u><span style="font-size: 10pt; font-family: Verdana; color: black;">Supported Devices and EVAL boards<o:p></o:p></span></u></b><br>
+
+            
+            <ul style="margin-top: 0cm;" type="square"><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32F051xx, </span><span style="font-size: 10pt; font-family: Verdana;">STM32F050xx </span><span style="font-size: 10pt; font-family: Verdana;">and STM32F030xx devices</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM320518-EVAL board RevB</span></li></ul><h3 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; margin-right: 500pt; width: 200px;"><span style="font-size: 10pt; font-family: Arial; color: white;">V1.1.0 / 31-July-2013</span></h3>
 
 
 
@@ -367,7 +419,7 @@ notes</a>)</span></li>
 <li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM32F051xx and </span><span style="font-size: 10pt; font-family: Verdana;">STM32F050xx&nbsp;</span><span style="font-size: 10pt; font-family: Verdana;">devices</span></li><li class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><span style="font-size: 10pt; font-family: Verdana;">STM320518-EVAL board RevB</span></li>
             </ul>
 
-            <h3 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-right: 500pt; width: 186px;"><span style="font-size: 10pt; font-family: Arial; color: white;">V1.0.0 / 18-May-2012<o:p></o:p></span></h3>
+            <h3 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; margin-right: 500pt; width: 186px;"><span style="font-size: 10pt; font-family: Arial; color: white;">V1.0.0 / 18-May-2012<o:p></o:p></span></h3>
 
             
             <p class="MsoNormal" style="margin: 4.5pt 0cm 4.5pt 18pt;"><b style=""><u><span style="font-size: 10pt; font-family: Verdana; color: black;">Main
@@ -409,7 +461,7 @@ notes</a>)</span></li>
             </ul>
 <span style="font-size: 10pt; font-family: Verdana;"></span><ul style="margin-top: 0cm;" type="square"></ul>
 
-<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><a name="License"></a><span style="font-size: 12pt; color: white;">License<o:p></o:p></span></h2><p class="MsoNormal"><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">Licensed under MCD-ST Liberty SW License Agreement V2, (the "License"); You may not use this&nbsp;</span><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">package</span><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"> except in compliance with the License. You may obtain a copy of the License at:<br><br></span></p><div style="text-align: center;"><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="http://www.st.com/software_license_agreement_liberty_v2">http://www.st.com/software_license_agreement_liberty_v2</a></span><br><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"></span></div><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"><br>Unless
+<h2 style="background: rgb(51, 102, 255) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;"><a name="License"></a><span style="font-size: 12pt; color: white;">License<o:p></o:p></span></h2><p class="MsoNormal"><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">Licensed under MCD-ST Liberty SW License Agreement V2, (the "License"); You may not use this&nbsp;</span><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">package</span><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"> except in compliance with the License. You may obtain a copy of the License at:<br><br></span></p><div style="text-align: center;"><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="http://www.st.com/software_license_agreement_liberty_v2">http://www.st.com/software_license_agreement_liberty_v2</a></span><br><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"></span></div><span style="font-size: 10pt; font-family: &quot;Verdana&quot;,&quot;sans-serif&quot;; color: black;"><br>Unless
 required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS, <br>WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See

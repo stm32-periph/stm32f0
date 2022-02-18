@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_rcc.h
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    31-July-2013
+  * @version V1.2.1
+  * @date    22-November-2013
   * @brief   This file contains all the functions prototypes for the RCC 
   *          firmware library.
   ******************************************************************************
@@ -407,7 +407,7 @@ typedef struct
 #define RCC_MCOSource_HSE                ((uint8_t)0x06)
 #define RCC_MCOSource_PLLCLK_Div2        ((uint8_t)0x07)
 
-#ifdef STM32F0XX_MD
+#if defined (STM32F0XX_MD)
  #define IS_RCC_MCO_SOURCE(SOURCE) (((SOURCE) == RCC_MCOSource_NoClock) || ((SOURCE) == RCC_MCOSource_HSI14) || \
                                     ((SOURCE) == RCC_MCOSource_SYSCLK)  || ((SOURCE) == RCC_MCOSource_HSI)  || \
                                     ((SOURCE) == RCC_MCOSource_HSE) || ((SOURCE) == RCC_MCOSource_PLLCLK_Div2)|| \
@@ -428,7 +428,7 @@ typedef struct
 /** @defgroup RCC_MCOPrescaler
   * @{
   */
-#ifndef STM32F0XX_MD
+#if !defined (STM32F0XX_MD)
 #define RCC_MCOPrescaler_1            RCC_CFGR_MCO_PRE_1
 #define RCC_MCOPrescaler_2            RCC_CFGR_MCO_PRE_2
 #define RCC_MCOPrescaler_4            RCC_CFGR_MCO_PRE_4
@@ -510,7 +510,7 @@ void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul);
 void RCC_PLLCmd(FunctionalState NewState);
 void RCC_PREDIV1Config(uint32_t RCC_PREDIV1_Div);
 void RCC_ClockSecuritySystemCmd(FunctionalState NewState);
-#ifdef STM32F0XX_MD
+#if defined (STM32F0XX_MD)
 void RCC_MCOConfig(uint8_t RCC_MCOSource);
 #else
 void RCC_MCOConfig(uint8_t RCC_MCOSource,uint32_t RCC_MCOPrescaler);

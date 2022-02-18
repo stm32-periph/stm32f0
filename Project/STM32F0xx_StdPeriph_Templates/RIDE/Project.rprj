@@ -1,6 +1,0 @@
-
-<Project ActiveApp="Project" Header="Project 'Project'" OutputFile="" Path=".\Project.rprj" Project="Yes" sate="96" >
-	<ApplicationBuild Config="STM32F0XX_MD(STM32F0x1xx)" Extern=".\Project.rapp" Header="Project" OutputFile=".\STM32F0XX_MD(STM32F0x1xx)\Project.elf" Path=".\Project.rapp" sate="98" />
-	
-
-</Project>

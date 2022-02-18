@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file      startup_stm32f0xx_ld.s
   * @author    MCD Application Team
-  * @version   V1.1.1
-  * @date      31-July-2013
+  * @version   V1.2.1
+  * @date      22-November-2013
   * @brief     STM32F0xx Low-density devices vector table for Atollic toolchain.
   *            This module performs:
   *                - Set the initial SP
