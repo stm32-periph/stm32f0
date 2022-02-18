@@ -15,17 +15,17 @@
 **
 **  Environment : Atollic TrueSTUDIO(R)
 **
-**  Distribution: The file is distributed “as is,” without any warranty
-**                of any kind.
+*******************************************************************************
+** @attention
 **
-**  (c)Copyright Atollic AB.
-**  You may use this file as-is or modify it according to the needs of your
-**  project. This file may only be built (assembled or compiled and linked)
-**  using the Atollic TrueSTUDIO(R) product. The use of this file together
-**  with other tools than Atollic TrueSTUDIO(R) is not permitted.
+** Copyright (c) STMicroelectronics.
+** All rights reserved.
 **
-*****************************************************************************
-*/
+** This software is licensed under terms that can be found in the LICENSE file
+** in the root directory of this software component.
+** If no LICENSE file comes with this software, it is provided AS-IS.
+**
+*******************************************************************************
 
 /* Entry Point */
 ENTRY(Reset_Handler)

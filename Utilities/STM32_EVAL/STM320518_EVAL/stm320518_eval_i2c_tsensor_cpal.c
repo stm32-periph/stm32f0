@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_tsensor_cpal.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    16-January-2014
+  * @version V1.1.2
+  * @date    13-October-2021
   * @brief   This file provides a set of functions needed to manage the I2C LM75 
   *          temperature sensor mounted on STM320518-EVAL board. 
   *          It implements a high level communication layer for read and write 
@@ -37,19 +37,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  * Copyright (c) 2014 STMicroelectronics.
+  * All rights reserved.
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -460,4 +453,3 @@ uint8_t LM75_ShutDown(FunctionalState NewState)
   return LM75_OK;
 }
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -2,9 +2,9 @@
   ******************************************************************************
   * @file      startup_stm32f0xx_ld.s
   * @author    MCD Application Team
-  * @version   V1.5.0
-  * @date      05-December-2014
-  * @brief     STM32F031 devices vector table for Atollic toolchain.
+  * @version   V1.5.2
+  * @date      13-October-2021
+  * @brief     STM32F031 devices vector table for GCC based toolchain.
   *            This module performs:
   *                - Set the initial SP
   *                - Set the initial PC == Reset_Handler,
@@ -17,19 +17,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -290,5 +283,4 @@ g_pfnVectors:
   .thumb_set USART1_IRQHandler,Default_Handler
 
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

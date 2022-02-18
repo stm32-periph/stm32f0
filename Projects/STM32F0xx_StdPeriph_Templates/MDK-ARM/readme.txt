@@ -5,25 +5,21 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.5.0
-  * @date    05-December-2014
+  * @version V1.6.0
+  * @date    13-October-2021
   * @brief   This sub-directory contains all the user-modifiable files 
   *          needed to create a new project linked with the STM32F0xx  
   *          Standard Peripheral Library and working with RealView Microcontroller
   *          Development Kit(MDK-ARM) software toolchain
   ******************************************************************************
+  * @attention
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
+  * Copyright (c) 2014 STMicroelectronics.
+  * All rights reserved.
   *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   @endverbatim

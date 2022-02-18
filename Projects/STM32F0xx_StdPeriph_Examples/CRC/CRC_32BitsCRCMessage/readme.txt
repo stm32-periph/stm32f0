@@ -5,8 +5,8 @@
   ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    CRC/CRC_32BitsCRCMessage/readme.txt 
   * @author  MCD Application Team
-  * @version V1.4.0
-  * @date    24-July-2014
+  * @version V1.6.0
+  * @date    13-October-2021
   * @brief   Description of the 32-bit CRC value of a message example.
   ******************************************************************************
   *
@@ -80,5 +80,4 @@ In order to make the program work, you must do the following :
  - Rebuild all files and load your image into target memory
  - Run the example
    
- * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */
