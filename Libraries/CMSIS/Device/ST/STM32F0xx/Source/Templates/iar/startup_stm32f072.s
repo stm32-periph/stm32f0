@@ -1,8 +1,8 @@
 ;******************** (C) COPYRIGHT 2014 STMicroelectronics ********************
 ;* File Name          : startup_stm32f072.s
 ;* Author             : MCD Appl&ication Team
-;* Version            : V1.4.0
-;* Date               : 24-July-2014 
+;* Version            : V1.5.0
+;* Date               : 24-December-2014 
 ;* Description        : STM32F072 Devices Devices vector table for 
 ;*                      EWARM toolchain.
 ;*                      This module performs:

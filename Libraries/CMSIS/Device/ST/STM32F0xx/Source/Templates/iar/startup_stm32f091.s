@@ -1,8 +1,8 @@
 ;******************** (C) COPYRIGHT 2014 STMicroelectronics ********************
 ;* File Name          : startup_stm32f091.s
 ;* Author             : MCD Application Team
-;* Version            : V1.4.0
-;* Date               : 24-July-2014  
+;* Version            : V1.5.0
+;* Date               : 24-December-2014  
 ;* Description        : STM32F091xc devices vector table for EWARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
@@ -130,6 +130,29 @@ __vector_table
         PUBWEAK Reset_Handler
         SECTION .text:CODE:NOROOT:REORDER(2)
 Reset_Handler
+
+        LDR     R0, =sfe(CSTACK)          ; set stack pointer 
+        MSR     MSP, R0 
+
+;;Check if boot space corresponds to test memory 
+        LDR R0,=0x00000004
+        LDR R1, [R0]
+        LSRS R1, R1, #24
+        LDR R2,=0x1F
+        CMP R1, R2
+        
+        BNE ApplicationStart       
+;; SYSCFG clock enable         
+        LDR R0,=0x40021018 
+        LDR R1,=0x00000001
+        STR R1, [R0]
+        
+;; Set CFGR1 register with flash memory remap at address 0
+
+        LDR R0,=0x40010000 
+        LDR R1,=0x00000000
+        STR R1, [R0]
+ApplicationStart
         LDR     R0, =SystemInit
         BLX     R0
         LDR     R0, =__iar_program_start

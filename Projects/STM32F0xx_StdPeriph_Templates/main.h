@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    Project/STM32F0xx_StdPeriph_Templates/main.h 
   * @author  MCD Application Team
-  * @version V1.4.0
-  * @date    24-July-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   Header for main.c module
   ******************************************************************************
   * @attention
