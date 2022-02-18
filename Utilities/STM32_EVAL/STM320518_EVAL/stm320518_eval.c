@@ -2,14 +2,15 @@
   ******************************************************************************
   * @file    stm320518_eval.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
-  * @brief   This file provides set of firmware functions to manage Leds, 
-  *          push-button and COM ports.
+  * @version V1.1.1
+  * @date    16-January-2014
+  * @brief   This file provides firmware functions to manage Leds, push-buttons, 
+  *          COM ports, SD card on SPI and temperature sensor (LM75) available on 
+  *          STM320518-EVAL evaluation board from STMicroelectronics.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -48,33 +49,10 @@
   * @{
   */ 
 
-/** @defgroup STM320518_EVAL_LOW_LEVEL_Private_TypesDefinitions
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_LOW_LEVEL_Private_Defines
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_LOW_LEVEL_Private_Macros
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_LOW_LEVEL_Private_Variables
-  * @{
-  */ 
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 GPIO_TypeDef* GPIO_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT, LED3_GPIO_PORT,
                                  LED4_GPIO_PORT};
 const uint16_t GPIO_PIN[LEDn] = {LED1_PIN, LED2_PIN, LED3_PIN,
@@ -149,20 +127,8 @@ const uint8_t COM_RX_PIN_SOURCE[COMn] = {EVAL_COM1_RX_SOURCE};
 const uint8_t COM_TX_AF[COMn] = {EVAL_COM1_TX_AF};
  
 const uint8_t COM_RX_AF[COMn] = {EVAL_COM1_RX_AF};
-
-
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_LOW_LEVEL_Private_FunctionPrototypes
-  * @{
-  */ 
-
-/**
-  * @}
-  */ 
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/ 
 
 /** @defgroup STM320518_EVAL_LOW_LEVEL_Private_Functions
   * @{
@@ -327,7 +293,7 @@ uint32_t STM_EVAL_PBGetState(Button_TypeDef Button)
   *          This parameter can be one of following parameters:    
   *            @arg COM1
   * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure that
-  *   contains the configuration information for the specified USART peripheral.
+  *         contains the configuration information for the specified USART peripheral.
   * @retval None
   */
 void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
@@ -349,7 +315,7 @@ void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
   /* Configure USART Tx as alternate function push-pull */
   GPIO_InitStructure.GPIO_Pin = COM_TX_PIN[COM];
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
   GPIO_Init(COM_TX_PORT[COM], &GPIO_InitStructure);
@@ -374,38 +340,37 @@ void SD_LowLevel_DeInit(void)
 {
   GPIO_InitTypeDef  GPIO_InitStructure;
   
-  SPI_Cmd(SD_SPI, DISABLE); /*!< SD_SPI disable */
-  SPI_I2S_DeInit(SD_SPI);   /*!< DeInitializes the SD_SPI */
+  SPI_Cmd(SD_SPI, DISABLE); /* SD_SPI disable */
+  SPI_I2S_DeInit(SD_SPI);   /* DeInitializes the SD_SPI */
   
-  /*!< SD_SPI Periph clock disable */
+  /* SD_SPI Periph clock disable */
   RCC_APB2PeriphClockCmd(SD_SPI_CLK, DISABLE); 
 
-  /*!< Configure SD_SPI pins: SCK */
+  /* Configure SD_SPI pins: SCK */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_SCK_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(SD_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI pins: MISO */
+  /* Configure SD_SPI pins: MISO */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_MISO_PIN;
   GPIO_Init(SD_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI pins: MOSI */
+  /* Configure SD_SPI pins: MOSI */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_MOSI_PIN;
   GPIO_Init(SD_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI_CS_PIN pin: SD Card CS pin */
+  /* Configure SD_SPI_CS_PIN pin: SD Card CS pin */
   GPIO_InitStructure.GPIO_Pin = SD_CS_PIN;
   GPIO_Init(SD_CS_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
+  /* Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
   GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
   GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /**
-  * @brief  Initializes the SD Card and put it into StandBy State (Ready for 
-  *         data transfer).
+  * @brief  Initializes the SPI and GPIOs resources used to drive the uSD card
   * @param  None
   * @retval None
   */
@@ -414,15 +379,15 @@ void SD_LowLevel_Init(void)
   GPIO_InitTypeDef  GPIO_InitStructure;
   SPI_InitTypeDef   SPI_InitStructure;
 
-  /*!< SD_SPI_CS_GPIO, SD_SPI_MOSI_GPIO, SD_SPI_MISO_GPIO, SD_SPI_DETECT_GPIO 
+  /* SD_SPI_CS_GPIO, SD_SPI_MOSI_GPIO, SD_SPI_MISO_GPIO, SD_SPI_DETECT_GPIO 
        and SD_SPI_SCK_GPIO Periph clock enable */
   RCC_AHBPeriphClockCmd(SD_CS_GPIO_CLK | SD_SPI_MOSI_GPIO_CLK | SD_SPI_MISO_GPIO_CLK |
                         SD_SPI_SCK_GPIO_CLK | SD_DETECT_GPIO_CLK, ENABLE);
 
-  /*!< SD_SPI Periph clock enable */
+  /* SD_SPI Periph clock enable */
   RCC_APB2PeriphClockCmd(SD_SPI_CLK, ENABLE); 
 
-  /*!< Configure SD_SPI pins: SCK */
+  /* Configure SD_SPI pins: SCK */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_SCK_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -430,23 +395,23 @@ void SD_LowLevel_Init(void)
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
   GPIO_Init(SD_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI pins: MISO */
+  /* Configure SD_SPI pins: MISO */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_MISO_PIN;
   GPIO_Init(SD_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI pins: MOSI */
+  /* Configure SD_SPI pins: MOSI */
   GPIO_InitStructure.GPIO_Pin = SD_SPI_MOSI_PIN;
   GPIO_Init(SD_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI_CS_PIN pin: SD Card CS pin */
+  /* Configure SD_SPI_CS_PIN pin: SD Card CS pin */
   GPIO_InitStructure.GPIO_Pin = SD_CS_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
   GPIO_Init(SD_CS_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
+  /* Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
   GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
@@ -461,7 +426,9 @@ void SD_LowLevel_Init(void)
   /* Connect PXx to SD_SPI_MOSI */
   GPIO_PinAFConfig(SD_SPI_MOSI_GPIO_PORT, SD_SPI_MOSI_SOURCE, SD_SPI_MOSI_AF);  
   
-  /*!< SD_SPI Config */
+  /* SPI configuration -------------------------------------------------------*/
+  SPI_I2S_DeInit(SD_SPI);
+
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
   SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
@@ -476,11 +443,11 @@ void SD_LowLevel_Init(void)
   
   SPI_RxFIFOThresholdConfig(SD_SPI, SPI_RxFIFOThreshold_QF);
   
-  SPI_Cmd(SD_SPI, ENABLE); /*!< SD_SPI enable */
+  SPI_Cmd(SD_SPI, ENABLE); /* SD_SPI enable */
 }
 
 /**
-  * @brief  DeInitializes the LM75_I2C.
+  * @brief  DeInitializes peripherals used by the LM75 driver.
   * @param  None
   * @retval None
   */
@@ -488,32 +455,32 @@ void LM75_LowLevel_DeInit(void)
 {
   GPIO_InitTypeDef  GPIO_InitStructure;
 
-  /*!< Disable LM75_I2C */
+  /* Disable LM75_I2C */
   I2C_Cmd(LM75_I2C, DISABLE);
   
-  /*!< DeInitializes the LM75_I2C */
+  /* DeInitializes the LM75_I2C */
   I2C_DeInit(LM75_I2C);
   
-  /*!< LM75_I2C Periph clock disable */
+  /* LM75_I2C Periph clock disable */
   RCC_APB1PeriphClockCmd(LM75_I2C_CLK, DISABLE);
     
-  /*!< Configure LM75_I2C pins: SCL */
+  /* Configure LM75_I2C pins: SCL */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SCL_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(LM75_I2C_SCL_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure LM75_I2C pins: SDA */
+  /* Configure LM75_I2C pins: SDA */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SDA_PIN;
   GPIO_Init(LM75_I2C_SDA_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure LM75_I2C pin: SMBUS ALERT */
+  /* Configure LM75_I2C pin: SMBUS ALERT */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SMBUSALERT_PIN;
   GPIO_Init(LM75_I2C_SMBUSALERT_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /**
-  * @brief  Initializes the LM75_I2C..
+  * @brief  Initializes the I2C source clock and IOs used to drive the LM75
   * @param  None
   * @retval None
   */
@@ -521,13 +488,13 @@ void LM75_LowLevel_Init(void)
 {
   GPIO_InitTypeDef  GPIO_InitStructure;
 
-  /*!< LM75_I2C Periph clock enable */
+  /* LM75_I2C Periph clock enable */
   RCC_APB1PeriphClockCmd(LM75_I2C_CLK, ENABLE);
     
   /* Configure the I2C clock source. The clock is derived from the HSI */
   RCC_I2CCLKConfig(RCC_I2C1CLK_HSI);
   
-  /*!< LM75_I2C_SCL_GPIO_CLK, LM75_I2C_SDA_GPIO_CLK 
+  /* LM75_I2C_SCL_GPIO_CLK, LM75_I2C_SDA_GPIO_CLK 
        and LM75_I2C_SMBUSALERT_GPIO_CLK Periph clock enable */
   RCC_AHBPeriphClockCmd(LM75_I2C_SCL_GPIO_CLK | LM75_I2C_SDA_GPIO_CLK |
                         LM75_I2C_SMBUSALERT_GPIO_CLK, ENABLE);
@@ -541,19 +508,19 @@ void LM75_LowLevel_Init(void)
   /* Connect PXx to I2C_SMBUSALER */
   GPIO_PinAFConfig(LM75_I2C_SMBUSALERT_GPIO_PORT, LM75_I2C_SMBUSALERT_SOURCE, LM75_I2C_SMBUSALERT_AF);
     
-  /*!< Configure LM75_I2C pins: SCL */
+  /* Configure LM75_I2C pins: SCL */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SCL_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
   GPIO_Init(LM75_I2C_SCL_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure LM75_I2C pins: SDA */
+  /* Configure LM75_I2C pins: SDA */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SDA_PIN;
   GPIO_Init(LM75_I2C_SDA_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure LM75_I2C pin: SMBUS ALERT */
+  /* Configure LM75_I2C pin: SMBUS ALERT */
   GPIO_InitStructure.GPIO_Pin = LM75_I2C_SMBUSALERT_PIN;
   GPIO_Init(LM75_I2C_SMBUSALERT_GPIO_PORT, &GPIO_InitStructure);
 }
@@ -573,23 +540,23 @@ void sEE_LowLevel_DeInit(void)
   /* sEE_I2C DeInit */
   I2C_DeInit(sEE_I2C);
 
-  /*!< sEE_I2C Periph clock disable */
+  /* sEE_I2C Periph clock disable */
   RCC_APB1PeriphClockCmd(sEE_I2C_CLK, DISABLE);
     
-  /*!< GPIO configuration */  
-  /*!< Configure sEE_I2C pins: SCL */
+  /* GPIO configuration */  
+  /* Configure sEE_I2C pins: SCL */
   GPIO_InitStructure.GPIO_Pin = sEE_I2C_SCL_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(sEE_I2C_SCL_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure sEE_I2C pins: SDA */
+  /* Configure sEE_I2C pins: SDA */
   GPIO_InitStructure.GPIO_Pin = sEE_I2C_SDA_PIN;
   GPIO_Init(sEE_I2C_SDA_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /**
-  * @brief  Initializes peripherals used by the I2C EEPROM driver.
+  * @brief  Initializes the I2C source clock and IOs used to drive the EEPROM.
   * @param  None
   * @retval None
   */
@@ -600,10 +567,10 @@ void sEE_LowLevel_Init(void)
   /* Configure the I2C clock source. The clock is derived from the HSI */
   RCC_I2CCLKConfig(RCC_I2C1CLK_HSI);
     
-  /*!< sEE_I2C_SCL_GPIO_CLK and sEE_I2C_SDA_GPIO_CLK Periph clock enable */
+  /* sEE_I2C_SCL_GPIO_CLK and sEE_I2C_SDA_GPIO_CLK Periph clock enable */
   RCC_AHBPeriphClockCmd(sEE_I2C_SCL_GPIO_CLK | sEE_I2C_SDA_GPIO_CLK, ENABLE);
   
-  /*!< sEE_I2C Periph clock enable */
+  /* sEE_I2C Periph clock enable */
   RCC_APB1PeriphClockCmd(sEE_I2C_CLK, ENABLE);
   
   /* Connect PXx to I2C_SCL*/
@@ -612,15 +579,16 @@ void sEE_LowLevel_Init(void)
   /* Connect PXx to I2C_SDA*/
   GPIO_PinAFConfig(sEE_I2C_SDA_GPIO_PORT, sEE_I2C_SDA_SOURCE, sEE_I2C_SDA_AF);
   
-  /*!< GPIO configuration */  
-  /*!< Configure sEE_I2C pins: SCL */
+  /* GPIO configuration */  
+  /* Configure sEE_I2C pins: SCL */
   GPIO_InitStructure.GPIO_Pin = sEE_I2C_SCL_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(sEE_I2C_SCL_GPIO_PORT, &GPIO_InitStructure);
   
-  /*!< Configure sEE_I2C pins: SDA */
+  /* Configure sEE_I2C pins: SDA */
   GPIO_InitStructure.GPIO_Pin = sEE_I2C_SDA_PIN;
   GPIO_Init(sEE_I2C_SDA_GPIO_PORT, &GPIO_InitStructure);
 }

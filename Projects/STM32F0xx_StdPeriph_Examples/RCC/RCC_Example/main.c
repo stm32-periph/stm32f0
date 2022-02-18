@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    RCC/RCC_Example/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ int main(void)
        system_stm32f0xx.c file
      */     
 
-  /* Initialize Leds mounted on STM320518-EVAL*/
+  /* Initialize Leds mounted on STM32072B-EVAL*/
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
 
@@ -80,7 +80,11 @@ int main(void)
   /* Enable and configure RCC global IRQ channel, will be used to manage HSE ready 
      and PLL ready interrupts. 
      These interrupts are enabled in stm32f0xx_it.c file **********************/
+#ifdef USE_STM320518_EVAL
   NVIC_InitStructure.NVIC_IRQChannel = RCC_IRQn;
+#else 
+  NVIC_InitStructure.NVIC_IRQChannel = RCC_CRS_IRQn; 
+#endif /* USE_STM320518_EVAL */
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
@@ -100,7 +104,11 @@ int main(void)
   GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_0);
 
   /* Output System Clock on MCO pin */
-  RCC_MCOConfig(RCC_MCOSource_SYSCLK);         
+#ifdef USE_STM320518_EVAL
+  RCC_MCOConfig(RCC_MCOSource_SYSCLK); 
+#else 
+  RCC_MCOConfig(RCC_MCOSource_SYSCLK, RCC_MCOPrescaler_1);  
+#endif /* USE_STM320518_EVAL */   
 
   while (1)
   {

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    ADC/ADC_DMA/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -38,8 +38,14 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define MESSAGE1           " STM32F05x CortexM0 "
-#define MESSAGE2           "   STM320518-EVAL   "
+#define MESSAGE1   "STM32F0xx CortexM0  " 
+#ifdef USE_STM320518_EVAL
+  #define MESSAGE2   "   STM320518-EVAL   "
+  #define MESSAGE3   "  Turn RV3(PC.01)    "
+#else 
+  #define MESSAGE2   "   STM32072B-EVAL   " 
+  #define MESSAGE3   "  Turn RV3(PC.00)    "
+#endif /* USE_STM320518_EVAL */
 #define ADC1_DR_Address    0x40012440
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,6 +55,10 @@ __IO uint16_t RegularConvData_Tab[4];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+static void Display_Init(void);
+static void Display(void);
+static void ADC_Config(void);
+static void DMA_Config(void);
 
 /**
   * @brief  Main program.
@@ -67,8 +77,11 @@ int main(void)
   /* LCD Display init  */
   Display_Init();
    
-  /* ADC1 and DMA configuration */
-  ADC1_DMA_Config();
+  /* ADC1 configuration */
+  ADC_Config();
+  
+  /* DMA configuration */
+  DMA_Config();
 
   /* Infinite loop */
   while (1)
@@ -85,15 +98,14 @@ int main(void)
 }
 
 /**
-  * @brief  ADC1 channel with DMA configuration
+  * @brief  ADC1 channel configuration
   * @param  None
   * @retval None
   */
-void ADC1_DMA_Config(void)
+static void ADC_Config(void)
 {
   ADC_InitTypeDef     ADC_InitStructure;
   GPIO_InitTypeDef    GPIO_InitStructure;
-  DMA_InitTypeDef   DMA_InitStructure;
   /* ADC1 DeInit */  
   ADC_DeInit(ADC1);
   
@@ -103,14 +115,76 @@ void ADC1_DMA_Config(void)
    /* ADC1 Periph clock enable */
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
   
-  /* DMA1 clock enable */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1 , ENABLE);
-  
-  /* Configure ADC Channel11 as analog input */
+  /* Configure ADC Channel11 and channel10 as analog input */
+#ifdef USE_STM320518_EVAL
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 ;
+#else
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 ;
+#endif /* USE_STM320518_EVAL */
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
   GPIO_Init(GPIOC, &GPIO_InitStructure);
+  
+  /* Initialize ADC structure */
+  ADC_StructInit(&ADC_InitStructure);
+  
+  /* Configure the ADC1 in continuous mode withe a resolution equal to 12 bits  */
+  ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
+  ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
+  ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+  ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+  ADC_InitStructure.ADC_ScanDirection = ADC_ScanDirection_Backward;
+  ADC_Init(ADC1, &ADC_InitStructure); 
+
+  /* Convert the ADC1 Channel11 and channel10 with 55.5 Cycles as sampling time */ 
+#ifdef USE_STM320518_EVAL
+  ADC_ChannelConfig(ADC1, ADC_Channel_11 , ADC_SampleTime_55_5Cycles); 
+#else
+  ADC_ChannelConfig(ADC1, ADC_Channel_10 , ADC_SampleTime_55_5Cycles); 
+#endif /* USE_STM320518_EVAL */  
+  
+  
+  /* Convert the ADC1 temperature sensor  with 55.5 Cycles as sampling time */ 
+  ADC_ChannelConfig(ADC1, ADC_Channel_TempSensor , ADC_SampleTime_55_5Cycles);  
+  ADC_TempSensorCmd(ENABLE);
+  
+  /* Convert the ADC1 Vref  with 55.5 Cycles as sampling time */ 
+  ADC_ChannelConfig(ADC1, ADC_Channel_Vrefint , ADC_SampleTime_55_5Cycles); 
+  ADC_VrefintCmd(ENABLE);
+  
+  /* Convert the ADC1 Vbat with 55.5 Cycles as sampling time */ 
+  ADC_ChannelConfig(ADC1, ADC_Channel_Vbat , ADC_SampleTime_55_5Cycles);  
+  ADC_VbatCmd(ENABLE);
+  
+  /* ADC Calibration */
+  ADC_GetCalibrationFactor(ADC1);
+  
+  /* ADC DMA request in circular mode */
+  ADC_DMARequestModeConfig(ADC1, ADC_DMAMode_Circular);
+  
+  /* Enable ADC_DMA */
+  ADC_DMACmd(ADC1, ENABLE);  
+  
+  /* Enable the ADC peripheral */
+  ADC_Cmd(ADC1, ENABLE);     
+  
+  /* Wait the ADRDY flag */
+  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY)); 
+  
+  /* ADC1 regular Software Start Conv */ 
+  ADC_StartOfConversion(ADC1);
+}
+
+/**
+  * @brief  DMA channel1 configuration
+  * @param  None
+  * @retval None
+  */
+static void DMA_Config(void)
+{
+  DMA_InitTypeDef   DMA_InitStructure;
+  /* DMA1 clock enable */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1 , ENABLE);
   
   /* DMA1 Channel1 Config */
   DMA_DeInit(DMA1_Channel1);
@@ -129,50 +203,6 @@ void ADC1_DMA_Config(void)
   /* DMA1 Channel1 enable */
   DMA_Cmd(DMA1_Channel1, ENABLE);
   
-  /* ADC DMA request in circular mode */
-  ADC_DMARequestModeConfig(ADC1, ADC_DMAMode_Circular);
-  
-  /* Enable ADC_DMA */
-  ADC_DMACmd(ADC1, ENABLE);  
-  
-  /* Initialize ADC structure */
-  ADC_StructInit(&ADC_InitStructure);
-  
-  /* Configure the ADC1 in continous mode withe a resolutuion equal to 12 bits  */
-  ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
-  ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
-  ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
-  ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-  ADC_InitStructure.ADC_ScanDirection = ADC_ScanDirection_Backward;
-  ADC_Init(ADC1, &ADC_InitStructure); 
-
-  /* Convert the ADC1 Channel 1 with 55.5 Cycles as sampling time */ 
-  ADC_ChannelConfig(ADC1, ADC_Channel_11 , ADC_SampleTime_55_5Cycles);   
-  
-  
-  /* Convert the ADC1 temperature sensor  with 55.5 Cycles as sampling time */ 
-  ADC_ChannelConfig(ADC1, ADC_Channel_TempSensor , ADC_SampleTime_55_5Cycles);  
-  ADC_TempSensorCmd(ENABLE);
-  
-  /* Convert the ADC1 Vref  with 55.5 Cycles as sampling time */ 
-  ADC_ChannelConfig(ADC1, ADC_Channel_Vrefint , ADC_SampleTime_55_5Cycles); 
-  ADC_VrefintCmd(ENABLE);
-  
-  /* Convert the ADC1 Vbat with 55.5 Cycles as sampling time */ 
-  ADC_ChannelConfig(ADC1, ADC_Channel_Vbat , ADC_SampleTime_55_5Cycles);  
-  ADC_VbatCmd(ENABLE);
-  
-  /* ADC Calibration */
-  ADC_GetCalibrationFactor(ADC1);
-  
-  /* Enable ADC1 */
-  ADC_Cmd(ADC1, ENABLE);     
-  
-  /* Wait the ADRDY falg */
-  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY)); 
-  
-  /* ADC1 regular Software Start Conv */ 
-  ADC_StartOfConversion(ADC1);
 }
 
 /**
@@ -180,7 +210,7 @@ void ADC1_DMA_Config(void)
   * @param  None
   * @retval None
   */
-void Display(void)
+static void Display(void)
 {
   uint32_t v=0,mv=0;
   uint8_t text[50],index;
@@ -190,7 +220,7 @@ void Display(void)
   LCD_SetTextColor(Green);
   for(index=0;index<4;index++)
   {
-    if (index == 3)
+    if (index == 0)
     {
       v=((2* RegularConvData_Tab[index]* 3300) / 0xFFF) / 1000;
       mv = (((2* RegularConvData_Tab[index]* 3300) / 0xFFF)%1000)/100;
@@ -201,15 +231,15 @@ void Display(void)
       mv = (((RegularConvData_Tab[index]* 3300) / 0xFFF)%1000)/100;
     } 
     
-    if (index == 0)
+    if (index == 3)
     {
       sprintf((char*)text," Pot (RV3)   = %d,%d V   ",v,mv);
     }
-    else if (index == 1)
+    else if (index == 2)
     {
       sprintf((char*)text," V(sense)    = %d,%d V   ",v,mv);
     }
-     else if (index == 2)
+     else if (index == 1)
     {
       sprintf((char*)text," V(ref int)  = %d,%d V   ",v,mv);
     }
@@ -227,10 +257,14 @@ void Display(void)
   * @param  None
   * @retval None
   */
-void Display_Init(void)
+static void Display_Init(void)
 {
   /* Initialize the LCD */
+#ifdef USE_STM320518_EVAL
   STM320518_LCD_Init();
+#else
+  STM32072B_LCD_Init();
+#endif /* USE_STM320518_EVAL */
 
   /* Clear the LCD */ 
   LCD_Clear(White);
@@ -248,15 +282,15 @@ void Display_Init(void)
   /* Set the LCD Text size */
   LCD_SetFont(&Font16x24);
 
-  LCD_DisplayStringLine(LINE(0), " STM32F05x CortexM0 ");
-  LCD_DisplayStringLine(LINE(1), "   STM320518-EVAL   ");
+  LCD_DisplayStringLine(LINE(0), MESSAGE1);
+  LCD_DisplayStringLine(LINE(1), MESSAGE2);
   
   /* Set the LCD Back Color and Text Color*/
   LCD_SetBackColor(White);
   LCD_SetTextColor(Blue);
 
   /* Display */
-  LCD_DisplayStringLine(LINE(3),"  Turn RV3(PC.01)    ");
+  LCD_DisplayStringLine(LINE(3), MESSAGE3);
 }
 
 #ifdef  USE_FULL_ASSERT

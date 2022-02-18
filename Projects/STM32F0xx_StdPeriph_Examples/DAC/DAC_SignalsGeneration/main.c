@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    DAC/DAC_SignalsGeneration/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -26,14 +26,13 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx.h"
-#include "stm320518_eval.h"
+#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
   */
 
-/** @addtogroup DAC_Signals_Generation
+/** @addtogroup DAC_SignalsGeneration
   * @{
   */
 
@@ -44,7 +43,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-TIM_TimeBaseInitTypeDef    TIM_TimeBaseStructure;
 DAC_InitTypeDef            DAC_InitStructure;
 DMA_InitTypeDef            DMA_InitStructure;
 const uint16_t Sine12bit[32] = {
@@ -57,8 +55,9 @@ __IO uint8_t  SelectedWavesForm = 1;
 __IO uint8_t WaveChange = 1; 
 
 /* Private function prototypes -----------------------------------------------*/
+static void DAC_Config(void);
+static void TIM_Config(void);
 /* Private functions ---------------------------------------------------------*/
-void DAC_Config(void);
 
 /**
   * @brief  Main program.
@@ -77,25 +76,11 @@ int main(void)
   /* Preconfiguration before using DAC----------------------------------------*/
   DAC_Config();
   
-  /* TIM2 Periph clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-  
-  /* Time base configuration */
-  TIM_TimeBaseStructInit(&TIM_TimeBaseStructure); 
-  TIM_TimeBaseStructure.TIM_Period = 0xFF;          
-  TIM_TimeBaseStructure.TIM_Prescaler = 0x0;       
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;    
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
-  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-
-  /* TIM2 TRGO selection */
-  TIM_SelectOutputTrigger(TIM2, TIM_TRGOSource_Update);
-  
-  /* TIM2 enable counter */
-  TIM_Cmd(TIM2, ENABLE);
+  /* TIM2 configuration */
+  TIM_Config();
   
   /* Configures Button GPIO and EXTI Line */
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
+  STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_EXTI);
 
   /* Infinite loop */
   while (1)
@@ -144,17 +129,15 @@ int main(void)
          
       }
           /* The Escalator wave has been selected */
-       else
-       {
-         
+      else
+      {
           /* Escalator Wave generator -----------------------------------------*/
           DAC_DeInit();
           
           /* DAC channel1 Configuration */
           DAC_InitStructure.DAC_Trigger = DAC_Trigger_T2_TRGO;
           DAC_InitStructure.DAC_OutputBuffer = DAC_OutputBuffer_Disable;
-          
-  
+            
           /* DMA1 channel2 configuration */
           DMA_DeInit(DMA1_Channel3);
 
@@ -183,14 +166,13 @@ int main(void)
   }
 }
 
-
 /**
   * @brief  PrecConfiguration: configure PA4 in analog,
   *                           enable DAC clock, enable DMA1 clock
   * @param  None
   * @retval None
   */
-void DAC_Config(void)
+static void DAC_Config(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -210,6 +192,32 @@ void DAC_Config(void)
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
+/**
+  * @brief  TIM2 Configuration
+  * @param  None
+  * @retval None
+  */
+static void TIM_Config(void)
+{
+  TIM_TimeBaseInitTypeDef    TIM_TimeBaseStructure;
+  
+  /* TIM2 Periph clock enable */
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+  
+  /* Time base configuration */
+  TIM_TimeBaseStructInit(&TIM_TimeBaseStructure); 
+  TIM_TimeBaseStructure.TIM_Period = 0xFF;          
+  TIM_TimeBaseStructure.TIM_Prescaler = 0x0;       
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;    
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
+  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+  /* TIM2 TRGO selection */
+  TIM_SelectOutputTrigger(TIM2, TIM_TRGOSource_Update);
+  
+  /* TIM2 enable counter */
+  TIM_Cmd(TIM2, ENABLE);
+}
 
 #ifdef  USE_FULL_ASSERT
 

@@ -2,11 +2,11 @@
   @page I2C_TSENSOR Communication between I2C and STLM75 Temperature sensor
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    I2C/I2C_TSENSOR/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the I2C TSENSOR example.
   ******************************************************************************
   *
@@ -40,7 +40,7 @@ ranges.
 The user can configure the TOS and THYS thanks to a dedicated define values in 
 the code.
 
-By default the STM320518-EVAL demo are setting them to (see main.c file):
+By default the EVAL demo are setting them to (see main.c file):
   
    #define TEMPERATURE_THYS 31
    #define TEMPERATURE_TOS 32
@@ -63,13 +63,16 @@ By default the STM320518-EVAL demo are setting them to (see main.c file):
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board. 
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
+    - STLM75 I2C temperature sensor is already available on this board.
+    
+  - STM32072B-EVAL Set-up
     - STLM75 I2C temperature sensor is already available on this board.
 
 
@@ -79,11 +82,17 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_i2c_tsensor.c
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_i2c_tsensor.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c 
+       
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_i2c_tsensor.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_lcd.c 
  - Rebuild all files and load your image into target memory
  - Run the example
 

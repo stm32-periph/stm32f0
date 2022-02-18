@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    RTC/RTC_Timer/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -31,25 +31,21 @@
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
   */
-
+  
 /** @addtogroup RTC_Timer
   * @{
   */
 
 /* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-#define MESSAGE1   "        Timer       "
-#define MESSAGE2   " LEFT  | RIGHT | UP/DOWN  " 
-#define MESSAGE3   " RESET | START | ADJUST   " 
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-__IO uint32_t StartEvent = 0; 
-uint32_t TimingDelay = 0;
-extern __IO uint32_t RTCAlarmCount;
-extern uint32_t SecondNumb;
+__IO uint8_t ALARM_Occured = 0;
+__IO uint32_t RTCAlarmCount = 0;
 
 /* Private function prototypes -----------------------------------------------*/
+static void RTC_Config(void);
+static void RTC_AlarmConfig(void);
+
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -64,201 +60,108 @@ int main(void)
        file (startup_stm32f0xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f0xx.c file
-     */ 
-
-uint32_t index = 0, tmp=0 ;
+     */  
   
   /* Initialize the LCD */
-  STM320518_LCD_Init(); 
+#ifdef USE_STM320518_EVAL
+    STM320518_LCD_Init();
+#else
+    STM32072B_LCD_Init();
+#endif /* USE_STM320518_EVAL */
+         
+  /* Enable The Display */
+  LCD_DisplayOn(); 
+
+  /* Clear the Background Layer */ 
+  LCD_Clear(LCD_COLOR_WHITE);
   
   /* Clear the LCD */ 
   LCD_Clear(White);
-  
+
   /* Set the LCD Back Color */
   LCD_SetBackColor(Blue);
   
   /* Set the LCD Text Color */
   LCD_SetTextColor(White);
-  
-  /* Displays MESSAGE1 on line 1 */
+   
+  /* Displays MESSAGE1 on line 0 */
   LCD_DisplayStringLine(LINE(0), (uint8_t *)MESSAGE1);
-  
-  /* Set the LCD Back Color */
-  LCD_SetBackColor(Cyan);
-  
-  /* Set the LCD Text Color */
-  LCD_SetTextColor(Black);
-  
-  /* Draw lines */
-  LCD_DrawUniLine(69, 121, 69,20);
-  LCD_DrawUniLine(171, 121, 171, 20);
-  
-  /* Draw 4 lines  */
-  LCD_DrawUniLine(70, 121, 120, 71);
-  LCD_DrawUniLine(120, 71, 170,121);
-  LCD_DrawUniLine(70, 20, 120, 70);
-  LCD_DrawUniLine(120, 70, 170,20);
-  
-  /* Initailize the Display Picture */  
-  for (index = 0; index < 100 ; index++)
-  {
-    if ((index % 2) ==0)
-    {
-      /* Set the LCD Text Color */
-      LCD_SetTextColor(Blue);
-      /* Draw Horizontal line */
-      LCD_DrawLine(70 + (index/2) , 120 - (index/2)  , 101 - (index + 1) ,Horizontal);
-      /* Set the LCD Text Color */
-      LCD_SetTextColor(White);
-      /* Draw Horizontal line */
-      LCD_DrawLine(170 - (index/2) , 120 - (index/2)  , 101 - (index + 1) ,Horizontal);
-    }
-  }
-  
-  /* Set the LCD Text Color */
-  LCD_SetTextColor(Blue); 
-  /* Set the LCD Back Color */
-  LCD_SetBackColor(White);
-  
-  /* Display String on the LCD  */
-  LCD_DisplayStringLine(LINE(3), " Set Timer:");
-  LCD_DisplayStringLine(95,     "   01:00 ");  
-  
-  /* Initialize Timer to 60 seconds */
-  SecondNumb = 60;
-  
-  /* Configure the external interrupt "LEFT", "RIGHT" , "DOWN" and "UP" buttons */
-  STM_EVAL_PBInit(BUTTON_RIGHT, BUTTON_MODE_EXTI);
-  STM_EVAL_PBInit(BUTTON_LEFT, BUTTON_MODE_EXTI);
-  STM_EVAL_PBInit(BUTTON_UP, BUTTON_MODE_EXTI);
-  STM_EVAL_PBInit(BUTTON_DOWN, BUTTON_MODE_EXTI);
-  
-  /* Configure DOWN button in GPIO mode */  
-   STM_EVAL_PBInit(BUTTON_DOWN, BUTTON_MODE_GPIO);  
-  
-  /* Configure the RTC peripheral by selecting the clock source.*/
+
+  /* RTC configuration */
   RTC_Config();
- 
+  
+  /* Set the LCD Text Color */
+  LCD_SetTextColor(Red);
+  
+  /* Displays a rectangle on the LCD */
+  LCD_DrawRect(80, 280, 25, 240 );
+  
+  /* Configure the external interrupt "WAKEUP" and "TAMPER" buttons */
+  STM_EVAL_PBInit(BUTTON_SEL, BUTTON_MODE_EXTI);
+  STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_EXTI);  
+     
   /* Configure RTC AlarmA register to generate 8 interrupts per 1 Second */
   RTC_AlarmConfig();
   
-  /* Set Text and Back color and Text size */
+  /* set LCD Font */
   LCD_SetFont(&Font12x12);
-  LCD_SetBackColor(Cyan);
-  LCD_SetTextColor(Black);
-  LCD_DisplayStringLine(LINE(18), (uint8_t *)MESSAGE2);
-  
+
   /* Set the LCD Back Color */
-  LCD_SetBackColor(Blue);
-  LCD_SetTextColor(White);
-  LCD_DisplayStringLine(LINE(19), (uint8_t *)MESSAGE3);
-  LCD_SetFont(&Font16x24);
+  LCD_SetBackColor(White); 
+
+  /* Set the LCD Text Color */
+  LCD_SetTextColor(Black);
+  
+  /* Set the Back Color */
+  LCD_SetBackColor(LCD_COLOR_CYAN);
+  /* Displays MESSAGE2 and MESSAGE3 on the LCD */
+  LCD_DisplayStringLine(LINE(18), (uint8_t *)MESSAGE2);  
+  LCD_DisplayStringLine(LINE(19), (uint8_t *)MESSAGE3);  
 
   /* Infinite loop */
   while (1)
   {
-  /* Check on the event 'start' */
-    if(StartEvent == 8)
+    uint32_t tmp =0;
+    /* ALARM Interrupt */
+    if (ALARM_Occured)
     {
-      /* Check on the Alarm event counter */
-      if(RTCAlarmCount != 0 ) 
+      if(RTCAlarmCount != 480)
       {
-        tmp = (uint32_t) ((RTCAlarmCount * 100)/ (8 * SecondNumb)); 
+        /* Increament the counter of Alarma interrupts */
+        RTCAlarmCount++;
         
-        /* First */
-        Delay((2000* SecondNumb));
+        /* Set the LCD Back Color */
+        LCD_SetTextColor(Green);
         
-        LCD_SetTextColor(Blue);
-        LCD_DrawLine(120, 70, 2, Vertical);
-        LCD_DrawLine(122, 68, 2, Vertical);
-        LCD_DrawLine(122, 72, 2, Vertical);
-        if(tmp <= 72)
-        {  
-          LCD_SetTextColor(White);
-          LCD_DrawLine(130, 70, 2, Vertical);
-          LCD_DrawLine(132, 68, 2, Vertical);
-          LCD_DrawLine(132, 72, 2, Vertical);
-        }
-        LCD_SetTextColor(Blue);
-        LCD_DrawLine(140, 70, 2, Vertical);
-        LCD_DrawLine(142, 69, 2, Vertical);
-        LCD_DrawLine(142, 72, 2, Vertical);
+        /* Draw rectangle on the LCD */
+        LCD_DrawFullRect(81, 359, 80+ (((RTCAlarmCount)-1)/2) , 24);
         
-        /* Second */
-        Delay((2000*SecondNumb));
-        if(tmp <= 90)
-        { 
-          LCD_SetTextColor(White);
-          LCD_DrawLine(120, 70, 2, Vertical);
-          LCD_DrawLine(122, 68, 2, Vertical);
-          LCD_DrawLine(122, 72, 2, Vertical);
-        }
-        LCD_SetTextColor(Blue);
-        LCD_DrawLine(130, 70, 2, Vertical);
-        LCD_DrawLine(132, 68, 2, Vertical);
-        LCD_DrawLine(132, 72, 2, Vertical);
-        if(tmp <= 52)
-        { 
-          LCD_SetTextColor(White);
-          LCD_DrawLine(140, 70, 2, Vertical);
-          LCD_DrawLine(142, 68, 2, Vertical);
-          LCD_DrawLine(142, 72, 2, Vertical);
-        }
-      }
-    }
-    else if (StartEvent == 9)
-    {
-      LCD_SetTextColor(Blue);
-      LCD_DrawLine(120, 70, 2, Vertical);
-      LCD_DrawLine(122, 68, 2, Vertical);
-      LCD_DrawLine(122, 72, 2, Vertical);
-      
-      LCD_DrawLine(130, 70, 2, Vertical);
-      LCD_DrawLine(132, 68, 2, Vertical);
-      LCD_DrawLine(132, 72, 2, Vertical);
-      
-      LCD_DrawLine(140, 70, 2, Vertical);
-      LCD_DrawLine(142, 68, 2, Vertical);
-      LCD_DrawLine(142, 72, 2, Vertical);
-    }
-    else
-    {
-      if(tmp <= 90)
-      { 
-        LCD_SetTextColor(White);
+        /* Set the LCD text color */
+        LCD_SetTextColor(Red);
+        
+        /* Display rectangle on the LCD */
+        LCD_DrawRect(80, 280, 25, 240 );
+        
+        /* Define the rate of Progress bar */
+        tmp = (RTCAlarmCount * 100)/ 480; 
+        
+        /* Set the LCD Font */
+        LCD_SetFont(&Font16x24);
+        
+        /* Display Char on the LCD : XXX% */
+        LCD_DisplayChar(LINE(2),200, (tmp / 100) +0x30);
+        LCD_DisplayChar(LINE(2),180, ((tmp  % 100 ) / 10) +0x30);
+        LCD_DisplayChar(LINE(2),160, (tmp % 10) +0x30);
+        LCD_DisplayChar(LINE(2),140, 0x25);
       }
       else
       {
-        LCD_SetTextColor(Blue);
+        /* Disable the RTC Clock */
+        RCC_RTCCLKCmd(DISABLE);
+        
       }
-      LCD_DrawLine(120, 70, 2, Vertical);
-      LCD_DrawLine(122, 68, 2, Vertical);
-      LCD_DrawLine(122, 72, 2, Vertical);
-      
-      if(tmp <= 72)
-      { 
-        LCD_SetTextColor(White);
-      }
-      else
-      {
-        LCD_SetTextColor(Blue);
-      }
-      LCD_DrawLine(130, 70, 2, Vertical);
-      LCD_DrawLine(132, 68, 2, Vertical);
-      LCD_DrawLine(132, 72, 2, Vertical);
-      
-      if(tmp <= 52)
-      { 
-        LCD_SetTextColor(White);
-      }
-      else
-      {
-        LCD_SetTextColor(Blue);
-      }
-      LCD_DrawLine(140, 70, 2, Vertical);
-      LCD_DrawLine(142, 68, 2, Vertical);
-      LCD_DrawLine(142, 72, 2, Vertical);
-      
+      /* Reinitialize the ALARM variable */
+      ALARM_Occured = 0;
     }
   }
 }
@@ -268,30 +171,33 @@ uint32_t index = 0, tmp=0 ;
   * @param  None
   * @retval None
   */
-void RTC_Config(void)
+static void RTC_Config(void)
 {
-
-  RTC_InitTypeDef RTC_InitStructure;
+  RTC_InitTypeDef  RTC_InitStructure;
   RTC_TimeTypeDef  RTC_TimeStruct;
-  
+
   /* Enable the PWR clock */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
 
   /* Allow access to RTC */
   PWR_BackupAccessCmd(ENABLE);
 
+  /* Reset RTC Domain */
+  RCC_BackupResetCmd(ENABLE);
+  RCC_BackupResetCmd(DISABLE);
+
   /* Enable the LSE OSC */
   RCC_LSEConfig(RCC_LSE_ON);
 
   /* Wait till LSE is ready */  
   while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-  {
-  }
+  {}
 
   /* Select the RTC Clock Source */
   RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
 
   /* Configure the RTC data register and RTC prescaler */
+  /* ck_spre(1Hz) = RTCCLK(LSI) /(AsynchPrediv + 1)*(SynchPrediv + 1)*/
   RTC_InitStructure.RTC_AsynchPrediv = 0x7F;
   RTC_InitStructure.RTC_SynchPrediv  = 0xFF;
   RTC_InitStructure.RTC_HourFormat   = RTC_HourFormat_24;
@@ -302,12 +208,7 @@ void RTC_Config(void)
   RTC_TimeStruct.RTC_Hours   = 0x00;
   RTC_TimeStruct.RTC_Minutes = 0x00;
   RTC_TimeStruct.RTC_Seconds = 0x00;  
-  RTC_SetTime(RTC_Format_BIN, &RTC_TimeStruct);
-    /* Enable the RTC Clock */
-  RCC_RTCCLKCmd(ENABLE);
-  
-  /* Wait for RTC APB registers synchronisation */
-  RTC_WaitForSynchro();
+  RTC_SetTime(RTC_Format_BCD, &RTC_TimeStruct);
 }
 
 /**
@@ -315,12 +216,14 @@ void RTC_Config(void)
   * @param  None
   * @retval None
   */
-void RTC_AlarmConfig(void)
+static void RTC_AlarmConfig(void)
 {
   EXTI_InitTypeDef EXTI_InitStructure;
   RTC_AlarmTypeDef RTC_AlarmStructure;
   NVIC_InitTypeDef NVIC_InitStructure;
-  
+
+  RTC_AlarmStructInit(&RTC_AlarmStructure);
+    
   /* EXTI configuration */
   EXTI_ClearITPendingBit(EXTI_Line17);
   EXTI_InitStructure.EXTI_Line = EXTI_Line17;
@@ -336,41 +239,21 @@ void RTC_AlarmConfig(void)
   NVIC_Init(&NVIC_InitStructure);
  
   /* Set the alarmA Masks */
-  RTC_AlarmStructInit(&RTC_AlarmStructure);
-
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_All;
-  RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
-
+  RTC_SetAlarm(RTC_Format_BCD, RTC_Alarm_A, &RTC_AlarmStructure);
+  
   /* Set AlarmA subseconds and enable SubSec Alarm : generate 8 interripts per Second */
   RTC_AlarmSubSecondConfig(RTC_Alarm_A, 0xFF, RTC_AlarmSubSecondMask_SS14_5);
 
   /* Enable AlarmA interrupt */
   RTC_ITConfig(RTC_IT_ALRA, ENABLE);
-  
-  /* Enable the alarmA */
-  RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
-  
 }
-
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{ 
-  while(nTime != 0)
-  {
-  nTime--;
-  }
-}
-
 
 #ifdef  USE_FULL_ASSERT
 
 /**
   * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
+  *   where the assert_param error has occurred.
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None

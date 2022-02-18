@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    USART/USART_WakeUpFromStop/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ uint8_t DataReceived = 0;
 extern __IO uint8_t InterruptCounter;
 
 /* Private function prototypes -----------------------------------------------*/
-static void USART_Configuration(void);
+static void USART_Config(void);
 static void WakeUp_StartBitMethod(void);
 static void RestoreConfiguration(void);
 
@@ -64,14 +64,14 @@ int main(void)
        system_stm32f0xx.c file
   */
   
-  /* Initialize LEDs available on STM320518-EVAL board ************************/
+  /* Initialize LEDs available  ***********************************************/
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
    
   /* USART configuration */
-  USART_Configuration();
+  USART_Config();
   
   /* Wake up from USART STOP mode by Start bit Method */
   WakeUp_StartBitMethod();
@@ -95,20 +95,20 @@ int main(void)
 static void WakeUp_StartBitMethod(void)
 { 
   /* Configure the wake up Method = Start bit */ 
-  USART_StopModeWakeUpSourceConfig(USART1, USART_WakeUpSource_StartBit);
+  USART_StopModeWakeUpSourceConfig(EVAL_COM1, USART_WakeUpSource_StartBit);
   
   /* Enable USART1 */ 
-  USART_Cmd(USART1, ENABLE);
+  USART_Cmd(EVAL_COM1, ENABLE);
  
   /* Before entering the USART in STOP mode the REACK flag must be checked to ensure the USART RX is ready */
-  while(USART_GetFlagStatus(USART1, USART_FLAG_REACK) == RESET)
+  while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_REACK) == RESET)
   {}
   
   /* Enable USART STOP mode by setting the UESM bit in the CR1 register.*/
-  USART_STOPModeCmd(USART1, ENABLE);
+  USART_STOPModeCmd(EVAL_COM1, ENABLE);
   
   /* Enable the wake up from stop Interrupt */ 
-  USART_ITConfig(USART1, USART_IT_WU, ENABLE);   
+  USART_ITConfig(EVAL_COM1, USART_IT_WU, ENABLE);   
 
   /* Enable PWR APB clock */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
@@ -121,22 +121,22 @@ static void WakeUp_StartBitMethod(void)
   {}
   
   /* Disable USART peripheral in STOP mode */ 
-  USART_STOPModeCmd(USART1, DISABLE);
+  USART_STOPModeCmd(EVAL_COM1, DISABLE);
     
-  while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
+  while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_RXNE) == RESET)
   {}
-  DataReceived = USART_ReceiveData(USART1);
+  DataReceived = USART_ReceiveData(EVAL_COM1);
  
   /* Clear the TE bit (if a transmission is on going or a data is in the TDR, it will be sent before
   efectivelly disabling the transmission) */
-  USART_DirectionModeCmd(USART1, USART_Mode_Tx, DISABLE);
+  USART_DirectionModeCmd(EVAL_COM1, USART_Mode_Tx, DISABLE);
   
   /* Check the Transfer Complete Flag */
-  while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET)
+  while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
   {}
 
   /* USART Disable */
-  USART_Cmd(USART1, DISABLE);
+  USART_Cmd(EVAL_COM1, DISABLE);
 }
 
 /**
@@ -144,36 +144,45 @@ static void WakeUp_StartBitMethod(void)
   * @param  None
   * @retval None
   */
-static void USART_Configuration(void)
+static void USART_Config(void)
 { 
   USART_InitTypeDef USART_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure; 
   NVIC_InitTypeDef NVIC_InitStructure;
   
-  /* Enable GPIOA and DMA clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA , ENABLE);
+  /* Enable GPIO clock */
+  RCC_AHBPeriphClockCmd(EVAL_COM1_TX_GPIO_CLK , ENABLE);
+  RCC_AHBPeriphClockCmd(EVAL_COM1_RX_GPIO_CLK , ENABLE);
   
-  /* Enable USART1 APB clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+  /* Enable USARTx APB clock */
+#ifdef USE_STM320518_EVAL
+  RCC_APB2PeriphClockCmd(EVAL_COM1_CLK, ENABLE);
+#else 
+  RCC_APB1PeriphClockCmd(EVAL_COM1_CLK, ENABLE);
+#endif /* USE_STM320518_EVAL */ 
+
   
   /* Configure the HSI as USART clock */
+#ifdef USE_STM320518_EVAL
   RCC_USARTCLKConfig(RCC_USART1CLK_HSI);
+#else 
+  RCC_USARTCLKConfig(RCC_USART2CLK_HSI);
+#endif /* USE_STM320518_EVAL */
+
   
-  /* USART1 Pins configuration **************************************************/
-  GPIO_DeInit(GPIOA);
-  
+  /* USARTx Pins configuration **************************************************/  
   /* Connect pin to Periph */
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);    
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1); 
+  GPIO_PinAFConfig(EVAL_COM1_TX_GPIO_PORT, EVAL_COM1_TX_SOURCE, EVAL_COM1_TX_AF);    
+  GPIO_PinAFConfig(EVAL_COM1_RX_GPIO_PORT, EVAL_COM1_RX_SOURCE, EVAL_COM1_RX_AF); 
   
   /* Configure pins as AF pushpull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10;
+  GPIO_InitStructure.GPIO_Pin = EVAL_COM1_TX_PIN | EVAL_COM1_RX_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-  
+  GPIO_Init(EVAL_COM1_RX_GPIO_PORT, &GPIO_InitStructure); 
+  GPIO_Init(EVAL_COM1_TX_GPIO_PORT, &GPIO_InitStructure); 
  
   /* USARTx configured as follow:
   - BaudRate = 115200 baud  
@@ -184,17 +193,22 @@ static void USART_Configuration(void)
   - Receive and transmit enabled
   */
   
-  USART_DeInit(USART1);
+  USART_DeInit(EVAL_COM1);
   USART_InitStructure.USART_BaudRate = 115200;
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;
   USART_InitStructure.USART_StopBits = USART_StopBits_1;
   USART_InitStructure.USART_Parity = USART_Parity_No;
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-  USART_Init(USART1, &USART_InitStructure);
+  USART_Init(EVAL_COM1, &USART_InitStructure);
+ 
   
-  /* USART1 IRQ Channel configuration */
+  /* USART2 IRQ Channel configuration */
+#ifdef USE_STM320518_EVAL
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+#else 
+  NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+#endif /* USE_STM320518_EVAL */
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0x01;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);

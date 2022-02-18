@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_ee_cpal.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file provides a set of functions needed to manage I2C  
   *          EEPROM memory.
   *          
@@ -33,7 +33,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -61,17 +61,17 @@
 
 typedef struct  
 {
-  __IO uint32_t sEEDataNum;             /*!< The number of data that will be written in next transfer */ 
+  __IO uint32_t sEEDataNum;             /* The number of data that will be written in next transfer */ 
   
-  uint32_t sEEWriteAddr;                /*!< Physical memory address of EEPROM where data will be written */ 
+  uint32_t sEEWriteAddr;                /* Physical memory address of EEPROM where data will be written */ 
   
-  __IO uint8_t *sEEpBuffer;             /*!< The address of the buffer from which data transfer should start */
+  __IO uint8_t *sEEpBuffer;             /* The address of the buffer from which data transfer should start */
   
-  __IO uint16_t sEENumOfPage;           /*!< The number of page that will be written  */  
+  __IO uint16_t sEENumOfPage;           /* The number of page that will be written  */  
   
-  __IO uint8_t sEENumOfSingle;          /*!< The number of single data that will be written */ 
+  __IO uint8_t sEENumOfSingle;          /* The number of single data that will be written */ 
   
-  __IO uint8_t sEENextWrite;            /*!< This member indicates there is remaining transfers  */   
+  __IO uint8_t sEENextWrite;            /* This member indicates there is remaining transfers  */   
   
 } sEE_WriteTypeDef; 
 

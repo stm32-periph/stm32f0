@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    RTC/RTC_LSI/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ __IO uint32_t LsiFreq = 0;
 __IO uint32_t CaptureNumber = 0, PeriodValue = 0;
 
 /* Private function prototypes -----------------------------------------------*/
-void RTC_Config(void);
-uint32_t GetLSIFrequency(void);
+static void RTC_Config(void);
+static uint32_t GetLSIFrequency(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -67,13 +67,13 @@ int main(void)
 /* Initialize LEDs mounted on STM320518-EVAL board --------------------------*/
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_GPIO);
+  STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_GPIO);
   
   /* RTC Configuration -------------------------------------------------------*/
   RTC_Config();
 
   /* Wait Until KEY BUTTON is pressed */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) != RESET)
+  while(STM_EVAL_PBGetState(BUTTON_TAMPER) != RESET)
   {
   }
   
@@ -82,7 +82,7 @@ int main(void)
 
   /* Turn on LED2 */
   STM_EVAL_LEDOn(LED2);
-
+  
   /* Calendar Configuration */
   RTC_InitStructure.RTC_AsynchPrediv = 99;
   RTC_InitStructure.RTC_SynchPrediv	=  (LsiFreq/100) - 1;
@@ -100,7 +100,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void RTC_Config(void)
+static void RTC_Config(void)
 {
   RTC_TimeTypeDef RTC_TimeStructure;
   NVIC_InitTypeDef NVIC_InitStructure; 
@@ -180,7 +180,7 @@ void RTC_Config(void)
   * @param  None
   * @retval LSI Frequency
   */
-uint32_t GetLSIFrequency(void)
+static uint32_t GetLSIFrequency(void)
 {
   NVIC_InitTypeDef   NVIC_InitStructure;
   TIM_ICInitTypeDef  TIM_ICInitStructure;

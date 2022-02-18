@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    I2C/I2C_WakeUpFromStop/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ uint8_t BufferRX[BUFFSIZE];
 CPAL_TransferTypeDef  sRxStructure, sTxStructure;
 uint32_t BufferSize = BUFFSIZE;
 #ifdef I2C_SLAVE  
-GPIO_InitTypeDef GPIO_InitStructure;
+ GPIO_InitTypeDef GPIO_InitStructure;
 #endif /* I2C_SLAVE */
 __IO TestStatus TransferStatus = PASSED;
 
@@ -55,9 +55,9 @@ __IO TestStatus TransferStatus = PASSED;
 static void RCC_Config(void);
 static __IO uint32_t TimingDelay;
 #ifdef I2C_SLAVE  
-static TestStatus Compare_bBuffer(uint8_t* pBuffer, uint8_t* pBuffer1, uint32_t BufferLength);
-static void Reset_bBuffer(uint8_t *pBuffer, uint32_t BufferLenght);
-static void RestoreConfiguration(void);
+ static TestStatus Compare_bBuffer(uint8_t* pBuffer, uint8_t* pBuffer1, uint32_t BufferLength);
+ static void Reset_bBuffer(uint8_t *pBuffer, uint32_t BufferLenght);
+ static void Restore_Configuration(void);
 #endif /* I2C_SLAVE */
 
 
@@ -78,16 +78,19 @@ int main(void)
   /* Configure Clocks */
   RCC_Config();
   
-  /* Initialize LEDs, Key Button and LCD available on
-  STM320518-EVAL board *****************************************************/
+  /* Initialize LEDsand LCD available on EVAL board ***************************/
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
   
   /* Initialize the LCD */
+#ifdef USE_STM320518_EVAL
   STM320518_LCD_Init();
-  
+#else 
+  STM32072B_LCD_Init();
+#endif /* USE_STM320518_EVAL */
+
   /* Display message on  LCD ***********************************************/
   /* Clear the LCD */ 
   LCD_Clear(White);  
@@ -103,7 +106,7 @@ int main(void)
   LCD_SetTextColor(Blue);
   
   /* Configure the Push buttons in Polling mode */
-  STM_EVAL_PBInit(BUTTON_KEY, Mode_GPIO);
+  STM_EVAL_PBInit(BUTTON_SEL, Mode_GPIO);
   
   /* if STM32 device is set as Master */
 #ifdef I2C_MASTER     
@@ -117,15 +120,15 @@ int main(void)
   /* Initialize CPAL I2C structure parameters values */
   CPAL_I2C_StructInit(&MASTERSTRUCTURE);
   
-#ifdef CPAL_I2C_DMA_PROGMODEL
-  MASTERSTRUCTURE.wCPAL_Options =  CPAL_OPT_NO_MEM_ADDR | CPAL_OPT_DMATX_TCIT;
-  MASTERSTRUCTURE.CPAL_ProgModel = CPAL_PROGMODEL_DMA;
-#elif defined (CPAL_I2C_IT_PROGMODEL)
-  MASTERSTRUCTURE.wCPAL_Options =  CPAL_OPT_NO_MEM_ADDR;
-  MASTERSTRUCTURE.CPAL_ProgModel = CPAL_PROGMODEL_INTERRUPT;
-#else
- #error "Please select one of the programming model (in main.h)"
-#endif
+ #ifdef CPAL_I2C_DMA_PROGMODEL
+   MASTERSTRUCTURE.wCPAL_Options =  CPAL_OPT_NO_MEM_ADDR | CPAL_OPT_DMATX_TCIT;
+   MASTERSTRUCTURE.CPAL_ProgModel = CPAL_PROGMODEL_DMA;
+ #elif defined (CPAL_I2C_IT_PROGMODEL)
+   MASTERSTRUCTURE.wCPAL_Options =  CPAL_OPT_NO_MEM_ADDR;
+   MASTERSTRUCTURE.CPAL_ProgModel = CPAL_PROGMODEL_INTERRUPT;
+ #else
+  #error "Please select one of the programming model (in main.h)"
+ #endif
   
   /* Set I2C Speed */
   MASTERSTRUCTURE.pCPAL_I2C_Struct->I2C_Timing = MASTER_I2C_TIMING;
@@ -153,7 +156,7 @@ int main(void)
     LCD_DisplayStringLine(Line6, MESSAGE5);
     
     /* wait until Key button is pushed */
-    while(STM_EVAL_PBGetState(BUTTON_KEY));
+    while(! STM_EVAL_PBGetState(BUTTON_SEL));
     
     /* Update LCD Display */
     LCD_DisplayStringLine(Line5, MEASSAGE_EMPTY);
@@ -195,7 +198,11 @@ int main(void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
   
+#ifdef USE_STM320518_EVAL
   RCC_MCOConfig(RCC_MCOSource_SYSCLK);
+#else 
+  RCC_MCOConfig(RCC_MCOSource_SYSCLK, RCC_MCOPrescaler_1);
+#endif /* USE_STM320518_EVAL */
   
   /* Deinitialize I2Cx Device */ 
   CPAL_I2C_DeInit(&SLAVESTRUCTURE); 
@@ -259,7 +266,7 @@ int main(void)
     while ((SLAVESTRUCTURE.CPAL_State != CPAL_STATE_READY) && (SLAVESTRUCTURE.CPAL_State != CPAL_STATE_ERROR));
     
     /* Configure SystemClock*/
-    RestoreConfiguration();
+    Restore_Configuration();
     
     /* Configure and enable the systick timer to generate an interrupt each 1 ms */
     SysTick_Config((SystemCoreClock / 1000));
@@ -308,7 +315,7 @@ static void RCC_Config(void)
   * @param  None
   * @retval None
   */
-static void RestoreConfiguration(void)
+static void Restore_Configuration(void)
 {
   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
   

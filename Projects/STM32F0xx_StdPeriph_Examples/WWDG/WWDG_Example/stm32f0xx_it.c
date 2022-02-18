@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    WWDG/WWDG_Example/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -25,17 +25,12 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */
+  */ 
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
-  * @{
-  */
-
-/** @addtogroup WWDG_Example
   * @{
   */
 
@@ -106,23 +101,22 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f0xx.s).                                            */
 /******************************************************************************/
-
 /**
-  * @brief  This function handles External line 8 interrupt request.
+  * @brief  This function handles External line 4 to 15 interrupt request.
   * @param  None
   * @retval None
   */
 void EXTI4_15_IRQHandler(void)
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
+  if (EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET)
   {  
-    /* Clear the Key Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    /* Clear the TAMPER Button EXTI Line Pending Bit */
+    EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
     
     /* As the following address is invalid (not mapped), a Hardfault exception
-	  will be generated with an infinite loop and when the WWDG counter falls to 63
-    the WWDG reset occurs */
- 	  *(__IO uint32_t *) 0x00040001 = 0xFF;
+       will be generated with an infinite loop and when the IWDG counter reaches 0
+       the IWDG reset occurs */
+    *(__IO uint32_t *) 0x00040001 = 0xFF;
   }
 }
 
@@ -137,11 +131,6 @@ void EXTI4_15_IRQHandler(void)
 
 /**
   * @}
-  */
-
-/**
-  * @}
   */ 
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

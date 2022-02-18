@@ -2,11 +2,11 @@
   @page USART_AutoBaudRate USART AutoBaudRate Example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    USART/USART_AutoBaudRate/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the USART AutoBaudRate Example.
   ******************************************************************************
   *
@@ -30,9 +30,9 @@
 This example provides a description of how to use the Auto BaudRate capability
 of the USART via the HyperTerminal.
 
-First, the USART1 is configured to detect BaudRate automatically with StartBit
-Measurement Method (Any character starting with a bit at 1 should be send to USART 
-to detect Baud Rate).
+First, the USART1(STM32F051R8T6 devices) or USART2(STM32F072VBT6 devices) is configured
+to detect BaudRate automatically with StartBit Measurement Method (Any character 
+starting with a bit at 1 should be send to USART to detect Baud Rate).
 
 After configuration, the USART waits until a data is received via HyperTerminal
 to launch auto-detection of Baud Rate phase. The end of this phase is monitored 
@@ -44,7 +44,7 @@ completed successfully, LED2 is turned on and the received data is transmitted b
 to the HyperTerminal.
 You can repeat this procedure by changing the BaudRate on HyperTerminal side.
  
-The USART1 is configured as follow:
+The USART is configured as follow:
     - BaudRate = 115200 baud (any value can be chosen)  
     - Word Length = 8 Bits 
     - One Stop Bit
@@ -70,16 +70,21 @@ The USART1 is configured as follow:
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
-    - Connect a null-modem female/female RS232 cable between the DB9 connector 
-      CN12 and PC serial port.
-    - Make sure that JP3 is in position 5<->6 
+      - Connect a null-modem female/female RS232 cable between the DB9 connector 
+        CN7 and PC serial port.
+      - Make sure that JP3 is in position 5<->6  
+      
+  - STM32072B-EVAL Set-up  
+      - Connect a null-modem female/female RS232 cable between the DB9 connector 
+        CN10 and PC serial port.
+      - Make sure that JP17 is in position 5<->6 
 
   - Hyperterminal configuration:
     - BaudRate = User can select any value
@@ -95,9 +100,13 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+ - Select STM32F051 workspace 
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.cc 
  - Rebuild all files and load your image into target memory
  - Run the example
 

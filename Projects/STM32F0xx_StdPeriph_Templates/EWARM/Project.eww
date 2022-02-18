@@ -9,11 +9,11 @@
       <name>BUILD_ALL</name>
       <member>
         <project>Project</project>
-        <configuration>STM32F0XX_LD(STM32F0x0xx)</configuration>
+        <configuration>STM32F031</configuration>
       </member>
       <member>
         <project>Project</project>
-        <configuration>STM32F0XX_MD(STM32F0x1xx)</configuration>
+        <configuration>STM32F051</configuration>
       </member>
     </batchDefinition>
   </batchBuild>

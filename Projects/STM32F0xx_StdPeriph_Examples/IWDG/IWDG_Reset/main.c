@@ -1,14 +1,14 @@
 /**
   ******************************************************************************
-  * @file    WDG/IWDG_Reset/main.c 
+  * @file    IWDG/IWDG_Reset/main.c  
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ __IO uint32_t LsiFreq = 40000;
 extern __IO uint16_t CaptureNumber;
 
 /* Private function prototypes -----------------------------------------------*/
+static void TIM14_ConfigForLSI(void);
 void Delay(__IO uint32_t nTime);
-void TIM14_ConfigForLSI(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -63,10 +63,10 @@ int main(void)
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f0xx.c file
      */ 
-/* Initialize LED1 and Key Button mounted on STM320518-EVAL board */       
+/* Initialize LED and Tamper Button mounted on the Eval board */       
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
+  STM_EVAL_PBInit(BUTTON_TAMPER, BUTTON_MODE_EXTI);
 
   /* Setup SysTick Timer for 1 msec interrupts  */
   if (SysTick_Config(SystemCoreClock / 1000))
@@ -148,7 +148,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void TIM14_ConfigForLSI(void)
+static void TIM14_ConfigForLSI(void)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
   TIM_ICInitTypeDef  TIM_ICInitStructure;
@@ -270,5 +270,5 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
   */
-  
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

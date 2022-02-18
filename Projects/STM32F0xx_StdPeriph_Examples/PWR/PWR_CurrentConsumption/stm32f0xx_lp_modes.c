@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    PWR/PWR_CurrentConsumption/stm32f0xx_lp_modes.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the STM32F0xx Low Power Modes:
   *           - Sleep Mode
@@ -13,7 +13,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "stm32f0xx_lp_modes.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -71,6 +71,9 @@ void SleepMode_Measure(void)
   /* Enable GPIOs clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
                         RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOF , ENABLE);
+#ifdef USE_STM32072B_EVAL
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE , ENABLE);
+#endif /* USE_STM32072B_EVAL */
   
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -81,18 +84,24 @@ void SleepMode_Measure(void)
   GPIO_Init(GPIOF, &GPIO_InitStructure);
   GPIO_Init(GPIOA, &GPIO_InitStructure); 
   GPIO_Init(GPIOB, &GPIO_InitStructure);
+#ifdef USE_STM32072B_EVAL
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
+#endif /* USE_STM32072B_EVAL */
 
   /* Disable GPIOs clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
                          RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOF, DISABLE);
+#ifdef USE_STM32072B_EVAL
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE , DISABLE);
+#endif /* USE_STM32072B_EVAL */
 
-  /* Configure KEY Button */
-  STM_EVAL_PBInit(BUTTON_KEY, BUTTON_MODE_EXTI);
+  /* Configure Joystick SEL Button */
+  STM_EVAL_PBInit(BUTTON_SEL, BUTTON_MODE_EXTI);
 
   /* Request to enter SLEEP mode */
   __WFI();
 
-  /* Initialize LED4 on STM320518-EVAL board */
+  /* Initialize LED4 on EVAL board */
   STM_EVAL_LEDInit(LED4);
 
   /* Infinite loop */
@@ -155,6 +164,9 @@ void StopMode_Measure(void)
   /* Enable GPIOs clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
                          RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOF , ENABLE);
+#ifdef USE_STM32072B_EVAL
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE , ENABLE);
+#endif /* USE_STM32072B_EVAL */
 
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -165,11 +177,17 @@ void StopMode_Measure(void)
   GPIO_Init(GPIOF, &GPIO_InitStructure);
   GPIO_Init(GPIOA, &GPIO_InitStructure);
   GPIO_Init(GPIOB, &GPIO_InitStructure);
+#ifdef USE_STM32072B_EVAL
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
+#endif /* USE_STM32072B_EVAL */
 
   /* Disable GPIOs clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA |RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
                          RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOF, DISABLE);
- 
+#ifdef USE_STM32072B_EVAL
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE , DISABLE);
+#endif /* USE_STM32072B_EVAL */
+  
   RTC_InitStructure.RTC_HourFormat = RTC_HourFormat_24;
   RTC_InitStructure.RTC_AsynchPrediv = 0x7F;
   RTC_InitStructure.RTC_SynchPrediv = 0x0138;
@@ -223,7 +241,7 @@ void StopMode_Measure(void)
   /* Enter Stop Mode */
   PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
 
-  /* Initialize LED4 on STM320518-EVAL board */
+  /* Initialize LED4 on EVAL board */
   STM_EVAL_LEDInit(LED4);
 
   /* Infinite loop */
@@ -251,7 +269,7 @@ void StopMode_Measure(void)
 void StandbyMode_Measure(void)
 {
   /* Enable WKUP pin 2 */
-  PWR_WakeUpPinCmd(PWR_WakeUpPin_1,ENABLE);
+  PWR_WakeUpPinCmd(PWR_WakeUpPin_2,ENABLE);
 
   /* Request to enter STANDBY mode (Wake Up flag is cleared in PWR_EnterSTANDBYMode function) */
   PWR_EnterSTANDBYMode();

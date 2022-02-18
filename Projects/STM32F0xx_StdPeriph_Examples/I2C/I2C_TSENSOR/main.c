@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    I2C/I2C_TSENSOR/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -74,7 +74,11 @@ int main(void)
   NVIC_Config();
   
   /* Initialize the LCD */
+#ifdef USE_STM320518_EVAL
   STM320518_LCD_Init();
+#else 
+  STM32072B_LCD_Init();
+#endif /* USE_STM320518_EVAL */
   
   /* Initialize the Temperature Sensor */
   LM75_Init();

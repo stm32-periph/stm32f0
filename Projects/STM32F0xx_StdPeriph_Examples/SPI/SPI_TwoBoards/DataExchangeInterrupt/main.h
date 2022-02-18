@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    SPI/SPI_TwoBoards/DataExchangeInterrupt/main.h 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Header for main.c module
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -31,7 +31,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
-#include "stm320518_eval.h"
+#ifdef USE_STM320518_EVAL
+  #include "stm320518_eval.h"
+#else 
+  #include "stm32072b_eval.h"
+#endif /* USE_STM320518_EVAL */
 
 /* Exported typedef ----------------------------------------------------------*/
 #define countof(a)   (sizeof(a) / sizeof(*(a)))
@@ -40,15 +44,15 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 /* Exported define -----------------------------------------------------------*/
 
 /* Uncomment the line below if you will use the SPI peripheral as a Master */
-//#define SPI_MASTER 
+#define SPI_MASTER 
 /* Uncomment the line below if you will use the SPI peripheral as a Slave */
-#define SPI_SLAVE
+//#define SPI_SLAVE
 
 /* Uncomment the size of data to be transmetted (only one data size must be selected) */
-//#define SPI_DATASIZE_8
+#define SPI_DATASIZE_8
 //#define SPI_DATASIZE_7
 //#define SPI_DATASIZE_6
-#define SPI_DATASIZE_5
+//#define SPI_DATASIZE_5
 
 
 /* USE//R_TIMEOUT value for waiting loops. This timeout is just guarantee that the
@@ -64,23 +68,43 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 #define SPIx_IRQn                        SPI1_IRQn
 #define SPIx_IRQHandler                  SPI1_IRQHandler
 
-#define SPIx_SCK_PIN                     GPIO_Pin_5
-#define SPIx_SCK_GPIO_PORT               GPIOA
-#define SPIx_SCK_GPIO_CLK                RCC_AHBPeriph_GPIOA
-#define SPIx_SCK_SOURCE                  GPIO_PinSource5
-#define SPIx_SCK_AF                      GPIO_AF_0
+#ifdef USE_STM320518_EVAL
+  #define SPIx_SCK_PIN                     GPIO_Pin_5
+  #define SPIx_SCK_GPIO_PORT               GPIOA
+  #define SPIx_SCK_GPIO_CLK                RCC_AHBPeriph_GPIOA
+  #define SPIx_SCK_SOURCE                  GPIO_PinSource5
+  #define SPIx_SCK_AF                      GPIO_AF_0
 
-#define SPIx_MISO_PIN                    GPIO_Pin_4
-#define SPIx_MISO_GPIO_PORT              GPIOB
-#define SPIx_MISO_GPIO_CLK               RCC_AHBPeriph_GPIOB
-#define SPIx_MISO_SOURCE                 GPIO_PinSource4
-#define SPIx_MISO_AF                     GPIO_AF_0
+  #define SPIx_MISO_PIN                    GPIO_Pin_4
+  #define SPIx_MISO_GPIO_PORT              GPIOB
+  #define SPIx_MISO_GPIO_CLK               RCC_AHBPeriph_GPIOB
+  #define SPIx_MISO_SOURCE                 GPIO_PinSource4
+  #define SPIx_MISO_AF                     GPIO_AF_0
 
-#define SPIx_MOSI_PIN                    GPIO_Pin_7
-#define SPIx_MOSI_GPIO_PORT              GPIOA
-#define SPIx_MOSI_GPIO_CLK               RCC_AHBPeriph_GPIOA
-#define SPIx_MOSI_SOURCE                 GPIO_PinSource7
-#define SPIx_MOSI_AF                     GPIO_AF_0
+  #define SPIx_MOSI_PIN                    GPIO_Pin_7
+  #define SPIx_MOSI_GPIO_PORT              GPIOA
+  #define SPIx_MOSI_GPIO_CLK               RCC_AHBPeriph_GPIOA
+  #define SPIx_MOSI_SOURCE                 GPIO_PinSource7
+  #define SPIx_MOSI_AF                     GPIO_AF_0
+#else 
+  #define SPIx_SCK_PIN                     GPIO_Pin_3                  /* PB.03 */
+  #define SPIx_SCK_GPIO_PORT               GPIOB                       /* GPIOB */
+  #define SPIx_SCK_GPIO_CLK                RCC_AHBPeriph_GPIOB
+  #define SPIx_SCK_SOURCE                  GPIO_PinSource3
+  #define SPIx_SCK_AF                      GPIO_AF_0
+
+  #define SPIx_MISO_PIN                    GPIO_Pin_14                  /* PE.14 */
+  #define SPIx_MISO_GPIO_PORT              GPIOE                       /* GPIOE */
+  #define SPIx_MISO_GPIO_CLK               RCC_AHBPeriph_GPIOE
+  #define SPIx_MISO_SOURCE                 GPIO_PinSource14
+  #define SPIx_MISO_AF                     GPIO_AF_1
+
+  #define SPIx_MOSI_PIN                    GPIO_Pin_15                  /* PE.15 */
+  #define SPIx_MOSI_GPIO_PORT              GPIOE                       /* GPIOE */
+  #define SPIx_MOSI_GPIO_CLK               RCC_AHBPeriph_GPIOE
+  #define SPIx_MOSI_SOURCE                 GPIO_PinSource15
+  #define SPIx_MOSI_AF                     GPIO_AF_1
+#endif /* USE_STM320518_EVAL */
 
 #define TXBUFFERSIZE                     (countof(TxBuffer) - 1)
 #define RXBUFFERSIZE                     TXBUFFERSIZE

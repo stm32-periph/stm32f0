@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    PWR/PWR_Stop/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -43,10 +43,10 @@
 extern __IO uint32_t TimingDelay;
 
 /* Private function prototypes -----------------------------------------------*/
-void RTC_Config(void);
+static void RTC_Config(void);
+static void SYSCLKConfig_STOP(void);
+static void RTC_AlarmConfig(void);
 void Delay(__IO uint32_t nTime);
-void SYSCLKConfig_STOP(void);
-void RTC_AlarmConfig(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -64,8 +64,8 @@ int main(void)
        system_stm32f0xx.c file
      */ 
  
-  /* Configures the KEY button */
-  STM_EVAL_PBInit(BUTTON_KEY,BUTTON_MODE_EXTI);
+  /* Configures the TAMPER button */
+  STM_EVAL_PBInit(BUTTON_TAMPER,BUTTON_MODE_EXTI);
   
   /* Configure LEDs */
   STM_EVAL_LEDInit(LED1);
@@ -118,7 +118,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void RTC_Config(void)
+static void RTC_Config(void)
 {
   RTC_TimeTypeDef   RTC_TimeStructure;
   RTC_InitTypeDef   RTC_InitStructure;
@@ -131,6 +131,10 @@ void RTC_Config(void)
   
   /* Allow access to RTC */
   PWR_BackupAccessCmd(ENABLE);
+
+  /* Reset back up registers */
+  RCC_BackupResetCmd(ENABLE);
+  RCC_BackupResetCmd(DISABLE);
   
   /* Enable the LSE */
   RCC_LSEConfig(RCC_LSE_ON);
@@ -144,7 +148,8 @@ void RTC_Config(void)
   
   /* Enable the RTC Clock */
   RCC_RTCCLKCmd(ENABLE);
-  
+ 
+  RTC_DeInit(); 
   /* Wait for RTC APB registers synchronisation */
   RTC_WaitForSynchro();  
   
@@ -186,7 +191,7 @@ void RTC_Config(void)
   * @param  None
   * @retval None
   */
-void RTC_AlarmConfig(void)
+static void RTC_AlarmConfig(void)
 {  
   RTC_TimeTypeDef   RTC_TimeStructure;
   RTC_AlarmTypeDef  RTC_AlarmStructure;
@@ -199,7 +204,7 @@ void RTC_AlarmConfig(void)
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours   = RTC_TimeStructure.RTC_Hours;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = RTC_TimeStructure.RTC_Minutes;
   RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = RTC_TimeStructure.RTC_Seconds + 5;
-  RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31;
+  RTC_AlarmStructure.RTC_AlarmDateWeekDay = 31;
   RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
   RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Minutes |
                                      RTC_AlarmMask_Hours;
@@ -221,7 +226,7 @@ void RTC_AlarmConfig(void)
   * @param  None
   * @retval None
   */
-void SYSCLKConfig_STOP(void)
+static void SYSCLKConfig_STOP(void)
 {  
   /* After wake-up from STOP reconfigure the system clock */
   /* Enable HSE */

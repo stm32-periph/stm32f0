@@ -2,11 +2,11 @@
   @page PWR_Stop PWR STOP example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    PWR/PWR_STOP/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the PWR STOP example.
   ******************************************************************************
   *
@@ -28,24 +28,24 @@
 @par PWR_Stop Example Description 
 
 This example shows how to enter the system to STOP mode and wake-up using EXTI
-Line interrupts. The EXTI Line sources are PB8 and RTC Alarm.
+Line interrupts. The EXTI Line sources are PC13 and RTC Alarm.
 
-The EXTI line8 is configured to generate interrupt on falling edge.
+The EXTI line13 is configured to generate interrupt on falling edge.
 The EXTI line17(RTC Alarm) is configured to generate interrupt on rising edge.
 
-The system enters and exits STOP mode as following:
+The system enters and exits STOP mode as follow:
 After system start-up, the RTC is configured to generate an Alarm event then the 
 system enters STOP mode. To wake-up from STOP mode you have to apply a falling
-edge on EXTI line8, otherwise the  RTC Alarm will wake-up the system within 5 
+edge on EXTI line13, otherwise the  RTC Alarm will wake-up the system within 5 
 seconds. After exit from STOP, the system clock is reconfigured to its previous 
 state (as HSE and PLL are disabled in STOP mode).
 Then, after a delay the system will enter again in STOP mode and exit in the way
 described above. This behavior is repeated in an infinite loop.
 
-Three leds are used to monitor the system state as following:
+Three leds are used to monitor the system state as follow:
  - LED1 ON: system in RUN mode
  - LED1, LED2 and LED4 OFF: system in STOP mode
- - LED2 ON if EXTI Line8 is used to exit from STOP
+ - LED2 ON if EXTI Line13 is used to exit from STOP
  - LED4 ON if EXTI line17(RTC Alarm) is used to exit from STOP 
  @note To measure the current consumption in STOP mode, please refer to 
       @subpage PWR_CurrentConsumption example.
@@ -68,14 +68,18 @@ Three leds are used to monitor the system state as following:
       
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
-    - Use Key push-button
+    - Use the Tamper push-button connected to PC13 pin  
+    
+  - STM32072B-EVAL Set-up  
+    - Use the Tamper push-button connected to PC13 pin
+
 
     
 @par How to use it ? 
@@ -84,9 +88,12 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
  - Rebuild all files and load your image into target memory
  - Run the example
         

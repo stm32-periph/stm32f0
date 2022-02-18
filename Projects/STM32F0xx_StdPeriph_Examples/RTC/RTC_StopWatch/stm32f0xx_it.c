@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    RTC/RTC_StopWatch/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -41,20 +40,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define MESSAGE4   "  Press and hold TAMPER   " 
-#define MESSAGE5   " to reset Backup registers" 
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-RTC_TimeTypeDef RTC_StampTimeStruct;
+extern __IO uint8_t Button_State;
+extern __IO uint8_t Button_RTC;
 extern __IO uint8_t StartEvent;
-uint32_t BackupIndex = 0;
-__IO uint32_t SubSecFrac = 0;
-/* Define the backup register */
-uint32_t BKPDataReg[5] = { RTC_BKP_DR0, RTC_BKP_DR1, RTC_BKP_DR2, RTC_BKP_DR3, RTC_BKP_DR4
-                          };
-__IO uint32_t CurrentTimeSec = 0;
-
+extern uint32_t BackupIndex;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -114,95 +105,52 @@ void SysTick_Handler(void)
 /******************************************************************************/
 /*                 STM32F0xx Peripherals Interrupt Handlers                   */
 /******************************************************************************/
+#ifdef USE_STM320518_EVAL
 /**
-* @brief  This function handles External lines 9 to 5 interrupt request.
+* @brief  This function handles External lines 15 to 4 interrupt request.
 * @param  None
 * @retval None
 */
 void EXTI4_15_IRQHandler(void)
 {
-  RTC_TimeTypeDef  RTC_TimeStructureInit;
   if((EXTI_GetITStatus(LEFT_BUTTON_EXTI_LINE) != RESET) && (StartEvent == 0x0))
     {
-      /* Enable Tamper interrupt */
-      RTC_ITConfig(RTC_IT_TAMP, ENABLE);
-      /* Enabale the tamper 1 */
-      RTC_TamperCmd(RTC_Tamper_1 , ENABLE);
-      
-      /* Set the LCD Back Color */
-      LCD_SetBackColor(White);
-      
-      /* Clear the LCD line 5 */
-      LCD_ClearLine(Line5);
-      
-      /* Get the current time */
-      RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructureInit);
-      CurrentTimeSec = (RTC_TimeStructureInit.RTC_Hours * 3600) + (RTC_TimeStructureInit.RTC_Minutes * 60) +
-        RTC_TimeStructureInit.RTC_Seconds;     
-      
-      /* start count */
-      StartEvent = 0x1;
+      Button_State = LEFT_ON;
     }
     
     else if((EXTI_GetITStatus(RIGHT_BUTTON_EXTI_LINE) != RESET) && (StartEvent !=0x0) && (BackupIndex < 11))
     {
-      uint16_t Colorx;
-      
-      if (BackupIndex < 5)
-      {
-        if((uint8_t)(BackupIndex% 2) != 0x0)
-        { 
-          /* Set LCD backcolor*/
-          LCD_SetBackColor(Blue2);
-          Colorx = White;
-        }
-        else
-        {
-          /* Set LCD backcolor*/
-          LCD_SetBackColor(Cyan);
-          Colorx = Black;
-        }
-        SubSecFrac = 0;
-        /* Get the Current sub second and time */
-        SubSecFrac = (((256 - (uint32_t)RTC_GetSubSecond()) * 1000) / 256);
-        
-        RTC_GetTime(RTC_Format_BIN, &RTC_StampTimeStruct);
-        
-        LCD_SetFont(&Font16x24);
-        /* Display result on the LCD */
-        RTC_Time_Display( LINE(3 + BackupIndex), Colorx, RTC_Get_Time(SubSecFrac , &RTC_StampTimeStruct) ); 
-        
-        if (BackupIndex < 2)
-        {
-          /* Save time register  to Backup register ( the first 5 register is reserved for time) */
-          RTC_WriteBackupRegister(BKPDataReg[BackupIndex],(uint32_t)RTC->TR);
-        
-          /* Save sub second time stamp register ( the latest 6 register is reserved for time) */
-          RTC_WriteBackupRegister(BKPDataReg[BackupIndex + 2], SubSecFrac);
-        }
-        
-      }
-      else
-      {
-        /* the backup register is full with 10trials */
-        /* Set the LCD Back Color */
-        LCD_SetBackColor(White);
-        LCD_SetFont(&Font12x12);
-        /* Set the LCD Text Color */
-        LCD_SetTextColor(Red); 
-        LCD_DisplayStringLine(LINE(16), (uint8_t *)MESSAGE4);
-        LCD_DisplayStringLine(LINE(17), (uint8_t *)MESSAGE5);
-        
-      }  
-      BackupIndex++;
-      /* Set the LCD Back Color */
-      LCD_SetBackColor(White);  
+      Button_State = RIGHT_ON;
     }
         /* Clear the LEFT EXTI  pending bit */
       EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);  
         /* Clear the RIGHT EXTI line */
       EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);  
 }
+#else 
+/**
+* @brief  This function handles External lines 3 to 2 interrupt request.
+* @param  None
+* @retval None
+*/
+void EXTI2_3_IRQHandler(void)
+{
+  if((EXTI_GetITStatus(LEFT_BUTTON_EXTI_LINE) != RESET) && (StartEvent == 0x0))
+    {
+      Button_State = LEFT_ON;
+    }
+    
+    else if((EXTI_GetITStatus(RIGHT_BUTTON_EXTI_LINE) != RESET) && (StartEvent !=0x0) && (BackupIndex < 11))
+    {
+      Button_State = RIGHT_ON;
+    }
+        /* Clear the LEFT EXTI  pending bit */
+      EXTI_ClearITPendingBit(LEFT_BUTTON_EXTI_LINE);  
+        /* Clear the RIGHT EXTI line */
+      EXTI_ClearITPendingBit(RIGHT_BUTTON_EXTI_LINE);  
+}
+#endif /* USE_STM320518_EVAL */
+
 
 /**
 * @brief  This function handles Tamper pin interrupt request.
@@ -211,37 +159,9 @@ void EXTI4_15_IRQHandler(void)
 */
 void RTC_IRQHandler(void)
 {
-  uint8_t i =0;
   if (RTC_GetITStatus(RTC_IT_TAMP1) != RESET)
   {
-    /* Set the LCD Back Color */
-    LCD_SetBackColor(White);
-    LCD_SetFont(&Font16x24);
-    /* Clear LCD line 5 to 9 */
-    for (i=0; i < 5; i++)
-    {  
-      /* Clear all the LCD lignes from 3 to 7 */
-      LCD_ClearLine(LINE(3+i));
-    }
-    
-    /* reset Counter */
-    BackupIndex = 0 ;
-    
-    /* Enetr to idle */
-    StartEvent =0x0;
-    
-    LCD_SetFont(&Font12x12);
-    RTC_Time_InitDisplay();
-    
-    LCD_SetFont(&Font12x12);
-    LCD_ClearLine(LINE(16));
-    LCD_ClearLine(LINE(17));
-    
-    /* Enable Tamper interrupt */
-    RTC_ITConfig(RTC_IT_TAMP, DISABLE);
-    /* Enabale the tamper 1 */
-    RTC_TamperCmd(RTC_Tamper_1 , DISABLE);
-    
+    Button_RTC = RTC_TAMP;
   }
   /* Clear EXTI line 19 */
   EXTI_ClearITPendingBit(EXTI_Line19);

@@ -2,11 +2,11 @@
   @page SPI_DataExchangeDMA SPI Communication Boards Data Exchange using DMA example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    SPI/SPI_TwoBoards/DataExchangeDMA/readme.txt  
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the SPI Communication Boards Data Exchange using 
   *          DMA example.
   ******************************************************************************
@@ -143,27 +143,44 @@ These operations can be repeated infinitely.
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
-    - Use LED1, LED2, LED3 and LED4 connected respectively PC.10, PC.11, PC.12 
-      and PD.02 pins for each eval boards.
-    - Use The Joystick push buttons 
-       - DOWN[PC.07]
-       - UP[PC.06]
-       - LEFT[PC.09]
-       - RIGHT[PC.08] 
-       - SEL[PA.00]
-    - Connect SPI3 SCK pin (PA.05) to SPI3 SCK pin (PA.05)
-    - Connect SPI3 MISO pin (PB.04) to SPI3 MISO pin (PB.04)
-    - Connect SPI3 MOSI pin (PA.07) to SPI3 MOSI pin (PA.07)
-    - Connect SPI3 NSS pin (PA.15) to SPI3 NSS pin (PA.15)
-    - Connect TIM2_CH2 pin (PA.01) to SPI3 NSS pin (PA.15) (On master board only to trigger the DMA transfers)
-    - Connect GND pins of two boards.” 
+      - Use LED1, LED2, LED3 and LED4 connected respectively PC.10, PC.11, PC.12 
+         and PD.02 pins for each eval boards.
+      - Use The Joystick push buttons 
+         - DOWN[PC.07]
+         - UP[PC.06]
+         - LEFT[PC.09]
+         - RIGHT[PC.08] 
+         - SEL[PA.00]
+     - Connect SPI1 SCK pin (PA.05) to SPI SCK pin
+     - Connect SPI1 MISO pin (PB.04) to SPI MISO pin
+     - Connect SPI1 MOSI pin (PA.07) to SPI MOSI pin
+     - Connect SPI1 NSS pin (PA.15) to SPI NSS pin
+     - Connect TIM2_CH2 pin (PA.01) to SPI1 NSS pin (PA.15) (On master board only to trigger the DMA transfers)
+     - Connect GND pins of two boards. 
+     
+  - STM32072B-EVAL Set-up
+      - Use LED1, LED2, LED3 and LED4 connected respectively PD.08, PD.09, PD.10 
+        and PD.11 pins for each eval boards.
+      - Use The Joystick push buttons 
+         - DOWN[PF.10]
+         - UP[PF.09]
+         - LEFT[PE.02]
+         - RIGHT[PE.03] 
+         - SEL[PA.00]
+      - Connect SPI1 SCK pin (PB.03) to SPI SCK pin
+      - Connect SPI1 MISO pin (PE.15) to SPI MISO pin
+      - Connect SPI1 MOSI pin (PE.14) to SPI MOSI pin
+      - Connect SPI1 NSS pin (PA.15) to SPI NSS pin (PA.15)
+      - Connect TIM2_CH2 pin (PA.01) to SPI1 NSS pin (PA.15) (On master board only to trigger the DMA transfers)
+      - Connect GND pins of two boards.
+
 
 @par How to use it ? 
 
@@ -171,9 +188,12 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
  - Rebuild all files and load your image into target memory
  - Run the example
 

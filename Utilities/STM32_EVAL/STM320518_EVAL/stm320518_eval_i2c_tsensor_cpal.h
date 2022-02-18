@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_tsensor_cpal.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the 
   *          stm320518_eval_i2c_tsensor_cpal.c firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -75,11 +75,11 @@ typedef enum
 /**
   * @brief  Internal register Memory
   */
-#define LM75_REG_TEMP       0x00  /*!< Temperature Register of LM75 */
-#define LM75_REG_CONF       0x01  /*!< Configuration Register of LM75 */
-#define LM75_REG_THYS       0x02  /*!< Temperature Register of LM75 */
-#define LM75_REG_TOS        0x03  /*!< Over-temp Shutdown threshold Register of LM75 */
-#define LM75_ADDR           0x90   /*!< LM75 address */
+#define LM75_REG_TEMP       0x00  /* Temperature Register of LM75 */
+#define LM75_REG_CONF       0x01  /* Configuration Register of LM75 */
+#define LM75_REG_THYS       0x02  /* Temperature Register of LM75 */
+#define LM75_REG_TOS        0x03  /* Over-temp Shutdown threshold Register of LM75 */
+#define LM75_ADDR           0x90   /* LM75 address */
    
 
 /* Exported macro ------------------------------------------------------------*/

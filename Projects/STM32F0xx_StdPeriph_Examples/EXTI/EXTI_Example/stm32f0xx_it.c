@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    EXTI/EXTI_Example/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "stm320518_eval.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -124,6 +123,34 @@ void EXTI0_1_IRQHandler(void)
 }
 
 /**
+  * @brief  This function handles External line 2 to 3 interrupt request.
+  * @param  None
+  * @retval None
+  */
+#ifdef USE_STM32072B_EVAL 
+void EXTI2_3_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line3) != RESET)
+  {
+    /* Toggle LED1 */
+    STM_EVAL_LEDToggle(LED1);
+    
+    /* Clear the EXTI line 3 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line3);
+  }
+  
+  if(EXTI_GetITStatus(EXTI_Line2) != RESET)
+  {
+    /* Toggle LED3 */
+    STM_EVAL_LEDToggle(LED3);
+
+    /* Clear the EXTI line 2 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line2);
+  }
+}
+#endif
+
+/**
   * @brief  This function handles External lines 4 to 15 interrupt request.
   * @param  None
   * @retval None
@@ -139,15 +166,6 @@ void EXTI4_15_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line8);
   }
   
-  if(EXTI_GetITStatus(EXTI_Line9) != RESET)
-  {
-    /* Toggle LED3 */
-    STM_EVAL_LEDToggle(LED3);
-
-    /* Clear the EXTI line 9 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line9);
-  }
-
   if(EXTI_GetITStatus(EXTI_Line13) != RESET)
   {
     /* Toggle LED4 */
@@ -157,6 +175,17 @@ void EXTI4_15_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line13);
   }
 
+#ifdef USE_STM320518_EVAL
+  if(EXTI_GetITStatus(EXTI_Line9) != RESET)
+  {
+    /* Toggle LED4 */
+    STM_EVAL_LEDToggle(LED3);
+
+    /* Clear the EXTI line 13 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line9);
+  }
+#endif
+  
 }
 
 /**

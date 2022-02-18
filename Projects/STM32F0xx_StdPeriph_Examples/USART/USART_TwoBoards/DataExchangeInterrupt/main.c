@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    USART/USART_TwoBoards/DataExchangeInterrupt/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -82,13 +82,13 @@ int main(void)
   /* SysTick configuration ---------------------------------------------------*/
   SysTickConfig();
   
-  /* Initialize LEDs mounted on STM320518-EVAL board */
+  /* Initialize LEDs mounted on EVAL board */
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
   
-  /* Initialize push-buttons mounted on STM320518-EVAL board */
+  /* Initialize push-buttons mounted on EVAL board */
   STM_EVAL_PBInit(BUTTON_RIGHT, BUTTON_MODE_GPIO);
   STM_EVAL_PBInit(BUTTON_LEFT, BUTTON_MODE_GPIO);
   STM_EVAL_PBInit(BUTTON_UP, BUTTON_MODE_GPIO);
@@ -426,7 +426,7 @@ static void SysTickConfig(void)
 }
 
 /**
-  * @brief  Reads key from evaluationboard.
+  * @brief  Reads key from evaluation board.
   * @param  None
   * @retval Return JOY_RIGHT, JOY_LEFT, JOY_SEL, JOY_UP, JOY_DOWN or JOY_NONE
   */

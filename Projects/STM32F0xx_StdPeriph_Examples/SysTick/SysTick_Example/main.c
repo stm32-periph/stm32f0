@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    SysTick/SysTick_Example/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ int main(void)
 
     3. You can change the SysTick IRQ priority by calling the
        NVIC_SetPriority(SysTick_IRQn,...) just after the SysTick_Config() function 
-       call. The NVIC_SetPriority() is defined inside the core_cm3.h file.
+       call. The NVIC_SetPriority() is defined inside the core_cm0.h file.
 
     4. To adjust the SysTick time base, use the following formula:
                             

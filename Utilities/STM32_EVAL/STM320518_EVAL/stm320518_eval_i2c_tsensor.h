@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_tsensor.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the 
   *          stm320518_eval_i2c_tsensor.c firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -52,11 +52,7 @@
 /** @addtogroup STM320518_EVAL_I2C_TSENSOR
   * @{
   */  
-
-/** @defgroup STM320518_EVAL_I2C_TSENSOR_Exported_Types
-  * @{
-  */
-   
+/* Exported types ------------------------------------------------------------*/   
 /** 
   * @brief  TSENSOR Status  
   */ 
@@ -66,18 +62,11 @@ typedef enum
   LM75_FAIL
 }LM75_Status_TypDef;
 
-/**
-  * @}
-  */
-  
-/** @defgroup STM320518_EVAL_I2C_TSENSOR_Exported_Constants
-  * @{
-  */ 
-    
+/* Exported constants --------------------------------------------------------*/
 /* Uncomment the following line to use Timeout_User_Callback LM75_TimeoutUserCallback(). 
    If This Callback is enabled, it should be implemented by user in main function .
    LM75_TimeoutUserCallback() function is called whenever a timeout condition 
-   occure during communication (waiting on an event that doesn't occur, bus 
+   occurs during communication (waiting on an event that doesn't occur, bus 
    errors, busy devices ...). */   
 /* #define USE_TIMEOUT_USER_CALLBACK */    
     
@@ -93,31 +82,18 @@ typedef enum
 /**
   * @brief  Block Size
   */
-#define LM75_REG_TEMP       0x00  /*!< Temperature Register of LM75 */
-#define LM75_REG_CONF       0x01  /*!< Configuration Register of LM75 */
-#define LM75_REG_THYS       0x02  /*!< Temperature Register of LM75 */
-#define LM75_REG_TOS        0x03  /*!< Over-temp Shutdown threshold Register of LM75 */
-#define I2C_TIMEOUT         ((uint32_t)0x3FFFF) /*!< I2C Time out */
-#define LM75_ADDR           0x90   /*!< LM75 address */
+#define LM75_REG_TEMP       0x00  /* Temperature Register of LM75 */
+#define LM75_REG_CONF       0x01  /* Configuration Register of LM75 */
+#define LM75_REG_THYS       0x02  /* Temperature Register of LM75 */
+#define LM75_REG_TOS        0x03  /* Over-temp Shutdown threshold Register of LM75 */
+#define I2C_TIMEOUT         ((uint32_t)0x3FFFF) /* I2C Time out */
+#define LM75_ADDR           0x90   /* LM75 address */
 
 
 #define LM75_I2C_TIMING     0x1045061D
    
-
-/**
-  * @}
-  */
-
-/** @defgroup STM320518_EVAL_I2C_TSENSOR_Exported_Macros
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-/** @defgroup STM320518_EVAL_I2C_TSENSOR_Exported_Functions
-  * @{
-  */ 
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions ------------------------------------------------------- */ 
 void LM75_DeInit(void);
 void LM75_Init(void);
 ErrorStatus LM75_GetStatus(void);
@@ -148,9 +124,6 @@ uint8_t LM75_ShutDown(FunctionalState NewState);
 #endif
 
 #endif /* __STM320518_EVAL_I2C_TSENSOR_H */
-/**
-  * @}
-  */
 
 /**
   * @}

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    USART/USART_AutoBaudRate/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void USART_Configuration(void);
+static void USART_Config(void);
 static void AutoBauRate_StartBitMethod(void);
 
 /* Private functions ---------------------------------------------------------*/
@@ -70,7 +70,7 @@ int main(void)
   SysTick_Config((SystemCoreClock / 1000));
   
   /* USART configuration */
-  USART_Configuration();
+  USART_Config();
   
   /* AutoBaudRate for USART by Start bit Method */
   AutoBauRate_StartBitMethod();
@@ -83,31 +83,9 @@ int main(void)
   * @param  None
   * @retval None
   */
-static void USART_Configuration(void)
+static void USART_Config(void)
 { 
   USART_InitTypeDef USART_InitStructure;
-  GPIO_InitTypeDef GPIO_InitStructure; 
-  
-  /* Enable GPIOA and DMA clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA , ENABLE);
-  
-  /* Enable USART1 APB clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-  
-  /* USART1 Pins configuration **************************************************/
-  GPIO_DeInit(GPIOA);
-  
-  /* Connect pin to Periph */
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);    
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1); 
-  
-  /* Configure pins as AF pushpull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOA, &GPIO_InitStructure); 
   
   /* USARTx configured as follow:
   - BaudRate = 115200 baud  
@@ -117,15 +95,13 @@ static void USART_Configuration(void)
   - Hardware flow control disabled (RTS and CTS signals)
   - Receive and transmit enabled
   */
-  
-  USART_DeInit(USART1);
   USART_InitStructure.USART_BaudRate = 115200;
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;
   USART_InitStructure.USART_StopBits = USART_StopBits_1;
   USART_InitStructure.USART_Parity = USART_Parity_No;
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-  USART_Init(USART1, &USART_InitStructure);
+  STM_EVAL_COMInit(COM1, &USART_InitStructure);
 }
 
 /**
@@ -136,28 +112,28 @@ static void USART_Configuration(void)
 static void AutoBauRate_StartBitMethod(void)
 { 
   /* USART enable */
-  USART_Cmd(USART1, ENABLE);
+  USART_Cmd(EVAL_COM1, ENABLE);
   
   /* Configure the AutoBaudRate method */
-  USART_AutoBaudRateConfig(USART1, USART_AutoBaudRate_StartBit);
+  USART_AutoBaudRateConfig(EVAL_COM1, USART_AutoBaudRate_StartBit);
   
   /* Enable AutoBaudRate feature */
-  USART_AutoBaudRateCmd(USART1, ENABLE);
+  USART_AutoBaudRateCmd(EVAL_COM1, ENABLE);
   
   /* Wait until Receive enable acknowledge flag is set */
-  while(USART_GetFlagStatus(USART1, USART_FLAG_REACK) == RESET)
+  while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_REACK) == RESET)
   {}  
   
   /* Wait until Transmit enable acknowledge flag is set */  
-  while(USART_GetFlagStatus(USART1, USART_FLAG_TEACK) == RESET)
+  while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TEACK) == RESET)
   {}  
   
   /* Loop until the end of Autobaudrate phase */
-  while(USART_GetFlagStatus(USART1, USART_FLAG_ABRF) == RESET)
+  while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_ABRF) == RESET)
   {}  
   
   /* If AutoBaudBate error occurred */
-  if (USART_GetFlagStatus(USART1, USART_FLAG_ABRE) != RESET)
+  if (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_ABRE) != RESET)
   {
     /* Turn on LED3 */
     STM_EVAL_LEDOn(LED3);
@@ -168,27 +144,27 @@ static void AutoBauRate_StartBitMethod(void)
     STM_EVAL_LEDOn(LED2);
     
     /* Wait until RXNE flag is set */
-    while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
+    while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_RXNE) == RESET)
     {}
     
     /* Wait until TXE flag is set */    
-    while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+    while(USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TXE) == RESET)
     {}
     
     /* Send received character */
-    USART_SendData(USART1, USART_ReceiveData(USART1)); 
+    USART_SendData(EVAL_COM1, USART_ReceiveData(EVAL_COM1)); 
     
     /* clear the TE bit (if a transmission is on going or a data is in the TDR, it will be sent before
     efectivelly disabling the transmission) */
-    USART_DirectionModeCmd(USART1, USART_Mode_Tx, DISABLE);
+    USART_DirectionModeCmd(EVAL_COM1, USART_Mode_Tx, DISABLE);
     
     /* Check the Transfer Complete Flag */
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET)
+    while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
     {}
   }
   
   /* USART Disable */
-  USART_Cmd(USART1, DISABLE);
+  USART_Cmd(EVAL_COM1, DISABLE);
 }
 
 #ifdef  USE_FULL_ASSERT

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_ee.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file provides a set of functions needed to manage an I2C M24LR64 
   *          EEPROM memory.
   *          
@@ -45,7 +45,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -82,47 +82,16 @@
   * @{
   */ 
 
-/** @defgroup STM320518_EVAL_I2C_EE_Private_Types
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_I2C_EE_Private_Defines
-  * @{
-  */  
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM320518_EVAL_I2C_EE_Private_Macros
-  * @{
-  */
-/**
-  * @}
-  */ 
-  
-
-/** @defgroup STM320518_EVAL_I2C_EE_Private_Variables
-  * @{
-  */
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 __IO uint16_t  sEEAddress = 0;   
 __IO uint32_t  sEETimeout = sEE_LONG_TIMEOUT;
 __IO uint16_t  sEEDataNum;
-/**
-  * @}
-  */ 
 
-
-/** @defgroup STM320518_EVAL_I2C_EE_Private_Function_Prototypes
-  * @{
-  */ 
-/**
-  * @}
-  */ 
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
 
 
 /** @defgroup STM320518_EVAL_I2C_EE_Private_Functions
@@ -150,7 +119,7 @@ void sEE_Init(void)
   
   sEE_LowLevel_Init();
   
-  /*!< I2C configuration */
+  /* I2C configuration */
   /* sEE_I2C configuration */
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
   I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
@@ -166,7 +135,7 @@ void sEE_Init(void)
   /* sEE_I2C Peripheral Enable */
   I2C_Cmd(sEE_I2C, ENABLE);
   
-  /*!< Select the EEPROM address */
+  /* Select the EEPROM address */
   sEEAddress = sEE_HW_ADDRESS;      
 }
 
@@ -229,7 +198,7 @@ uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteTo
   /* Send LSB of memory address  */
   I2C_SendData(sEE_I2C, (uint8_t)(ReadAddr & 0x00FF));
   
-#endif /*!< sEE_M24C08 */ 
+#endif /* sEE_M24C08 */ 
   
   /* Wait until TC flag is set */
   sEETimeout = sEE_LONG_TIMEOUT;
@@ -411,7 +380,7 @@ uint32_t sEE_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteTo
   * @retval sEE_OK (0) if operation is correctly performed, else return value 
   *         different from sEE_OK (0) or the timeout user callback.
   */
-uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t* NumByteToWrite)
+uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint8_t* NumByteToWrite)
 {   
   uint32_t DataNum = 0;
   
@@ -455,7 +424,7 @@ uint32_t sEE_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t* NumByteTo
   /* Send LSB of memory address  */
   I2C_SendData(sEE_I2C, (uint8_t)(WriteAddr & 0x00FF));
   
-#endif /*!< sEE_M24C08 */
+#endif /* sEE_M24C08 */
   
   /* Wait until TCR flag is set */
   sEETimeout = sEE_LONG_TIMEOUT;
@@ -515,26 +484,26 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
   NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
   NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
   
-  /*!< If WriteAddr is sEE_PAGESIZE aligned  */
+  /* If WriteAddr is sEE_PAGESIZE aligned  */
   if(Addr == 0) 
   {
-    /*!< If NumByteToWrite < sEE_PAGESIZE */
+    /* If NumByteToWrite < sEE_PAGESIZE */
     if(NumOfPage == 0) 
     {
       /* Store the number of data to be written */
       sEEDataNum = NumOfSingle;
       /* Start writing data */
-      sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+      sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
       sEE_WaitEepromStandbyState();
     }
-    /*!< If NumByteToWrite > sEE_PAGESIZE */
+    /* If NumByteToWrite > sEE_PAGESIZE */
     else  
     {
       while(NumOfPage--)
       {
         /* Store the number of data to be written */
         sEEDataNum = sEE_PAGESIZE;        
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum)); 
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
         sEE_WaitEepromStandbyState();
         WriteAddr +=  sEE_PAGESIZE;
         pBuffer += sEE_PAGESIZE;
@@ -544,60 +513,63 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();
       }
     }
   }
-  /*!< If WriteAddr is not sEE_PAGESIZE aligned  */
+  /* If WriteAddr is not sEE_PAGESIZE aligned  */
   else 
   {
-    /*!< If NumByteToWrite < sEE_PAGESIZE */
+    /* If NumByteToWrite < sEE_PAGESIZE */
     if(NumOfPage== 0) 
     {
-      /*!< If the number of data to be written is more than the remaining space 
+      /* If the number of data to be written is more than the remaining space 
       in the current page: */
       if (NumByteToWrite > count)
       {
         /* Store the number of data to be written */
         sEEDataNum = count;        
-        /*!< Write the data conained in same page */
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+        /* Write the data contained in same page */
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();      
         
         /* Store the number of data to be written */
         sEEDataNum = (NumByteToWrite - count);          
-        /*!< Write the remaining data in the following page */
-        sEE_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint16_t*)(&sEEDataNum));
+        /* Write the remaining data in the following page */
+        sEE_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint8_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();        
       }      
       else      
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;         
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
         sEE_WaitEepromStandbyState();        
       }     
     }
-    /*!< If NumByteToWrite > sEE_PAGESIZE */
+    /* If NumByteToWrite > sEE_PAGESIZE */
     else
     {
       NumByteToWrite -= count;
       NumOfPage =  NumByteToWrite / sEE_PAGESIZE;
       NumOfSingle = NumByteToWrite % sEE_PAGESIZE;
       
-      /* Store the number of data to be written */
-      sEEDataNum = count;         
-      sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
-      sEE_WaitEepromStandbyState();
-      WriteAddr += count;
-      pBuffer += count;
+      if(count != 0)
+      {  
+        /* Store the number of data to be written */
+        sEEDataNum = count;         
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
+        sEE_WaitEepromStandbyState();
+        WriteAddr += count;
+        pBuffer += count;
+      } 
       
       while(NumOfPage--)
       {
         /* Store the number of data to be written */
         sEEDataNum = sEE_PAGESIZE;          
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum));
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum));
         sEETimeout = sEE_LONG_TIMEOUT;
         sEE_WaitEepromStandbyState();
         WriteAddr +=  sEE_PAGESIZE;
@@ -607,7 +579,7 @@ void sEE_WriteBuffer(uint8_t* pBuffer, uint16_t WriteAddr, uint16_t NumByteToWri
       {
         /* Store the number of data to be written */
         sEEDataNum = NumOfSingle;           
-        sEE_WritePage(pBuffer, WriteAddr, (uint16_t*)(&sEEDataNum)); 
+        sEE_WritePage(pBuffer, WriteAddr, (uint8_t*)(&sEEDataNum)); 
         sEE_WaitEepromStandbyState();
       }
     }
@@ -654,7 +626,7 @@ uint32_t sEE_WaitEepromStandbyState(void)
     /* Wait until timeout elapsed */
     while (sEETimeout-- != 0); 
     
-    /* Check if the maximum allowed numbe of trials has bee reached */
+    /* Check if the maximum allowed number of trials has bee reached */
     if (sEETrials++ == sEE_MAX_TRIALS_NUMBER)
     {
       /* If the maximum number of trials has been reached, exit the function */

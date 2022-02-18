@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    COMP/COMP_AnalogWatchdog/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx.h"
 #include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
@@ -44,9 +43,9 @@
 __IO uint32_t State = 0;
 
 /* Private function prototypes -----------------------------------------------*/
-void COMP_Config(void);
-void STOPEntry(void);
-void RestoreConfiguration(void);
+static void COMP_Config(void);
+static void STOPEntry(void);
+static void RestoreConfiguration(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -141,7 +140,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void COMP_Config(void)
+static void COMP_Config(void)
 {
   COMP_InitTypeDef        COMP_InitStructure;
   EXTI_InitTypeDef        EXTI_InitStructure;
@@ -218,7 +217,7 @@ void COMP_Config(void)
   * @param  None
   * @retval None
   */
-void STOPEntry(void)
+static void STOPEntry(void)
 {
   GPIO_InitTypeDef        GPIO_InitStructure;
   /* Enable GPIOs clock */
@@ -272,7 +271,7 @@ void CheckState(void)
   * @param  None
   * @retval None
   */
-void RestoreConfiguration(void)
+static void RestoreConfiguration(void)
 {
   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
   

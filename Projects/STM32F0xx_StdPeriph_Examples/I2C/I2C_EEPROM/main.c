@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    I2C/I2C_EEPROM/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 
 /* Private define ------------------------------------------------------------*/
 /* Uncomment the following line to enable using LCD screen for messages display */
-//#define ENABLE_LCD_MSG_DISPLAY
+#define ENABLE_LCD_MSG_DISPLAY
 
 #define sEE_WRITE_ADDRESS1        0x50
 #define sEE_READ_ADDRESS1         0x50
@@ -70,7 +70,7 @@ volatile uint16_t NumDataRead = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength);
+static TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength);
 
 /**
   * @brief  Main program.
@@ -88,7 +88,11 @@ int main(void)
 
 #ifdef ENABLE_LCD_MSG_DISPLAY
   /* Initialize the LCD screen for information display */
+#ifdef USE_STM320518_EVAL
   STM320518_LCD_Init();
+#else 
+  STM32072B_LCD_Init();
+#endif /* USE_STM320518_EVAL */
   
   LCD_Clear(LCD_COLOR_BLUE);  
   LCD_SetBackColor(LCD_COLOR_BLUE);
@@ -213,7 +217,7 @@ uint32_t sEE_TIMEOUT_UserCallback(void)
   * @retval PASSED: pBuffer1 identical to pBuffer2
   *         FAILED: pBuffer1 differs from pBuffer2
   */
-TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength)
+static TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength)
 {
   while(BufferLength--)
   {

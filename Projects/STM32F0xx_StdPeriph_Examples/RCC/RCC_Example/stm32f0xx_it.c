@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    RCC/RCC_Example/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -140,6 +139,7 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
+#ifdef USE_STM320518_EVAL
 void RCC_IRQHandler(void)
 {
   if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
@@ -168,6 +168,37 @@ void RCC_IRQHandler(void)
     }
   }
 }
+#else 
+void RCC_CRS_IRQHandler(void)
+{
+  if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
+  { 
+    /* Clear HSERDY interrupt pending bit */
+    RCC_ClearITPendingBit(RCC_IT_HSERDY);
+
+    /* Check if the HSE clock is still available */
+    if (RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET)
+    { 
+      /* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */ 
+      RCC_PLLCmd(ENABLE);     
+    }
+  }
+
+  if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET)
+  { 
+    /* Clear PLLRDY interrupt pending bit */
+    RCC_ClearITPendingBit(RCC_IT_PLLRDY);
+
+    /* Check if the PLL is still locked */
+    if (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET)
+    { 
+      /* Select PLL as system clock source */
+      RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    }
+  }
+}
+#endif /* USE_STM320518_EVAL */
+
 
 /**
   * @}

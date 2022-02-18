@@ -2,11 +2,11 @@
   @page ADC_DMA  ADC with DMA example description
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    ADC/ADC_DMA/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of ADC with DMA example
   ******************************************************************************
   *
@@ -29,11 +29,13 @@
 
 This example describes how to use the ADC1 and DMA to transfer continuously 
 converted data from ADC1 to memory.
-The ADC1 is configured to convert continuously channel11, Voltage reference, 
-Temperature sensor and Battery charge.
+The ADC1 is configured to convert continuously channel11 if the used device 
+is STM32F051R8T6 and channel10 if the used one is STM32F072VBT6. In addition 
+the ADC1 converts continuously Voltage reference, Temperature sensor 
+and Battery charge.
 Each time an end of conversion occurs the DMA transfers, in circular mode, the
 converted data from ADC1 DR register to the RegularConvData_Tab[4] table.
-User can vary the ADC1 channel11 voltage using the EVAL Board potentiometer RV3.
+User can vary the ADC1 channel11 or channel10 voltage using the EVAL Board potentiometer RV3.
 The 4 converted voltages are displayed on the EVAL Board LCD.
 
 
@@ -56,11 +58,14 @@ The 4 converted voltages are displayed on the EVAL Board LCD.
 
   - This example runs on STM32F0xx Devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board.
 
   - STM320518-EVAL Set-up
+     - Use potentiometer RV3
+     
+  - STM32072B-EVAL Set-up
      - Use potentiometer RV3
 
 
@@ -69,11 +74,15 @@ The 4 converted voltages are displayed on the EVAL Board LCD.
 In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
- - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - Open your preferred toolchain
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval_lcd.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval_lcd.c
  - Rebuild all files and load your image into target memory
  - Run the example
 

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    PWR/PWR_CurrentConsumption/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -58,11 +58,11 @@ int main(void)
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f0xx.c file
      */ 
-  /* Configure Key Button */
-  STM_EVAL_PBInit(BUTTON_KEY,BUTTON_MODE_GPIO);
+  /* Configure Joystick SEL Button */
+  STM_EVAL_PBInit(BUTTON_SEL,BUTTON_MODE_GPIO);
     
-  /* Loop while KEY button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) != RESET)
+  /* Loop while Joystick SEL button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_SEL) != RESET)
   {
   }
     
@@ -76,12 +76,12 @@ int main(void)
   RCC_BackupResetCmd(ENABLE);
   RCC_BackupResetCmd(DISABLE);
     
-  /* Loop while KEY button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) != RESET)
+  /* Loop while Joystick SEL button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_SEL) != RESET)
   {
   }
-  /* Loop while KEY button is maintained pressed */
-  while(STM_EVAL_PBGetState(BUTTON_KEY) == RESET)
+  /* Loop while Joystick SEL button is maintained pressed */
+  while(STM_EVAL_PBGetState(BUTTON_SEL) == RESET)
   {
   }
   
@@ -92,7 +92,7 @@ int main(void)
       - Prefetch and Cache enabled
       - Code running from Internal FLASH
       - All peripherals disabled.
-      - Wakeup using EXTI Line (KEY Button PA.00)
+      - Wakeup using EXTI Line (Joystick SEL Button PA.00)
    */  
   SleepMode_Measure();
 #elif defined (STOP_MODE)
@@ -109,7 +109,7 @@ int main(void)
   /* STANDBY Mode Entry 
       - RTC OFF
       - IWDG and LSI OFF
-      - Wakeup using WakeUp Pin (PA.0)
+      - Wakeup using WakeUp Pin 2(PC.13)
    */
   StandbyMode_Measure();
 #elif defined (STANDBY_RTC_MODE)
@@ -122,7 +122,7 @@ int main(void)
   StandbyRTCMode_Measure();
 #else
 
-  /* Initialize LED3 on STM320518-EVAL board */
+  /* Initialize LED3 on EVAL board */
   STM_EVAL_LEDInit(LED3);
   
   /* Infinite loop */

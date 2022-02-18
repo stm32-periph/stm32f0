@@ -2,11 +2,11 @@
   @page I2C_EEPROM  How to use the I2C to drive an EEPROM memory
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    I2C/I2C_EEPROM/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the I2C and M24Lxx EEPROM communication example.
   ******************************************************************************
   *
@@ -35,16 +35,16 @@ I2C peripheral is configured in Master transmitter during write operation and in
 Master receiver during read operation from I2C EEPROM. 
 
 The peripheral used is I2C1 but can be configured by modifying the defines values
-in stm320518_eval.h file.
+in stm320518_eval.h or stm32072b_eval.h file.
 The maximum speed of communication with M24LR64 is 400kHz.
 The speed of communication is configured by setting the value of sEE_I2C_TIMING define
-in stm320518c_eval_i2c_ee.h file.
+in stm320518_eval_i2c_ee.h or stm32072b_eval_i2c_ee.h file.
 
 For M24LR64 devices all the memory is accessible through the two-bytes 
 addressing mode and need to define block addresses. In this case, the physical 
 address has to be defined according to the address pins (E1, E2) connection.
 
-This address is defined in stm320518_eval_i2c_ee.h. 
+This address is defined in stm320518_eval_i2c_ee.h or in stm32072b_eval_i2c_ee.h. 
 The EEPROM addresses where the program start the write and the read operations 
 is defined in the main.c file. 
 
@@ -59,7 +59,8 @@ written data are read. The contents of the written and the read buffers are comp
 All transfers are managed in Polling mode by calling sEE_ReadBuffer() or 
 sEE_WriteBuffer() function.
 
-User should refer to stm320518_eval.h file to select which EEPROM use in this example.
+User should refer to stm320518_eval.h or to stm32072b_eval.h file to select which 
+EEPROM use in this example.
     
 This example provides the possibility to use the LCD screen for messages display
 (transfer status: PASSED, FAILED).
@@ -83,13 +84,16 @@ file.
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board. 
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
+    - When communicating with M24LR64 EEPROM, make sure that ANT7-M24LR is inserted in CN2 connector.   
+       
+  - STM32072B-EVAL Set-up
     - When communicating with M24LR64 EEPROM, make sure that ANT7-M24LR is inserted in CN2 connector.      
 
 
@@ -99,11 +103,16 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_i2c_ee.c
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c       
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_i2c_ee.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_i2c_ee.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_lcd.c       
  - Before building the project please make sure that "USE_DEFAULT_TIMEOUT_CALLBACK" 
    define is removed from Preprocessor defines under C/C++ compiler settings.
  - Rebuild all files and load your image into target memory

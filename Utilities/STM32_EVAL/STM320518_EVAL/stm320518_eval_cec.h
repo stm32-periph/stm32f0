@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_cec.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the stm320518_eval_cec
   *          firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -59,18 +59,18 @@ extern "C"
   */
 typedef enum
 {
-  HDMI_CEC_RX_OVERRUN              = (1),  /*!< CEC Receive overrun Error     */
-  HDMI_CEC_RX_BIT_RISING           = (2),  /*!< CEC Rx Bit Rising Error       */
-  HDMI_CEC_RX_SHORT_BIT_PERIOD     = (3),  /*!< CEC Rx Short Bit Period Error */
-  HDMI_CEC_RX_LONG_BIT_PERIOD      = (4),  /*!< CEC Rx Long Bit Period Error  */
-  HDMI_CEC_RX_ACKNOWLEDGE          = (5),  /*!< CEC RX Acknowledge Error      */
-  HDMI_CEC_ARBITRATION_LOST        = (6),  /*!< Arbitration Lost Error   */
-  HDMI_CEC_TX_UNDERRUN             = (7),  /*!< CEC Transmit Underrun Error */
-  HDMI_CEC_TX_ERROR                = (8),  /*!< CEC Transmit Error */
-  HDMI_CEC_TX_ACKNOWLEDGE          = (9),  /*!< CEC TX Acknowledge Error */
-  HDMI_CEC_DEVICE_UNREGISTRED      = (10), /*!< CEC Device Unregistered */
-  HDMI_CEC_TIMEOUT                 = (11), /*!< CEC TimeOut */
-  HDMI_CEC_OK                      = (12)  /*!< CEC OK */
+  HDMI_CEC_RX_OVERRUN              = (1),  /* CEC Receive overrun Error     */
+  HDMI_CEC_RX_BIT_RISING           = (2),  /* CEC Rx Bit Rising Error       */
+  HDMI_CEC_RX_SHORT_BIT_PERIOD     = (3),  /* CEC Rx Short Bit Period Error */
+  HDMI_CEC_RX_LONG_BIT_PERIOD      = (4),  /* CEC Rx Long Bit Period Error  */
+  HDMI_CEC_RX_ACKNOWLEDGE          = (5),  /* CEC RX Acknowledge Error      */
+  HDMI_CEC_ARBITRATION_LOST        = (6),  /* Arbitration Lost Error   */
+  HDMI_CEC_TX_UNDERRUN             = (7),  /* CEC Transmit Underrun Error */
+  HDMI_CEC_TX_ERROR                = (8),  /* CEC Transmit Error */
+  HDMI_CEC_TX_ACKNOWLEDGE          = (9),  /* CEC TX Acknowledge Error */
+  HDMI_CEC_DEVICE_UNREGISTRED      = (10), /* CEC Device Unregistered */
+  HDMI_CEC_TIMEOUT                 = (11), /* CEC TimeOut */
+  HDMI_CEC_OK                      = (12)  /* CEC OK */
 }HDMI_CEC_Error;
 
 typedef struct

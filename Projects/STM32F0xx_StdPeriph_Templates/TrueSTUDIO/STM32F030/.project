@@ -92,24 +92,49 @@
 			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f030.s</locationURI>
 		</link>
 		<link>
-			<name>CMSIS/startup_stm32f0xx.s</name>
+			<name>CMSIS/startup_stm32f031.s</name>
 			<type>1</type>
-			<location>C:/STM32F0xx_StdPeriph_Lib_VL/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f0xx.s</location>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f031.s</locationURI>
 		</link>
 		<link>
-			<name>CMSIS/startup_stm32f0xx_ld.s</name>
+			<name>CMSIS/startup_stm32f042.s</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f0xx_ld.s</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f042.s</locationURI>
+		</link>
+		<link>
+			<name>CMSIS/startup_stm32f051.s</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f051.s</locationURI>
+		</link>
+		<link>
+			<name>CMSIS/startup_stm32f072.s</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/startup_stm32f072.s</locationURI>
 		</link>
 		<link>
 			<name>CMSIS/system_stm32f0xx.c</name>
 			<type>1</type>
-			<location>C:/STM32F0xx_StdPeriph_Lib_VL/Projects/STM32F0xx_StdPeriph_Templates/system_stm32f0xx.c</location>
+			<locationURI>PARENT-2-PROJECT_LOC/system_stm32f0xx.c</locationURI>
+		</link>
+		<link>
+			<name>StdPeriph_Driver/stm320518_eval.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c</locationURI>
+		</link>
+		<link>
+			<name>StdPeriph_Driver/stm320518_eval_lcd.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c</locationURI>
 		</link>
 		<link>
 			<name>StdPeriph_Driver/stm32f0xx_adc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-4-PROJECT_LOC/Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c</locationURI>
+		</link>
+		<link>
+			<name>StdPeriph_Driver/stm32f0xx_can.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_can.c</locationURI>
 		</link>
 		<link>
 			<name>StdPeriph_Driver/stm32f0xx_cec.c</name>
@@ -125,6 +150,11 @@
 			<name>StdPeriph_Driver/stm32f0xx_crc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-4-PROJECT_LOC/Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_crc.c</locationURI>
+		</link>
+		<link>
+			<name>StdPeriph_Driver/stm32f0xx_crs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_crs.c</locationURI>
 		</link>
 		<link>
 			<name>StdPeriph_Driver/stm32f0xx_dac.c</name>

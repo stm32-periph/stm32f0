@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_i2c_ee_cpal.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for 
   *          the stm320518_eval_i2c_ee_cpal.c firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -128,13 +128,13 @@
 
  typedef enum
 { 
-  sEE_STATE_IDLE        = 0x01,         /*!<This state indicates that the EEPROM device is in idle state */ 
+  sEE_STATE_IDLE        = 0x01,         /*This state indicates that the EEPROM device is in idle state */ 
 
-  sEE_STATE_WRITING     = 0x02,         /*!<This state indicates that write operation is ongoing */
+  sEE_STATE_WRITING     = 0x02,         /*This state indicates that write operation is ongoing */
 
-  sEE_STATE_READING     = 0x03,         /*!<This state indicates that read operation is ongoing */
+  sEE_STATE_READING     = 0x03,         /*This state indicates that read operation is ongoing */
   
-  sEE_STATE_ERROR       = 0x04,         /*!<This state indicates that an error is occurred during 
+  sEE_STATE_ERROR       = 0x04,         /*This state indicates that an error is occurred during 
                                             last operation */
   
 }sEE_StateTypeDef;
@@ -144,19 +144,19 @@
 /* sEE Device structure definition */
 typedef struct  
 {
-  CPAL_InitTypeDef* sEE_CPALStructure;  /*!< Pointer on a CPAL Device structure relative to the device 
+  CPAL_InitTypeDef* sEE_CPALStructure;  /* Pointer on a CPAL Device structure relative to the device 
                                              instantiated to communicate with EEPROM */
   
-  uint16_t sEEPageSize;                 /*!< Contains the page size of EEPROM Memory*/ 
+  uint16_t sEEPageSize;                 /* Contains the page size of EEPROM Memory*/ 
   
-  uint8_t sEEAddress;                   /*!< Contains the EEPROM device Address */
+  uint8_t sEEAddress;                   /* Contains the EEPROM device Address */
   
   
-  uint8_t sEEMemoryAddrMode;            /*!< Bit-field value specifying Memory Addressing Mode. Can be 
+  uint8_t sEEMemoryAddrMode;            /* Bit-field value specifying Memory Addressing Mode. Can be 
                                              any combination of following values: 
                                              sEE_Memory_Addressing_Mode_Defines */ 
   
-  __IO sEE_StateTypeDef sEEState;       /*!< Holds the current State of the EEPROM device. The state 
+  __IO sEE_StateTypeDef sEEState;       /* Holds the current State of the EEPROM device. The state 
                                              parameter can be one of the following values: sEE_State_Enum  */
   
 } sEE_InitTypeDef;   
@@ -193,11 +193,11 @@ extern sEE_InitTypeDef sEE2_DevStructure;
    If one option is not selected then the relative feature is disabled.*/
 
 
-#define sEE_OPT_NO_MEM_ADDR            ((uint8_t)0x01)  /*!<Enable No Memory addressing mode for read operation : only EEPROM 
+#define sEE_OPT_NO_MEM_ADDR            ((uint8_t)0x01)  /*Enable No Memory addressing mode for read operation : only EEPROM 
                                                             device address sent. No Register/Physical address to be sent after 
                                                             addressing phase */  
 
-#define sEE_OPT_16BIT_REG              ((uint8_t)0x02)  /*!<Enable 16-Bit Register/Physical addressing mode (two bytes, 
+#define sEE_OPT_16BIT_REG              ((uint8_t)0x02)  /*Enable 16-Bit Register/Physical addressing mode (two bytes, 
                                                             MSB first). This option is supported only when sEE_OPT_NO_MEM_ADDR 
                                                             option is not set */ 
 

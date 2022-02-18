@@ -2,11 +2,11 @@
   @page I2C_WakeUpFromStop I2C WakeUp from stop mode
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    I2C/I2C_WakeUpFromStop/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the Wake Up from Stop mode example.
   ******************************************************************************
   *
@@ -34,9 +34,9 @@ and another one configured in slave mode.
 The I2C of the slave board is configured as slave device which enters in STOP mode
 after activating the WakeUp from stop ability. 
 
-The master board is used to WakeUp the slave board from STOP. By pushing the key Button
-of the master board, the I2C device initialize a communication by sending a Start condition
-followed by the address of slave device. 
+The master board is used to WakeUp the slave board from STOP. By pushing the 
+Joystick SEL Button of the master board, the I2C device initialize a communication
+by sending a Start condition followed by the address of slave device. 
 
 The slave device is woken Up from STOP if it recognizes its own address. 
 The received data is checked and the result is displayed on LCD. 
@@ -66,13 +66,19 @@ Note: Before entering STOP The I2C clock source must be set to HSI.
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board. 
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
+    - Use two boards should be connected as follow after loading the example:
+       - Connect I2C1 SCL pin (PB6) to I2C1 SCL pin (PB6)
+       - Connect I2C1 SDA pin (PB7) to I2C1 SDA pin (PB7)
+       - Connect Gnd pins of two boards.
+       
+  - STM32072B-EVAL Set-up
     - Use two boards should be connected as follow after loading the example:
        - Connect I2C1 SCL pin (PB6) to I2C1 SCL pin (PB6)
        - Connect I2C1 SDA pin (PB7) to I2C1 SDA pin (PB7)
@@ -85,13 +91,20 @@ In order to make the program work, you must do the following:
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
-      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
-      - stm32f0xx_i2c_cpal_usercallback.c
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
+       - stm32f0xx_i2c_cpal_usercallback.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
+       - stm32f0xx_i2c_cpal_usercallback.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_lcd.c 
  - Rebuild all files and load your image into target memory
  - Run the example
 

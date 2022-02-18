@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    I2C/I2C_WakeUpFromStop/main.h 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Header for main.c module
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -31,9 +31,15 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
-#include "stm320518_eval.h"
 #include "stm32f0xx_i2c_cpal.h"
-#include "stm320518_eval_lcd.h"
+#ifdef USE_STM320518_EVAL
+  #include "stm320518_eval.h"
+  #include "stm320518_eval_lcd.h"
+#else 
+  #include "stm32072b_eval.h"
+  #include "stm32072b_eval_lcd.h"
+#endif /* USE_STM320518_EVAL */
+
 
 /* Exported types ------------------------------------------------------------*/
 typedef enum {FAILED = 1, PASSED = !FAILED} TestStatus;
@@ -63,7 +69,7 @@ typedef enum {FAILED = 1, PASSED = !FAILED} TestStatus;
 #define MESSAGE1                        (uint8_t*)"---STM32 CPAL Lib---"
 #define MESSAGE2                        (uint8_t*)"I2C WakeUp From Stop"
 #define MESSAGE3                        (uint8_t*)"-------READY--------"
-#define MESSAGE4                        (uint8_t*)" Press Key to start "
+#define MESSAGE4                        (uint8_t*)" Press SEL to start "
 #define MESSAGE5                        (uint8_t*)"       Tansfer      "
 #define MESSAGE6                        (uint8_t*)" Transfer Complete  "
 #define MESSAGE7                        (uint8_t*)" Entering Stop Mode "

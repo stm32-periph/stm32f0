@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    I2C/I2C_TwoBoards/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -109,23 +108,31 @@ void PendSV_Handler(void)
 /******************************************************************************/
  
 /**
+  * @brief  This function handles EXTI0_1 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI0_1_IRQHandler(void)
+{
+  /* Check if the Key push button has been pushed */
+  if (EXTI_GetFlagStatus(SEL_BUTTON_EXTI_LINE) != RESET)  
+  {
+    if ((ActionState == ACTION_NONE) && (RecieverMode == STATE_OFF))
+    {
+      ActionState = BUTTON_SEL;
+    }    
+    /* Clear the interrupt pending bit */
+    EXTI_ClearITPendingBit(SEL_BUTTON_EXTI_LINE);
+  }
+}
+  
+/**
   * @brief  This function handles EXTI4_15 interrupt request.
   * @param  None
   * @retval None
   */
 void EXTI4_15_IRQHandler(void)
-{ 
-  /* Check if the Key push button has been pushed */
-  if (EXTI_GetFlagStatus(KEY_BUTTON_EXTI_LINE) != RESET)  
-  {
-    if ((ActionState == ACTION_NONE) && (RecieverMode == STATE_OFF))
-    {
-      ActionState = BUTTON_KEY;
-    }    
-    /* Clear the interrupt pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-  }
-  
+{   
   /* Check if the Tamper push button has been pushed */
   if (EXTI_GetFlagStatus(TAMPER_BUTTON_EXTI_LINE) != RESET)  
   {
@@ -142,7 +149,7 @@ void EXTI4_15_IRQHandler(void)
   * @brief  This function handles TIM6 global interrupt request.
   * @param  None
   * @retval None
-  */
+  */  
 void TIM6_DAC_IRQHandler(void)  
 {
   if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET)
@@ -152,7 +159,7 @@ void TIM6_DAC_IRQHandler(void)
     
     TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
   } 
-}
+}  
 
 /**
   * @brief  This function handles TIM17 global interrupt request.
@@ -172,8 +179,8 @@ void TIM17_IRQHandler(void)
     TIM_ClearITPendingBit(TIM17, TIM_IT_Update);
     
     /* Clear Key Button Interrupt pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
-    EXTI_ClearFlag(KEY_BUTTON_EXTI_LINE); 
+    EXTI_ClearITPendingBit(SEL_BUTTON_EXTI_LINE);
+    EXTI_ClearFlag(SEL_BUTTON_EXTI_LINE); 
   } 
 }
 

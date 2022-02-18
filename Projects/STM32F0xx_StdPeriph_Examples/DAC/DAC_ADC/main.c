@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    DAC/DAC_ADC/main.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx.h"
+#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -40,13 +40,9 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
-
-
-
 /* Private function prototypes -----------------------------------------------*/
-void ADC_Config(void);
-void DAC_Config(void);
+static void ADC_Config(void);
+static void DAC_Config(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -81,7 +77,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void DAC_Config(void)
+static void DAC_Config(void)
 {
   DAC_InitTypeDef    DAC_InitStructure;
   GPIO_InitTypeDef   GPIO_InitStructure;
@@ -100,6 +96,8 @@ void DAC_Config(void)
   
   /* DAC channel1 Configuration */
   DAC_InitStructure.DAC_Trigger = DAC_Trigger_None;
+  DAC_InitStructure.DAC_WaveGeneration = DAC_WaveGeneration_None;
+  DAC_InitStructure.DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
   DAC_InitStructure.DAC_OutputBuffer = DAC_OutputBuffer_Enable;
 
   /* DAC Channel1 Init */
@@ -110,11 +108,11 @@ void DAC_Config(void)
 }
 
 /**
-  * @brief  ADC1 channel11 configuration
+  * @brief  ADC1 channel configuration
   * @param  None
   * @retval None
   */
-void ADC_Config(void)
+static void ADC_Config(void)
 {  
   ADC_InitTypeDef    ADC_InitStructure;
   GPIO_InitTypeDef   GPIO_InitStructure;
@@ -127,7 +125,11 @@ void ADC_Config(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
   
   /* Configure ADC Channel11 as analog input */
+#ifdef USE_STM320518_EVAL
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 ;
+#else
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 ;/* Configure ADC Channel10 as analog input */
+#endif /* USE_STM320518_EVAL */
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
   GPIO_Init(GPIOC, &GPIO_InitStructure);
@@ -136,7 +138,7 @@ void ADC_Config(void)
   ADC_DeInit(ADC1);
   ADC_StructInit(&ADC_InitStructure);
   
-  /* Configure the ADC1 in continous mode withe a resolutuion equal to 12 bits  */
+  /* Configure the ADC1 in continous mode withe a resolution equal to 12 bits  */
   ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
   ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
   ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
@@ -144,8 +146,12 @@ void ADC_Config(void)
   ADC_InitStructure.ADC_ScanDirection = ADC_ScanDirection_Upward;
   ADC_Init(ADC1, &ADC_InitStructure);
   
-  /* Convert the ADC1 Channel 1 with 239.5 Cycles as sampling time */ 
+  /* Convert the ADC1 Channel 11 with 239.5 Cycles as sampling time */ 
+#ifdef USE_STM320518_EVAL
   ADC_ChannelConfig(ADC1, ADC_Channel_11 , ADC_SampleTime_239_5Cycles);
+#else
+  ADC_ChannelConfig(ADC1, ADC_Channel_10 , ADC_SampleTime_239_5Cycles);
+#endif /* USE_STM320518_EVAL */
  
   /* Enable End Of Conversion interupt */
   ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
@@ -156,11 +162,11 @@ void ADC_Config(void)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
   
-  /* Enable ADC1 */
-  ADC_Cmd(ADC1, ENABLE);
-
-  /* Wait the ADRDY falg */
-  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));
+  /* Enable the ADC peripheral */
+  ADC_Cmd(ADC1, ENABLE);     
+  
+  /* Wait the ADRDY flag */
+  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));    
 
   /* ADC1 Start Conversion */ 
   ADC_StartOfConversion(ADC1);

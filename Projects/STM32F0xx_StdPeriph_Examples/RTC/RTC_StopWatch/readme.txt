@@ -2,11 +2,11 @@
   @page RTC_StopWatch RTC StopWatch example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    RTC/RTC_StopWatch/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the RTC StopWatch example
   ******************************************************************************
   *
@@ -36,7 +36,7 @@
    LCD and Push Buttons to allow user to use StopWatch with real time display.
 
   After startup, a default 00:00:00:000 chronometer counter is displayed on the 
-  LCD, it correspond to [Hours]:[minutes]:[seconds]:[milliseconds].
+  LCD, it corresponds to [Hours]:[minutes]:[seconds]:[milliseconds].
   User can manipulate the chronometer features using Joystick LEFT, RIGHT and Tamper buttons:
     - press Joystick LEFT  button to start counter.
     - press Joystick RIGHT button to save trials in the backup registers (max 5 actions).
@@ -59,13 +59,17 @@
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
+    - Use Joystick LEFT and RIGHT button
+    - Use Tamper button
+    
+  - STM32072B-EVAL Set-up
     - Use Joystick LEFT and RIGHT button
     - Use Tamper button
 
@@ -75,10 +79,14 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c 
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+      - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval.c
+      - Utilities/STM32_EVAL/STM320518_EVAL/stm32072b_eval_lcd.c   
  - Rebuild all files and load your image into target memory
  - Run the example
 

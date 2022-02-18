@@ -2,15 +2,15 @@
   @page mdkarm MDK-ARM Project Template for STM32F0xx devices
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   This sub-directory contains all the user-modifiable files 
   *          needed to create a new project linked with the STM32F0xx  
   *          Standard Peripheral Library and working with RealView Microcontroller
-  *          Development Kit(MDK-ARM) software toolchain.
+  *          Development Kit(MDK-ARM) software toolchain
   ******************************************************************************
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
@@ -33,7 +33,7 @@
  - Project.uvproj/.uvopt: A pre-configured project file with the provided library structure
                           that produces an executable image with MDK-ARM.
 
-Enabling "Options for Target — Output – Browser Information" is useful for quick 
+Enabling "Options for Target â€” Output â€“ Browser Information" is useful for quick 
 source files navigation but may slow the compilation time.
  
  
@@ -41,26 +41,27 @@ source files navigation but may slow the compilation time.
  
  - Open the Project.uvproj project
  - In the build toolbar select the project config:
-      - STM32F0XX_MD(STM32F0x1xx): to configure the project for STM32F0xx Medium-density devices.
-                                  You can use STMicroelectronics STM320518-EVAL or STM32F0-Discovery
-                                  board to run this project.
-      - STM32F0XX_LD(STM32F0x0xx): to configure the project for STM32F0xx Low-density devices.
-                                  You need to use custom HW board to run this project.
+      - STM32F051: to configure the project for STM32F051 devices.
+                   You can use STMicroelectronics STM320518-EVAL or STM32F0-Discovery
+                   board to run this project.
+      - STM32F031: to configure the project for STM32F031 devices.
+                   You need to use custom HW board to run this project.
       - STM32F030: to configure the project for STM32F030 devices.
-                   You can use the STM32F0308-Discovery board to run this project
-                                  
+                   You can use STM32F0308-Discovery board to run this project.
+     - STM32F072: to configure the project for STM32F072 devices.
+                  You need to use custom STM32072B-EVAL or STM32F072B-Discovery
+                  board to run this project.
+                  
+     - STM32F042: to configure the project for STM32F042 devices.
+                  You need to use custom HW board to run this project.
+      
  - Rebuild all files: Project->Rebuild all target files
  - Load project image: Debug->Start/Stop Debug Session
  - Run program: Debug->Run (F5)
 
-   @note The needed define symbols for this config are already declared in the
-         preprocessor section: USE_STDPERIPH_DRIVER, STM32F0XX, USE_STM320518_EVAL
+@note The needed define symbols for this config are already declared in the
+      preprocessor section: USE_STDPERIPH_DRIVER, STM32F0XX, USE_STM320XXX_EVAL
 
-
-   @note - STM32F0xx Low-density devices are STM32F050xx and STM32F060xx microcontrollers
-        where the Flash memory ranges between 16 and 32 Kbytes.
-      - STM32F0xx Medium-density devices are STM32F051xx and STM32F061xx microcontrollers
-        where the Flash memory ranges between 16 and 64 Kbytes  
 
  * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */

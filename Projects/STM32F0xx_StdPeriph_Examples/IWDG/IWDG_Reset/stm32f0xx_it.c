@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    IWDG/IWDG_Reset/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -25,17 +25,12 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */
+  */ 
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
-  * @{
-  */
-
-/** @addtogroup IWDG_Reset
   * @{
   */
 
@@ -48,7 +43,6 @@ __IO uint16_t IC1ReadValue1 = 0, IC1ReadValue2 = 0;
 __IO uint16_t CaptureNumber = 0;
 __IO uint32_t Capture = 0;
 extern uint32_t LsiFreq;
-
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -119,10 +113,10 @@ void SysTick_Handler(void)
   */
 void EXTI4_15_IRQHandler(void)
 {
-  if (EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
+  if (EXTI_GetITStatus(TAMPER_BUTTON_EXTI_LINE) != RESET)
   {  
-    /* Clear the Key Button EXTI Line Pending Bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    /* Clear the TAMPER Button EXTI Line Pending Bit */
+    EXTI_ClearITPendingBit(TAMPER_BUTTON_EXTI_LINE);
     
     /* As the following address is invalid (not mapped), a Hardfault exception
        will be generated with an infinite loop and when the IWDG counter reaches 0
@@ -172,7 +166,6 @@ void TIM14_IRQHandler(void)
   }
 }
 #endif /* LSI_TIM_MEASURE */
-
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
@@ -181,10 +174,6 @@ void TIM14_IRQHandler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
-
-/**
-  * @}
-  */ 
 
 /**
   * @}

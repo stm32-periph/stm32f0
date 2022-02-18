@@ -2,11 +2,11 @@
   @page I2C_TwoBoards  I2C Communication Boards Data Exchange using CPAL Library
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    I2C/I2C_TwoBoards/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the CPAL Two Boards communication example.
   ******************************************************************************
   *
@@ -44,7 +44,7 @@ lines and Gnd.
 |        |    |__________|____|_______SDA_______|____|__________|    |         |
 |        |                    |                 |                    |         |
 |        |                    |                 |                    |         |
-|        |  Tamper      Key   |                 |  Tamper      Key   |         |
+|        |  Tamper      SEL   |                 |  Tamper      SEL   |         |
 |        |   _           _    |                 |   _           _    |         |
 |        |  |_|         |_|   |                 |  |_|         |_|   |         |
 |        |                    |                 |                    |         |
@@ -62,14 +62,14 @@ The example software perform the following actions:
    of the action relative to the push button.
  - Once a message is correctly sent, Board A activates the master transmitter mode 
    permanently and disables the slave receiver mode.
- - Once a message is received and correctly recognized, Board B activate the
+ - Once a message is received and correctly recognized, Board B activates the
    receiver mode and disable the transmitter mode. (push buttons interrupts are
    still active but message sending is disabled).
  - According to the push button pressed, a value is affected to a Timer which 
    generates periodic high priority interrupts. At each interrupt, a status message
    is sent to Board B. The period of Timer interrupts is variable depending on
    the push button pressed.    
- - When Key is pressed Board A send specific message (tSignal1) to Board B and set 
+ - When SEL is pressed Board A send specific message (tSignal1) to Board B and set 
    the period of Timer to 1.5 seconds. When Tamper is pressed specific message (tSignal2)
    is sent and the period of Timer is set to 0.375 seconds.
 
@@ -88,7 +88,7 @@ stm32f0xx_i2c_cpal_conf.h file by commenting or uncommenting these defines in
 Section 2 (Transfer Options Configuration):
               #define CPAL_I2C_DMA_PROGMODEL
               #define CPAL_I2C_IT_PROGMODEL
-Note : Only one define must selected. If these two defines are uncommented DMA Programming 
+Note : Only one define must be selected. If these two defines are uncommented, DMA Programming 
 model is selected and the code size of this example will increase.
 
  
@@ -134,15 +134,21 @@ model is selected and the code size of this example will increase.
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board. 
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
  - The same example should be loaded in two evaluation boards.
     
  - STM320518-EVAL Set-up
+    - Use two boards should be connected as follows:
+       - Connect I2C1 SCL pin (PB6) to I2C1 SCL pin (PB6)
+       - Connect I2C1 SDA pin (PB7) to I2C SDA pin (PB7)
+       - Connect Gnd pins of two boards.
+       
+ - STM32072B-EVAL Set-up
     - Use two boards should be connected as follows:
        - Connect I2C1 SCL pin (PB6) to I2C1 SCL pin (PB6)
        - Connect I2C1 SDA pin (PB7) to I2C SDA pin (PB7)
@@ -155,13 +161,20 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
-      - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
-      - stm32f0xx_i2c_cpal_usercallback.c
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
+       - stm32f0xx_i2c_cpal_usercallback.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
+       - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal.c
+       - Libraries/STM32F0xx_CPAL_Driver/stm32f0xx_i2c_cpal_hal.c
+       - stm32f0xx_i2c_cpal_usercallback.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval.c
+       - Utilities/STM32_EVAL/STM32072B_EVAL/stm32072b_eval_lcd.c 
  - Rebuild all files and load your image into target memory
  - Run the example
 

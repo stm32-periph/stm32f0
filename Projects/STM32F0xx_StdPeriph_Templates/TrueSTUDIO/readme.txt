@@ -2,11 +2,11 @@
   @page truestudio TrueSTUDIO Project Template for STM32F0xx devices
  
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    readme.txt
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   This sub-directory contains all the user-modifiable files needed to
   *          create a new project linked with the STM32F0xx Standard Peripherals
   *          Library and working with TrueSTUDIO software toolchain.
@@ -45,16 +45,18 @@
  - Click on File->Import, select General->'Existing Projects into Workspace' 
    and then click "Next". 
  - Browse to the TrueSTUDIO workspace directory and select the project: 
-   - STM32F0XX_MD(STM32F0x1xx): to configure the project for STM32F0x1xx devices.
-   - STM32F0XX_LD(STM32F0x0xx): to configure the project for STM32F0x0xx devices.
+   - STM32F051: to configure the project for STM32F051 devices.
+   - STM32F031: to configure the project for STM32F031 devices.
    - STM32F030: to configure the project for STM32F030 devices.
+   - STM32F072: to configure the project for STM32F072 devices.
+   - STM32F042: to configure the project for STM32F042 devices.
  - Rebuild all project files: Select the project in the "Project explorer" 
    window then click on Project->build project menu.
  - Run program: Select the project in the "Project explorer" window then click 
    Run->Debug (F11)
 
  @note The needed define symbols for this config are already declared in the
-       preprocessor section: USE_STM320518_EVAL, STM32F0XX, USE_STDPERIPH_DRIVER 
+       preprocessor section. 
 
  * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */

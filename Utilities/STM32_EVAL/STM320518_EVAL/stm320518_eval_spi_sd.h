@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_spi_sd.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the stm320518_eval_spi_sd
   *          firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -53,14 +53,11 @@
   * @{
   */  
 
-/** @defgroup STM320518_EVAL_SPI_SD_Exported_Types
-  * @{
-  */ 
-
+/* Exported types ------------------------------------------------------------*/
 typedef enum
 {
 /**
-  * @brief  SD reponses and error flags
+  * @brief  SD responses and error flags
   */
   SD_RESPONSE_NO_ERROR      = (0x00),
   SD_IN_IDLE_STATE          = (0x01),
@@ -86,43 +83,43 @@ typedef enum
   */ 
 typedef struct
 {
-  __IO uint8_t  CSDStruct;            /*!< CSD structure */
-  __IO uint8_t  SysSpecVersion;       /*!< System specification version */
-  __IO uint8_t  Reserved1;            /*!< Reserved */
-  __IO uint8_t  TAAC;                 /*!< Data read access-time 1 */
-  __IO uint8_t  NSAC;                 /*!< Data read access-time 2 in CLK cycles */
-  __IO uint8_t  MaxBusClkFrec;        /*!< Max. bus clock frequency */
-  __IO uint16_t CardComdClasses;      /*!< Card command classes */
-  __IO uint8_t  RdBlockLen;           /*!< Max. read data block length */
-  __IO uint8_t  PartBlockRead;        /*!< Partial blocks for read allowed */
-  __IO uint8_t  WrBlockMisalign;      /*!< Write block misalignment */
-  __IO uint8_t  RdBlockMisalign;      /*!< Read block misalignment */
-  __IO uint8_t  DSRImpl;              /*!< DSR implemented */
-  __IO uint8_t  Reserved2;            /*!< Reserved */
-  __IO uint32_t DeviceSize;           /*!< Device Size */
-  __IO uint8_t  MaxRdCurrentVDDMin;   /*!< Max. read current @ VDD min */
-  __IO uint8_t  MaxRdCurrentVDDMax;   /*!< Max. read current @ VDD max */
-  __IO uint8_t  MaxWrCurrentVDDMin;   /*!< Max. write current @ VDD min */
-  __IO uint8_t  MaxWrCurrentVDDMax;   /*!< Max. write current @ VDD max */
-  __IO uint8_t  DeviceSizeMul;        /*!< Device size multiplier */
-  __IO uint8_t  EraseGrSize;          /*!< Erase group size */
-  __IO uint8_t  EraseGrMul;           /*!< Erase group size multiplier */
-  __IO uint8_t  WrProtectGrSize;      /*!< Write protect group size */
-  __IO uint8_t  WrProtectGrEnable;    /*!< Write protect group enable */
-  __IO uint8_t  ManDeflECC;           /*!< Manufacturer default ECC */
-  __IO uint8_t  WrSpeedFact;          /*!< Write speed factor */
-  __IO uint8_t  MaxWrBlockLen;        /*!< Max. write data block length */
-  __IO uint8_t  WriteBlockPaPartial;  /*!< Partial blocks for write allowed */
-  __IO uint8_t  Reserved3;            /*!< Reserded */
-  __IO uint8_t  ContentProtectAppli;  /*!< Content protection application */
-  __IO uint8_t  FileFormatGrouop;     /*!< File format group */
-  __IO uint8_t  CopyFlag;             /*!< Copy flag (OTP) */
-  __IO uint8_t  PermWrProtect;        /*!< Permanent write protection */
-  __IO uint8_t  TempWrProtect;        /*!< Temporary write protection */
-  __IO uint8_t  FileFormat;           /*!< File Format */
-  __IO uint8_t  ECC;                  /*!< ECC code */
-  __IO uint8_t  CSD_CRC;              /*!< CSD CRC */
-  __IO uint8_t  Reserved4;            /*!< always 1*/
+  __IO uint8_t  CSDStruct;            /* CSD structure */
+  __IO uint8_t  SysSpecVersion;       /* System specification version */
+  __IO uint8_t  Reserved1;            /* Reserved */
+  __IO uint8_t  TAAC;                 /* Data read access-time 1 */
+  __IO uint8_t  NSAC;                 /* Data read access-time 2 in CLK cycles */
+  __IO uint8_t  MaxBusClkFrec;        /* Max. bus clock frequency */
+  __IO uint16_t CardComdClasses;      /* Card command classes */
+  __IO uint8_t  RdBlockLen;           /* Max. read data block length */
+  __IO uint8_t  PartBlockRead;        /* Partial blocks for read allowed */
+  __IO uint8_t  WrBlockMisalign;      /* Write block misalignment */
+  __IO uint8_t  RdBlockMisalign;      /* Read block misalignment */
+  __IO uint8_t  DSRImpl;              /* DSR implemented */
+  __IO uint8_t  Reserved2;            /* Reserved */
+  __IO uint32_t DeviceSize;           /* Device Size */
+  __IO uint8_t  MaxRdCurrentVDDMin;   /* Max. read current @ VDD min */
+  __IO uint8_t  MaxRdCurrentVDDMax;   /* Max. read current @ VDD max */
+  __IO uint8_t  MaxWrCurrentVDDMin;   /* Max. write current @ VDD min */
+  __IO uint8_t  MaxWrCurrentVDDMax;   /* Max. write current @ VDD max */
+  __IO uint8_t  DeviceSizeMul;        /* Device size multiplier */
+  __IO uint8_t  EraseGrSize;          /* Erase group size */
+  __IO uint8_t  EraseGrMul;           /* Erase group size multiplier */
+  __IO uint8_t  WrProtectGrSize;      /* Write protect group size */
+  __IO uint8_t  WrProtectGrEnable;    /* Write protect group enable */
+  __IO uint8_t  ManDeflECC;           /* Manufacturer default ECC */
+  __IO uint8_t  WrSpeedFact;          /* Write speed factor */
+  __IO uint8_t  MaxWrBlockLen;        /* Max. write data block length */
+  __IO uint8_t  WriteBlockPaPartial;  /* Partial blocks for write allowed */
+  __IO uint8_t  Reserved3;            /* Reserded */
+  __IO uint8_t  ContentProtectAppli;  /* Content protection application */
+  __IO uint8_t  FileFormatGrouop;     /* File format group */
+  __IO uint8_t  CopyFlag;             /* Copy flag (OTP) */
+  __IO uint8_t  PermWrProtect;        /* Permanent write protection */
+  __IO uint8_t  TempWrProtect;        /* Temporary write protection */
+  __IO uint8_t  FileFormat;           /* File Format */
+  __IO uint8_t  ECC;                  /* ECC code */
+  __IO uint8_t  CSD_CRC;              /* CSD CRC */
+  __IO uint8_t  Reserved4;            /* always 1*/
 } SD_CSD;
 
 /** 
@@ -130,16 +127,16 @@ typedef struct
   */
 typedef struct
 {
-  __IO uint8_t  ManufacturerID;       /*!< ManufacturerID */
-  __IO uint16_t OEM_AppliID;          /*!< OEM/Application ID */
-  __IO uint32_t ProdName1;            /*!< Product Name part1 */
-  __IO uint8_t  ProdName2;            /*!< Product Name part2*/
-  __IO uint8_t  ProdRev;              /*!< Product Revision */
-  __IO uint32_t ProdSN;               /*!< Product Serial Number */
-  __IO uint8_t  Reserved1;            /*!< Reserved1 */
-  __IO uint16_t ManufactDate;         /*!< Manufacturing Date */
-  __IO uint8_t  CID_CRC;              /*!< CID CRC */
-  __IO uint8_t  Reserved2;            /*!< always 1 */
+  __IO uint8_t  ManufacturerID;       /* ManufacturerID */
+  __IO uint16_t OEM_AppliID;          /* OEM/Application ID */
+  __IO uint32_t ProdName1;            /* Product Name part1 */
+  __IO uint8_t  ProdName2;            /* Product Name part2*/
+  __IO uint8_t  ProdRev;              /* Product Revision */
+  __IO uint32_t ProdSN;               /* Product Serial Number */
+  __IO uint8_t  Reserved1;            /* Reserved1 */
+  __IO uint16_t ManufactDate;         /* Manufacturing Date */
+  __IO uint8_t  CID_CRC;              /* CID CRC */
+  __IO uint8_t  Reserved2;            /* always 1 */
 } SD_CID;
 
 /** 
@@ -149,17 +146,11 @@ typedef struct
 {
   SD_CSD SD_csd;
   SD_CID SD_cid;
-  uint32_t CardCapacity;  /*!< Card Capacity */
-  uint32_t CardBlockSize; /*!< Card Block Size */
+  uint32_t CardCapacity;  /* Card Capacity */
+  uint32_t CardBlockSize; /* Card Block Size */
 } SD_CardInfo;
 
-/**
-  * @}
-  */
-  
-/** @defgroup STM320518_EVAL_SPI_SD_Exported_Constants
-  * @{
-  */ 
+/* Exported constants --------------------------------------------------------*/
     
 /**
   * @brief  Block Size
@@ -176,11 +167,11 @@ typedef struct
   *         Tokens (necessary because at nop/idle (and CS active) only 0xff is 
   *         on the data/command line)  
   */
-#define SD_START_DATA_SINGLE_BLOCK_READ    0xFE  /*!< Data token start byte, Start Single Block Read */
-#define SD_START_DATA_MULTIPLE_BLOCK_READ  0xFE  /*!< Data token start byte, Start Multiple Block Read */
-#define SD_START_DATA_SINGLE_BLOCK_WRITE   0xFE  /*!< Data token start byte, Start Single Block Write */
-#define SD_START_DATA_MULTIPLE_BLOCK_WRITE 0xFD  /*!< Data token start byte, Start Multiple Block Write */
-#define SD_STOP_DATA_MULTIPLE_BLOCK_WRITE  0xFD  /*!< Data toke stop byte, Stop Multiple Block Write */
+#define SD_START_DATA_SINGLE_BLOCK_READ    0xFE  /* Data token start byte, Start Single Block Read */
+#define SD_START_DATA_MULTIPLE_BLOCK_READ  0xFE  /* Data token start byte, Start Multiple Block Read */
+#define SD_START_DATA_SINGLE_BLOCK_WRITE   0xFE  /* Data token start byte, Start Single Block Write */
+#define SD_START_DATA_MULTIPLE_BLOCK_WRITE 0xFD  /* Data token start byte, Start Multiple Block Write */
+#define SD_STOP_DATA_MULTIPLE_BLOCK_WRITE  0xFD  /* Data toke stop byte, Stop Multiple Block Write */
 
 /**
   * @brief  SD detection on its memory slot
@@ -215,14 +206,8 @@ typedef struct
 #define SD_CMD_ERASE_GRP_END          36  /*!< CMD36 = 0x64 */
 #define SD_CMD_UNTAG_ERASE_GROUP      37  /*!< CMD37 = 0x65 */
 #define SD_CMD_ERASE                  38  /*!< CMD38 = 0x66 */
-
-/**
-  * @}
-  */ 
   
-/** @defgroup STM320518_EVAL_SPI_SD_Exported_Macros
-  * @{
-  */
+/* Exported macro ------------------------------------------------------------*/
 /** 
   * @brief  Select SD Card: ChipSelect pin low   
   */  
@@ -231,13 +216,8 @@ typedef struct
   * @brief  Deselect SD Card: ChipSelect pin high   
   */ 
 #define SD_CS_HIGH()    GPIO_SetBits(SD_CS_GPIO_PORT, SD_CS_PIN)
-/**
-  * @}
-  */ 
 
-/** @defgroup STM320518_EVAL_SPI_SD_Exported_Functions
-  * @{
-  */ 
+/* Exported functions ------------------------------------------------------- */ 
 void SD_DeInit(void);  
 SD_Error SD_Init(void);
 uint8_t SD_Detect(void);
@@ -263,9 +243,6 @@ uint8_t SD_ReadByte(void);
 #endif
 
 #endif /* __STM320518_EVAL_SPI_SD_H */
-/**
-  * @}
-  */
 
 /**
   * @}

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    EXTI/EXTI_Example/main.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main program body
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -26,8 +26,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx.h"
-#include "stm320518_eval.h"
+#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -46,8 +45,11 @@ GPIO_InitTypeDef   GPIO_InitStructure;
 NVIC_InitTypeDef   NVIC_InitStructure;
 
 /* Private function prototypes -----------------------------------------------*/
-void EXTI0_Config(void);
-void EXTI4_15_Config(void);
+static void EXTI0_Config(void);
+#ifdef USE_STM32072B_EVAL 
+static void EXTI2_3_Config(void);
+#endif
+static void EXTI4_15_Config(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -65,7 +67,7 @@ int main(void)
        system_stm32f0xx.c file
      */
 
-  /* Initialize LEDs mounted on STM320518-EVAL board */
+  /* Initialize LEDs mounted on EVAL board */
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
   STM_EVAL_LEDInit(LED3);
@@ -74,7 +76,12 @@ int main(void)
   /* Configure PA0 in interrupt mode */
   EXTI0_Config();
 
-  /* Configure PC8, PC9 and PC13 in interrupt mode */
+  /* Configure PE3, PE2 in interrupt mode only for STM32072B devices*/  
+#ifdef USE_STM32072B_EVAL
+  EXTI2_3_Config();
+#endif
+  
+  /* Configure PC13 in interrupt mode */
   EXTI4_15_Config();
 
   /* Generate software interrupt: simulate a falling edge applied on EXTI8 line */
@@ -91,7 +98,7 @@ int main(void)
   * @param  None
   * @retval None
   */
-void EXTI0_Config(void)
+static void EXTI0_Config(void)
 {
   /* Enable GPIOA clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -99,7 +106,7 @@ void EXTI0_Config(void)
   /* Configure PA0 pin as input floating */
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
   /* Enable SYSCFG clock */
@@ -110,7 +117,7 @@ void EXTI0_Config(void)
   /* Configure EXTI0 line */
   EXTI_InitStructure.EXTI_Line = EXTI_Line0;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
 
@@ -122,49 +129,108 @@ void EXTI0_Config(void)
 }
 
 /**
-  * @brief  Configure PC8, PC9 and PC13 in interrupt mode
+  * @brief  Configure PE3, PE0in interrupt mode
   * @param  None
   * @retval None
   */
-void EXTI4_15_Config(void)
+#ifdef USE_STM32072B_EVAL 
+static void EXTI2_3_Config(void)
 {
   /* Enable GPIOE clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
 
-  /* Configure PC8, PC9 and PC13 pins as input floating */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_13;
+  /* Configure PE3 and PE2 pins as input floating */
+  
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_3;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
 
   /* Enable SYSCFG clock */
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 
-  /* Connect EXTI8 Line to PC8 pin */
-  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource8);
+  /* Connect EXTI3 Line to PE3 pin */
+  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE, EXTI_PinSource3);
 
+  /* Connect EXTI2 Line to PE2 pin */
+  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE, EXTI_PinSource2);
+
+  /* Configure EXTI3 line */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line3;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);
+
+  /* Configure EXTI2 line */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line2;
+  EXTI_Init(&EXTI_InitStructure);
+
+  /* Enable and set EXTI2_3 Interrupt */
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI2_3_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+
+}
+#endif
+
+/**
+  * @brief  Configure PC13 in interrupt mode
+  * @param  None
+  * @retval None
+  */
+static void EXTI4_15_Config(void)
+{
+  /* Enable GPIOC clock */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
+
+  /* Enable SYSCFG clock */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+
+#ifdef USE_STM320518_EVAL 
+  /* Configure PC9 pin as input floating */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  
   /* Connect EXTI9 Line to PC9 pin */
   SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource9);
-
-  /* Connect EXTI13 Line to PC13 pin */
-  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource13);
-
-  /* Configure EXTI8 line */
-  EXTI_InitStructure.EXTI_Line = EXTI_Line8;
+  
+  /* Configure EXTI9 line */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line9;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
 
-  /* Configure EXTI9 line */
-  EXTI_InitStructure.EXTI_Line = EXTI_Line9;
+#endif
+  
+  /* Configure PC8 and PC13 pins as input floating */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_13;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  
+   /* Connect EXTI8 Line to PC8 pin */
+  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource8);
+  
+  /* Connect EXTI13 Line to PC13 pin */
+  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource13);
+  
+  /* Configure EXTI8 line */
+  EXTI_InitStructure.EXTI_Line = EXTI_Line8;  
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
-
+  
   /* Configure EXTI13 line */
   EXTI_InitStructure.EXTI_Line = EXTI_Line13;
   EXTI_Init(&EXTI_InitStructure);
-
-  /* Enable and set EXTI9_5 Interrupt */
+  
+  /* Enable and set EXTI4_15 Interrupt */
   NVIC_InitStructure.NVIC_IRQChannel = EXTI4_15_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;

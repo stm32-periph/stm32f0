@@ -2,11 +2,11 @@
   @page USART_DataExchangeDMA USART Communication Boards Data Exchange using DMA example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    USART/USART_TwoBoards/DataExchangeDMA/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the USART Communication Boards Data Exchange using 
   *          DMA example.
   ******************************************************************************
@@ -120,16 +120,22 @@ These operations can be repeated infinitely.
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
 
   - STM320518-EVAL Set-up
-    - Connect USART1 TX pin (PA.09) to USART1 RX pin (PA.10)
-    - Connect USART1 RX pin (PA.10) to USART1 TX pin (PA.09)
-    - Connect GND pins of two boards.” 
+    - Connect USART1 TX pin (PA.09) to USARTx RX pin
+    - Connect USART1 RX pin (PA.10) to USARTx TX pin
+    - Connect GND pins of two boards  
+    - JP3 should be in 5-6 position
+  - STM32072B-EVAL Set-up
+    - Connect USART2 TX pin (PD.05) to USARTx RX pin
+    - Connect USART2 RX pin (PD.06) to USARTx TX pin
+    - Connect GND pins of two boards 
+    - JP17 should be in 5-6 position
 
 
 @par How to use it ? 
@@ -138,9 +144,12 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
  - Rebuild all files and load your image into target memory
  - Run the example
 

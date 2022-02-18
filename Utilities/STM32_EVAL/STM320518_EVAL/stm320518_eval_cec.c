@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm320518_eval_cec.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file provides all the STM320518-EVAL HDMI-CEC firmware functions.
   *
   *          ===================================================================
@@ -14,7 +14,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ __IO uint8_t BufferPointer[15];
 __IO uint32_t ReceiveStatus = 0;
 __IO uint32_t SendStatus = 0;
 __IO uint8_t TransErrorCode = 0;
-__IO uint8_t MyLogicalAddress = 0;
+uint8_t MyLogicalAddress = 0;
 uint16_t MyPhysicalAddress = 0;
 __IO uint8_t DeviceType = 0;
 #ifdef HDMI_CEC_USE_DDC
@@ -488,7 +488,7 @@ HDMI_CEC_Error HDMI_CEC_GetErrorStatus (void)
 void HDMI_CEC_ProcessIRQSrc(void)
 {
   /********************** Reception *******************************************/
-  /* Check if a reception error occured */
+  /* Check if a reception error occurred */
   if (CEC->ISR & (CEC_IT_RXACKE | CEC_IT_LBPE | CEC_IT_SBPE | CEC_IT_BRE | CEC_IT_RXOVR))
   {
     /* Set receive status bit (Error) */

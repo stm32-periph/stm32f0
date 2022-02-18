@@ -2,15 +2,15 @@
   ******************************************************************************
   * @file    PWR/PWR_CurrentConsumption/stm32f0xx_it.c 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Examples
   * @{
@@ -107,16 +106,16 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief  This function handles EXTI Lines 14 to 5 interrupts requests.
+  * @brief  This function handles EXTI Lines 0 to 1 interrupts requests.
   * @param  None
   * @retval None
   */
-void EXTI14_5_IRQHandler(void)
+void EXTI0_1_IRQHandler(void)
 { 
-  if(EXTI_GetITStatus(KEY_BUTTON_EXTI_LINE) != RESET)
+  if(EXTI_GetITStatus(SEL_BUTTON_EXTI_LINE) != RESET)
   {    
-    /* Clear the Key Button EXTI line pending bit */
-    EXTI_ClearITPendingBit(KEY_BUTTON_EXTI_LINE);
+    /* Clear the Joystick SEL Button EXTI line pending bit */
+    EXTI_ClearITPendingBit(SEL_BUTTON_EXTI_LINE);
   }
 }
 

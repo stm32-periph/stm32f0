@@ -2,11 +2,11 @@
   @page RTC_LSI RTC prescaler adjustment with LSI Measurements example
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    RTC/RTC_LSI/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   Description of the RTC prescaler adjustment with LSI Measurements example.
   ******************************************************************************
   *
@@ -42,7 +42,7 @@ The inaccuracy of the LSI clock causes the RTC Alarm Interrupt to be inaccurate.
 The RTC CK_SPRE signal can be monitored by LED1 which is toggled into the RTC 
 Alarm_A interrupt service routine.
 
-The program waits until Key Push button is pressed to begin the auto calibration 
+The program waits until TAMPER Push button is pressed to begin the auto calibration 
 procedure:
  - Configure the TIM14 to remap internally the TIM14 Channel 1 Input Capture to 
    the LSI clock output.
@@ -71,14 +71,18 @@ procedure:
          
 @par Hardware and Software environment
 
-  - This example runs on STM32F0xx Devices.
+  - This example runs on STM32F0xx devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board
     and development board.
 
   - STM320518-EVAL Set-up
-    - None
+    - Use TAMPER push button for RTC calibration
+    
+  - STM32072B-EVAL Set-up
+    - Use TAMPER push button for RTC calibration
 
 @par How to use it ? 
 
@@ -86,9 +90,13 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain 
- - Select STM32F0XX_MD(STM32F0x1xx) workspace 
- - Add the following files to the project source list
-      - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c 
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+       
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
  - Rebuild all files and load your image into target memory
  - Run the example
 

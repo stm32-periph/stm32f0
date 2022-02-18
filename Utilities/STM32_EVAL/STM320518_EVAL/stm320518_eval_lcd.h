@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm320518_eval_lcd.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    10-May-2013
+  * @version V1.1.1
+  * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the stm320518_eval_lcd
   *          firmware driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -54,24 +54,14 @@
   * @{
   */ 
 
-
-/** @defgroup STM320518_EVAL_LCD_Exported_Types
-  * @{
-  */ 
+/* Exported types ------------------------------------------------------------*/ 
 typedef struct 
 {
   int16_t X;
   int16_t Y;
 } Point, * pPoint;
 
-/**
-  * @}
-  */ 
-
-/** @defgroup STM320518_EVAL_LCD_Exported_Constants
-  * @{
-  */ 
-
+/* Exported constants --------------------------------------------------------*/
 /**
  * @brief Uncomment the line below if you want to use LCD_DrawBMP function to
  *        display a bitmap picture on the LCD. This function assumes that the bitmap
@@ -337,22 +327,10 @@ typedef struct
 #define LCD_PIXEL_WIDTH          0x0140
 #define LCD_PIXEL_HEIGHT         0x00F0
 
-/**
-  * @}
-  */ 
-
-/** @defgroup STM320518_EVAL_LCD_Exported_Macros
-  * @{
-  */ 
+/* Exported macro ------------------------------------------------------------*/ 
 #define ASSEMBLE_RGB(R, G, B)    ((((R)& 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3)) 
 
-/**
-  * @}
-  */ 
-
-/** @defgroup STM320518_EVAL_LCD_Exported_Functions
-  * @{
-  */ 
+/* Exported functions ------------------------------------------------------- */
 void LCD_DeInit(void);
 void LCD_Setup(void);
 void STM320518_LCD_Init(void);
@@ -398,10 +376,6 @@ void LCD_DisplayOff(void);
 void LCD_CtrlLinesConfig(void);
 void LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal);
 void LCD_SPIConfig(void);
-
-/**
-  * @}
-  */ 
   
 #ifdef __cplusplus
 }

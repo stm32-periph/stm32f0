@@ -2,11 +2,11 @@
   @page ADC_LowPower ADC LowPower Example Description
   
   @verbatim
-  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
   * @file    ADC/ADC_LowPower/readme.txt 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.0
+  * @date    16-January-2014
   * @brief   brief   Description of the ADC Low Power mode example.
   ******************************************************************************
   *
@@ -31,13 +31,16 @@ This example provides a short description of how to use the ADC peripheral with
 Auto-delayed conversion mode and Auto-poweroff modes.
 
 The ADC is triggered by TIM3_TRGO which is connected to TIM3_Update Event.
-Each time the ADC is triggered, it converts the RV3 voltage (which correspond to
-ADC channel11), and then the ADC enter in delay mode (no Overrun detect) until the
-ADC data register has been read by pressing KEY button 
+Each time the ADC is triggered, it converts the RV3 voltage (which corresponds to
+ADC channel11 and ADC channel10 respectively in STM32F051R8T6 and STM32F072VBT6 devices), 
+and then the ADC enters in delay mode (no Overrun detect) until the ADC data register 
+has been read by pressing KEY button or TAMPER button respectively for STM32F051R8T6 
+and STM32F072VBT6 devices.
 
-To active the Auto delay mode and also the Auto power off mode uncomment  "#define ADC_LOWPOWER ".
-If "#define ADC_LOWPOWER" is commented the, an overrun interrupt is generated and
-LED1 is toggled. Otherwise, LED1 remain OFF.
+The Auto delay mode and the Auto power off mode activation can be done by uncommenting
+the "#define ADC_LOWPOWER " in the main.c file.
+If "#define ADC_LOWPOWER" is commented, an overrun interrupt is generated and
+LED1 is toggled. Otherwise, LED1 remains OFF.
 
 
 @par Directory contents 
@@ -59,13 +62,17 @@ LED1 is toggled. Otherwise, LED1 remain OFF.
 
   - This example runs on STM32F0xx Devices.
   
-  - This example has been tested with STMicroelectronics STM320518-EVAL (STM32F0xx)
-    evaluation board and can be easily tailored to any other supported device 
-    and development board.
+  - This example has been tested with STMicroelectronics STM320518-EVAL and
+    STM32072B-EVAL including respectively STM32F051R8T6 and STM32F072VBT6 devices
+    and can be easily tailored to any other supported device and development board.
 
   - STM320518-EVAL Set-up
      - Use potentiometer RV3
      - Use key button
+     
+  - STM32072B-EVAL Set-up
+     - Use potentiometer RV3
+     - Use tamper button
 
 
 @par How to use it ? 
@@ -74,10 +81,14 @@ In order to make the program work, you must do the following :
  - Copy all source files from this example folder to the template folder under
    Project\STM32F0xx_StdPeriph_Templates
  - Open your preferred toolchain
- - Select STM32F0XX_MD(STM32F0x1xx) workspace
- - Add the following files to the project source list
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval.c
-     - Utilities/STM32_EVAL/STM320518_EVAL/stm320518_eval_lcd.c  
+ - If the used device is STM32F051R8T6 choose STM32F051 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval.c
+       - Utilities\STM32_EVAL\STM320518_EVAL\stm320518_eval_lcd.c
+ - If the used device is STM32F072VBT6 choose STM32F072 project
+    - Add the following files to the project source list
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval.c
+       - Utilities\STM32_EVAL\STM32072B_EVAL\stm32072b_eval_lcd.c
  - Rebuild all files and load your image into target memory
  - Run the example
 
